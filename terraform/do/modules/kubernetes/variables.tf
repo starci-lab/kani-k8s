@@ -39,14 +39,3 @@ variable "workload_node_pool_label" {
   description = "Label of the workload node pool"
   default     = "kani-workload-node-pool"
 }
-
-variable "argo_cd_domain_name" {
-  type = string
-  description = "Domain name of the Argo CD server"
-}
-
-variable "base_domain_name" {
-  type = string
-  description = "Base domain name"
-  default = "kanibot.xyz"
-}
