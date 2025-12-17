@@ -7,7 +7,7 @@ resource "digitalocean_kubernetes_cluster" "kubernetes" {
     size = var.kubernetes_node_pool_size
     node_count = var.kubernetes_node_pool_node_count
     labels = {
-      "doks.digitalocean.com/node-pool" = var.workload_node_pool_label
+      "doks.digitalocean.com/node-pool" = var.kubernetes_node_pool_name
     }
   }
 }

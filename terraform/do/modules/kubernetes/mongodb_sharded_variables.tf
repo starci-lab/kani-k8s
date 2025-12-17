@@ -4,7 +4,7 @@
 variable "mongodb_root_username" {
   type        = string
   description = "Username for MongoDB"
-  default     = "kani"
+  default     = "root"
 }
 
 variable "mongodb_root_password" {
@@ -13,6 +13,14 @@ variable "mongodb_root_password" {
   sensitive   = true
 }
 
+# =========================
+# Shards
+# =========================
+variable "mongodb_shards" {
+  type        = number
+  description = "Number of shards for MongoDB"
+  default     = 1
+}
 # =========================
 # Config Server
 # =========================
@@ -26,31 +34,31 @@ variable "mongodb_configsvr_replica_count" {
 variable "mongodb_configsvr_persistence_size" {
   type        = string
   description = "Persistent volume size for Config Server"
-  default     = "1Gi"
+  default     = "2Gi"
 }
 
 variable "mongodb_configsvr_request_cpu" {
   type        = string
   description = "Requested CPU for Config Server"
-  default     = "32m"
+  default     = "192m"
 }
 
 variable "mongodb_configsvr_request_memory" {
   type        = string
   description = "Requested memory for Config Server"
-  default     = "64Mi"
+  default     = "384Mi"
 }
 
 variable "mongodb_configsvr_limit_cpu" {
   type        = string
   description = "CPU limit for Config Server"
-  default     = "128m"
+  default     = "384m"
 }
 
 variable "mongodb_configsvr_limit_memory" {
   type        = string
   description = "Memory limit for Config Server"
-  default     = "256Mi"
+  default     = "768Mi"
 }
 
 # =========================
@@ -63,34 +71,34 @@ variable "mongodb_shardsvr_replica_count" {
   default     = 1
 }
 
-variable "mongodb_shardsvr_persistence_size" {
-  type        = string
-  description = "Persistent volume size for Shard Server"
-  default     = "2Gi"
-}
-
 variable "mongodb_shardsvr_request_cpu" {
   type        = string
   description = "Requested CPU for Shard Server"
-  default     = "128m"
+  default     = "384m"
 }
 
 variable "mongodb_shardsvr_request_memory" {
   type        = string
   description = "Requested memory for Shard Server"
-  default     = "256Mi"
+  default     = "768Mi"
 }
 
 variable "mongodb_shardsvr_limit_cpu" {
   type        = string
   description = "CPU limit for Shard Server"
-  default     = "512m"
+  default     = "768m"
 }
 
 variable "mongodb_shardsvr_limit_memory" {
   type        = string
   description = "Memory limit for Shard Server"
-  default     = "1024Mi"
+  default     = "1536Mi"
+}
+
+variable "mongodb_shardsvr_persistence_size" {
+  type        = string
+  description = "Persistent volume size for Shard Server"
+  default     = "4Gi"
 }
 
 # =========================
@@ -106,23 +114,23 @@ variable "mongodb_mongos_replica_count" {
 variable "mongodb_request_cpu" {
   type        = string
   description = "Requested CPU for Mongos"
-  default     = "32m"
+  default     = "192m"
 }
 
 variable "mongodb_request_memory" {
   type        = string
   description = "Requested memory for Mongos"
-  default     = "64Mi"
+  default     = "384Mi"
 }
 
 variable "mongodb_limit_cpu" {
   type        = string
   description = "CPU limit for Mongos"
-  default     = "128m"
+  default     = "384m"
 }
 
 variable "mongodb_limit_memory" {
   type        = string
   description = "Memory limit for Mongos"
-  default     = "256Mi"
+  default     = "768Mi"
 }

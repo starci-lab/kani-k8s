@@ -7,4 +7,7 @@ module "kubernetes" {
   kubernetes_node_pool_size = var.kubernetes_node_pool_size
   kubernetes_node_pool_node_count = var.kubernetes_node_pool_node_count
   mongodb_root_password = var.mongodb_root_password
+  redis_password = var.redis_password
+  argo_cd_admin_password = var.argo_cd_admin_password
+  argo_cd_redis_password = var.redis_password
 }

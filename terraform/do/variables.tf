@@ -33,17 +33,35 @@ variable "kubernetes_node_pool_name" {
 variable "kubernetes_node_pool_size" {
   type = string
   description = "Size of the node pool"
-  default = "s-1vcpu-2gb"
+  default = "s-4vcpu-8gb"
 }
 
 variable "kubernetes_node_pool_node_count" {
   type = number
   description = "Number of nodes in the node pool"
-  default = 2
+  default = 1
 }
 
 variable "mongodb_root_password" {
   type = string
   description = "Root password for MongoDB"
+  sensitive = true
+}
+
+variable "redis_password" {
+  type = string
+  description = "Password for Redis"
+  sensitive = true
+}
+
+variable "mongodb_shards" {
+  type = number
+  description = "Number of shards for MongoDB"
+  default = 1
+}
+
+variable "argo_cd_admin_password" {
+  type = string
+  description = "Admin password for Argo CD"
   sensitive = true
 }
