@@ -1,0 +1,68 @@
+auth:
+  # MongoDB root/admin username
+  rootUser: ${username}
+  # Password for the MongoDB root user
+  rootPassword: ${password}
+configsvr:
+  # Number of replicas for Config Server (set to 1 for single-node setup)
+  replicaCount: ${configsvr_replica_count}
+  # Persistent storage configuration for Config Server
+  persistence:
+    # Persistent Volume size for config server metadata
+    size: ${configsvr_persistence_size}
+  # Schedule config server pods on a specific DigitalOcean node pool
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  # Resource configuration for config server pods
+  resources:
+    requests:
+      # Minimum guaranteed CPU
+      cpu: ${configsvr_request_cpu}
+      # Minimum guaranteed memory
+      memory: ${configsvr_request_memory}
+    limits:
+      # Maximum CPU allowed
+      cpu: ${configsvr_limit_cpu}
+      # Maximum memory allowed
+      memory: ${configsvr_limit_memory}
+shardsvr:
+  dataNode:
+    # Number of replicas per shard (set to 1 for single-node shard)
+    replicaCount: ${shardsvr_replica_count}
+    # Schedule shard data nodes on a specific DigitalOcean node pool
+    nodeSelector:
+      "doks.digitalocean.com/node-pool": ${node_pool_label}
+    # Resource configuration for shard data nodes
+    resources:
+      requests:
+        # Minimum guaranteed CPU for data nodes
+        cpu: ${shardsvr_request_cpu}
+        # Minimum guaranteed memory for data nodes
+        memory: ${shardsvr_request_memory}
+      limits:
+        # Maximum CPU allowed for data nodes
+        cpu: ${shardsvr_limit_cpu}
+        # Maximum memory allowed for data nodes
+        memory: ${shardsvr_limit_memory}
+  # Persistent storage configuration for shard data
+  persistence:
+    # Persistent Volume size for shard data
+    size: ${shardsvr_persistence_size}
+mongos:
+  # Number of mongos router replicas (set to 1)
+  replicaCount: ${mongos_replica_count}
+  # Schedule mongos router pods on a specific DigitalOcean node pool
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  # Resource configuration for mongos routers (stateless components)
+  resources:
+    requests:
+      # Minimum guaranteed CPU for mongos
+      cpu: ${mongos_request_cpu}
+      # Minimum guaranteed memory for mongos
+      memory: ${mongos_request_memory}
+    limits:
+      # Maximum CPU allowed for mongos
+      cpu: ${mongos_limit_cpu}
+      # Maximum memory allowed for mongos
+      memory: ${mongos_limit_memory}

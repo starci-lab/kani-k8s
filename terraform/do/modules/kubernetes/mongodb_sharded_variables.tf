@@ -1,0 +1,128 @@
+# =========================
+# Authentication
+# =========================
+variable "mongodb_root_username" {
+  type        = string
+  description = "Username for MongoDB"
+  default     = "kani"
+}
+
+variable "mongodb_root_password" {
+  type        = string
+  description = "Root password for MongoDB"
+  sensitive   = true
+}
+
+# =========================
+# Config Server
+# =========================
+
+variable "mongodb_configsvr_replica_count" {
+  type        = number
+  description = "Number of replicas for MongoDB Config Server"
+  default     = 1
+}
+
+variable "mongodb_configsvr_persistence_size" {
+  type        = string
+  description = "Persistent volume size for Config Server"
+  default     = "1Gi"
+}
+
+variable "mongodb_configsvr_request_cpu" {
+  type        = string
+  description = "Requested CPU for Config Server"
+  default     = "32m"
+}
+
+variable "mongodb_configsvr_request_memory" {
+  type        = string
+  description = "Requested memory for Config Server"
+  default     = "64Mi"
+}
+
+variable "mongodb_configsvr_limit_cpu" {
+  type        = string
+  description = "CPU limit for Config Server"
+  default     = "128m"
+}
+
+variable "mongodb_configsvr_limit_memory" {
+  type        = string
+  description = "Memory limit for Config Server"
+  default     = "256Mi"
+}
+
+# =========================
+# Shard Server
+# =========================
+
+variable "mongodb_shardsvr_replica_count" {
+  type        = number
+  description = "Number of replicas per shard"
+  default     = 1
+}
+
+variable "mongodb_shardsvr_persistence_size" {
+  type        = string
+  description = "Persistent volume size for Shard Server"
+  default     = "2Gi"
+}
+
+variable "mongodb_shardsvr_request_cpu" {
+  type        = string
+  description = "Requested CPU for Shard Server"
+  default     = "128m"
+}
+
+variable "mongodb_shardsvr_request_memory" {
+  type        = string
+  description = "Requested memory for Shard Server"
+  default     = "256Mi"
+}
+
+variable "mongodb_shardsvr_limit_cpu" {
+  type        = string
+  description = "CPU limit for Shard Server"
+  default     = "512m"
+}
+
+variable "mongodb_shardsvr_limit_memory" {
+  type        = string
+  description = "Memory limit for Shard Server"
+  default     = "1024Mi"
+}
+
+# =========================
+# Mongos Router
+# =========================
+
+variable "mongodb_mongos_replica_count" {
+  type        = number
+  description = "Number of mongos router replicas"
+  default     = 1
+}
+
+variable "mongodb_request_cpu" {
+  type        = string
+  description = "Requested CPU for Mongos"
+  default     = "32m"
+}
+
+variable "mongodb_request_memory" {
+  type        = string
+  description = "Requested memory for Mongos"
+  default     = "64Mi"
+}
+
+variable "mongodb_limit_cpu" {
+  type        = string
+  description = "CPU limit for Mongos"
+  default     = "128m"
+}
+
+variable "mongodb_limit_memory" {
+  type        = string
+  description = "Memory limit for Mongos"
+  default     = "256Mi"
+}
