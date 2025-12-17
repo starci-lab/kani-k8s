@@ -99,3 +99,19 @@ variable "cert_manager_controller_limit_memory" {
   description = "Memory limit for controller"
   default     = "256Mi"
 }
+
+# Cluster Issuer Name
+# =========================
+variable "cert_manager_cluster_issuer_name" {
+  type        = string
+  description = "Name of the cluster issuer"
+  default     = "letsencrypt-prod"
+}
+
+# Email
+# =========================
+variable "cert_manager_email" {
+  type        = string
+  description = "Email for the cluster issuer"
+  default = "cuongnvtse160875@gmail.com"
+}

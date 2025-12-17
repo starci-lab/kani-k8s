@@ -77,3 +77,10 @@ variable "kafka_sasl_password" {
   description = "SASL password for Kafka"
   sensitive = true
 }
+
+# Cloudflare variables
+variable "cloudflare_api_token" {
+  type = string
+  description = "Cloudflare API token"
+  sensitive = true
+}

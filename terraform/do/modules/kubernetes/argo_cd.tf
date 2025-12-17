@@ -6,9 +6,13 @@ resource "kubernetes_namespace" "argo_cd" {
   depends_on = [ digitalocean_kubernetes_cluster.kubernetes ]
 }
 
+locals {
+  argo_cd_name = "argo-cd"
+}
+
 # Argo CD
 resource "helm_release" "argo_cd" {
-  name             = "argo-cd"
+  name             = local.argo_cd_name
   namespace        = kubernetes_namespace.argo_cd.metadata[0].name
   chart = "oci://registry-1.docker.io/bitnamicharts/argo-cd"
   values = [
@@ -43,5 +47,54 @@ resource "helm_release" "argo_cd" {
   depends_on = [
     helm_release.redis_cluster,
     kubernetes_namespace.argo_cd
+  ]
+}
+
+data "kubernetes_service" "argo_cd" {
+  metadata {
+    name = local.argo_cd_name
+    namespace = kubernetes_namespace.argo_cd.metadata[0].name
+  }
+  depends_on = [ helm_release.argo_cd ]
+}
+
+resource "kubernetes_ingress_v1" "graphql" {
+  metadata {
+    name      = "graphql"
+    namespace = kubernetes_namespace.ingresses.metadata[0].name
+    annotations = {
+      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "acme.cert-manager.io/http01-edit-in-place"     = "true"
+    }
+  }
+  spec {
+    ingress_class_name = "nginx"
+    rule {
+      host = var.argo_cd_domain_name
+      http {
+        path {
+          path = "/"
+          backend {
+            service {
+              name = local.graphql_gateway.name
+              port {
+                number = local.graphql_gateway.port
+              }
+            }
+          }
+        }
+      }
+    }
+    tls {
+      hosts       = [var.argo_cd_domain_name]
+      secret_name = "argo-cd-tls"
+    }
+  }
+  depends_on = [
+    kubectl_manifest.cluster_issuer_letsencrypt_prod,
+    cloudflare_record.argo_cd,
+    helm_release.argo_cd
   ]
 }

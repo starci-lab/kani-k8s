@@ -42,3 +42,23 @@ resource "helm_release" "cert_manager" {
     kubernetes_namespace.cert_manager
   ]
 }
+
+resource "kubectl_manifest" "cluster_issuer_letsencrypt_prod" {
+  depends_on = [helm_release.cert_manager]
+  yaml_body = <<YAML
+apiVersion: "cert-manager.io/v1"
+kind: ClusterIssuer
+metadata:
+  name: ${var.cert_manager_cluster_issuer_name}
+spec:
+  acme:
+    server: "https://acme-v02.api.letsencrypt.org/directory"
+    email: ${var.cert_manager_email}
+    privateKeySecretRef:
+      name: ${var.cert_manager_cluster_issuer_name}
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+YAML
+}

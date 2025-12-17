@@ -11,4 +11,8 @@ module "kubernetes" {
   argo_cd_admin_password = var.argo_cd_admin_password
   argo_cd_redis_password = var.redis_password
   kafka_sasl_password = var.kafka_sasl_password
+  argo_cd_domain_name = module.cloudflare.argo_cd_domain_name
+  depends_on = [ 
+    module.cloudflare 
+  ]
 }
