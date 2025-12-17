@@ -65,3 +65,15 @@ variable "argo_cd_admin_password" {
   description = "Admin password for Argo CD"
   sensitive = true
 }
+
+variable "kafka_sasl_user" {
+  type = string
+  description = "SASL user for Kafka"
+  default = "kani-kafka-user"
+}
+
+variable "kafka_sasl_password" {
+  type = string
+  description = "SASL password for Kafka"
+  sensitive = true
+}
