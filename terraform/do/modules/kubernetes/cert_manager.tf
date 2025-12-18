@@ -32,34 +32,34 @@ resource "helm_release" "cert_manager" {
       // cert-manager core component resources
       // =========================
       install_crds                = var.cert_manager_install_crds
-      cert_manager_request_cpu    = var.cert_manager_cert_manager_request_cpu
-      cert_manager_request_memory = var.cert_manager_cert_manager_request_memory
-      cert_manager_limit_cpu      = var.cert_manager_cert_manager_limit_cpu
-      cert_manager_limit_memory   = var.cert_manager_cert_manager_limit_memory
+      cert_manager_request_cpu    = local.cert_manager.cert_manager.request_cpu
+      cert_manager_request_memory = local.cert_manager.cert_manager.request_memory
+      cert_manager_limit_cpu      = local.cert_manager.cert_manager.limit_cpu
+      cert_manager_limit_memory   = local.cert_manager.cert_manager.limit_memory
 
       // =========================
       // cert-manager webhook resources
       // =========================
-      webhook_request_cpu    = var.cert_manager_webhook_request_cpu
-      webhook_request_memory = var.cert_manager_webhook_request_memory
-      webhook_limit_cpu      = var.cert_manager_webhook_limit_cpu
-      webhook_limit_memory   = var.cert_manager_webhook_limit_memory
+      webhook_request_cpu    = local.cert_manager.webhook.request_cpu
+      webhook_request_memory = local.cert_manager.webhook.request_memory
+      webhook_limit_cpu      = local.cert_manager.webhook.limit_cpu
+      webhook_limit_memory   = local.cert_manager.webhook.limit_memory
 
       // =========================
       // cert-manager CA injector resources
       // =========================
-      cainjector_request_cpu    = var.cert_manager_cainjector_request_cpu
-      cainjector_request_memory = var.cert_manager_cainjector_request_memory
-      cainjector_limit_cpu      = var.cert_manager_cainjector_limit_cpu
-      cainjector_limit_memory   = var.cert_manager_cainjector_limit_memory
+      cainjector_request_cpu    = local.cert_manager.cainjector.request_cpu
+      cainjector_request_memory = local.cert_manager.cainjector.request_memory
+      cainjector_limit_cpu      = local.cert_manager.cainjector.limit_cpu
+      cainjector_limit_memory   = local.cert_manager.cainjector.limit_memory
 
       // =========================
       // cert-manager controller resources
       // =========================
-      controller_request_cpu    = var.cert_manager_controller_request_cpu
-      controller_request_memory = var.cert_manager_controller_request_memory
-      controller_limit_cpu      = var.cert_manager_controller_limit_cpu
-      controller_limit_memory   = var.cert_manager_controller_limit_memory
+      controller_request_cpu    = local.cert_manager.controller.request_cpu
+      controller_request_memory = local.cert_manager.controller.request_memory
+      controller_limit_cpu      = local.cert_manager.controller.limit_cpu
+      controller_limit_memory   = local.cert_manager.controller.limit_memory
     })
   ]
 

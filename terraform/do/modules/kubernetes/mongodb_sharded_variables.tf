@@ -54,25 +54,29 @@ variable "mongodb_configsvr_persistence_size" {
 variable "mongodb_configsvr_request_cpu" {
   type        = string
   description = "CPU resource request for MongoDB Config Server"
-  default     = "96m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_configsvr_request_memory" {
   type        = string
   description = "Memory resource request for MongoDB Config Server"
-  default     = "192Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_configsvr_limit_cpu" {
   type        = string
   description = "CPU resource limit for MongoDB Config Server"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_configsvr_limit_memory" {
   type        = string
   description = "Memory resource limit for MongoDB Config Server"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -90,25 +94,29 @@ variable "mongodb_shardsvr_replica_count" {
 variable "mongodb_shardsvr_request_cpu" {
   type        = string
   description = "CPU resource request for MongoDB Shard Server"
-  default     = "192m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_shardsvr_request_memory" {
   type        = string
   description = "Memory resource request for MongoDB Shard Server"
-  default     = "384Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_shardsvr_limit_cpu" {
   type        = string
   description = "CPU resource limit for MongoDB Shard Server (4x request)"
-  default     = "768m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_shardsvr_limit_memory" {
   type        = string
   description = "Memory resource limit for MongoDB Shard Server (4x request)"
-  default     = "1536Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_shardsvr_persistence_size" {
@@ -132,23 +140,96 @@ variable "mongodb_mongos_replica_count" {
 variable "mongodb_request_cpu" {
   type        = string
   description = "CPU resource request for MongoDB mongos router"
-  default     = "96m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_request_memory" {
   type        = string
   description = "Memory resource request for MongoDB mongos router"
-  default     = "192Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_limit_cpu" {
   type        = string
   description = "CPU resource limit for MongoDB mongos router (4x request)"
-  default     = "384m"
+  nullable    = true
+  default     = null
 }
 
 variable "mongodb_limit_memory" {
   type        = string
   description = "Memory resource limit for MongoDB mongos router (4x request)"
-  default     = "768Mi"
+  nullable    = true
+  default     = null
+}
+
+locals {
+  mongodb_presets = {
+    configsvr = "64"
+    shardsvr  = "192"
+    mongos    = "64"
+  }
+}
+
+locals {
+  mongodb = {
+    configsvr = {
+      request_cpu = coalesce(
+        var.mongodb_configsvr_request_cpu,
+        try(var.resources_config[local.mongodb_presets.configsvr].requests.cpu, "96m")
+      )
+      request_memory = coalesce(
+        var.mongodb_configsvr_request_memory,
+        try(var.resources_config[local.mongodb_presets.configsvr].requests.memory, "192Mi")
+      )
+      limit_cpu = coalesce(
+        var.mongodb_configsvr_limit_cpu,
+        try(var.resources_config[local.mongodb_presets.configsvr].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.mongodb_configsvr_limit_memory,
+        try(var.resources_config[local.mongodb_presets.configsvr].limits.memory, "512Mi")
+      )
+    }
+
+    shardsvr = {
+      request_cpu = coalesce(
+        var.mongodb_shardsvr_request_cpu,
+        try(var.resources_config[local.mongodb_presets.shardsvr].requests.cpu, "192m")
+      )
+      request_memory = coalesce(
+        var.mongodb_shardsvr_request_memory,
+        try(var.resources_config[local.mongodb_presets.shardsvr].requests.memory, "384Mi")
+      )
+      limit_cpu = coalesce(
+        var.mongodb_shardsvr_limit_cpu,
+        try(var.resources_config[local.mongodb_presets.shardsvr].limits.cpu, "768m")
+      )
+      limit_memory = coalesce(
+        var.mongodb_shardsvr_limit_memory,
+        try(var.resources_config[local.mongodb_presets.shardsvr].limits.memory, "1536Mi")
+      )
+    }
+
+    mongos = {
+      request_cpu = coalesce(
+        var.mongodb_request_cpu,
+        try(var.resources_config[local.mongodb_presets.mongos].requests.cpu, "96m")
+      )
+      request_memory = coalesce(
+        var.mongodb_request_memory,
+        try(var.resources_config[local.mongodb_presets.mongos].requests.memory, "192Mi")
+      )
+      limit_cpu = coalesce(
+        var.mongodb_limit_cpu,
+        try(var.resources_config[local.mongodb_presets.mongos].limits.cpu, "384m")
+      )
+      limit_memory = coalesce(
+        var.mongodb_limit_memory,
+        try(var.resources_config[local.mongodb_presets.mongos].limits.memory, "768Mi")
+      )
+    }
+  }
 }

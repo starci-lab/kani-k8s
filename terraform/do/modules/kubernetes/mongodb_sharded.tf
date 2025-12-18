@@ -51,10 +51,10 @@ resource "helm_release" "mongodb_sharded" {
       // Stores cluster metadata and manages sharded cluster coordination
       configsvr_replica_count      = var.mongodb_configsvr_replica_count
       configsvr_persistence_size   = var.mongodb_configsvr_persistence_size
-      configsvr_request_cpu        = var.mongodb_configsvr_request_cpu
-      configsvr_request_memory     = var.mongodb_configsvr_request_memory
-      configsvr_limit_cpu          = var.mongodb_configsvr_limit_cpu
-      configsvr_limit_memory       = var.mongodb_configsvr_limit_memory
+      configsvr_request_cpu        = local.mongodb.configsvr.request_cpu
+      configsvr_request_memory     = local.mongodb.configsvr.request_memory
+      configsvr_limit_cpu          = local.mongodb.configsvr.limit_cpu
+      configsvr_limit_memory       = local.mongodb.configsvr.limit_memory
 
       // =========================
       // Shard Server configuration
@@ -62,20 +62,20 @@ resource "helm_release" "mongodb_sharded" {
       // Stores the actual application data and handles read/write operations
       shardsvr_replica_count       = var.mongodb_shardsvr_replica_count
       shardsvr_persistence_size    = var.mongodb_shardsvr_persistence_size
-      shardsvr_request_cpu         = var.mongodb_shardsvr_request_cpu
-      shardsvr_request_memory      = var.mongodb_shardsvr_request_memory
-      shardsvr_limit_cpu           = var.mongodb_shardsvr_limit_cpu
-      shardsvr_limit_memory        = var.mongodb_shardsvr_limit_memory
+      shardsvr_request_cpu         = local.mongodb.shardsvr.request_cpu
+      shardsvr_request_memory      = local.mongodb.shardsvr.request_memory
+      shardsvr_limit_cpu           = local.mongodb.shardsvr.limit_cpu
+      shardsvr_limit_memory        = local.mongodb.shardsvr.limit_memory
 
       // =========================
       // Mongos Router configuration
       // =========================
       // Acts as the query router, directing client requests to the correct shards
       mongos_replica_count         = var.mongodb_mongos_replica_count
-      mongos_request_cpu           = var.mongodb_request_cpu
-      mongos_request_memory        = var.mongodb_request_memory
-      mongos_limit_cpu             = var.mongodb_limit_cpu
-      mongos_limit_memory          = var.mongodb_limit_memory
+      mongos_request_cpu           = local.mongodb.mongos.request_cpu
+      mongos_request_memory        = local.mongodb.mongos.request_memory
+      mongos_limit_cpu             = local.mongodb.mongos.limit_cpu
+      mongos_limit_memory          = local.mongodb.mongos.limit_memory
 
       // =========================
       // Node scheduling

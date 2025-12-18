@@ -37,10 +37,10 @@ resource "helm_release" "redis_cluster" {
       // =========================
       // Resources per node
       // =========================
-      request_cpu    = var.redis_request_cpu
-      request_memory = var.redis_request_memory
-      limit_cpu      = var.redis_limit_cpu
-      limit_memory   = var.redis_limit_memory
+      request_cpu    = local.redis.redis.request_cpu
+      request_memory = local.redis.redis.request_memory
+      limit_cpu      = local.redis.redis.limit_cpu
+      limit_memory   = local.redis.redis.limit_memory
       // =========================
       // Persistence
       // =========================

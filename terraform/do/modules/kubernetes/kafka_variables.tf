@@ -23,25 +23,29 @@ variable "kafka_sasl_password" {
 variable "kafka_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the Kafka controller"
-  default     = "192m"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_controller_request_memory" {
   type        = string
   description = "Memory resource request for the Kafka controller"
-  default     = "384Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_controller_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Kafka controller"
-  default     = "768m"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_controller_limit_memory" {
   type        = string
   description = "Memory resource limit for the Kafka controller"
-  default     = "1536Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_controller_persistence_size" {
@@ -64,25 +68,29 @@ variable "kafka_controller_log_persistence_size" {
 variable "kafka_broker_request_cpu" {
   type        = string
   description = "CPU resource request for Kafka brokers"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_broker_request_memory" {
   type        = string
   description = "Memory resource request for Kafka brokers"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_broker_limit_cpu" {
   type        = string
   description = "CPU resource limit for Kafka brokers"
-  default     = "512m"
+  nullable    = true
+  default     = null
 }
 
 variable "kafka_broker_limit_memory" {
   type        = string
   description = "Memory resource limit for Kafka brokers"
-  default     = "1024Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -94,23 +102,96 @@ variable "kafka_broker_limit_memory" {
 variable "volume_permissions_request_cpu" {
   type        = string
   description = "CPU resource request for the volume permissions init container"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "volume_permissions_request_memory" {
   type        = string
   description = "Memory resource request for the volume permissions init container"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "volume_permissions_limit_cpu" {
   type        = string
   description = "CPU resource limit for the volume permissions init container"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "volume_permissions_limit_memory" {
   type        = string
   description = "Memory resource limit for the volume permissions init container"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
+}
+
+locals {
+  kafka_presets = {
+    controller        = "192"
+    broker            = "128"
+    volume_permissions = "16"
+  }
+}
+
+locals {
+  kafka = {
+    controller = {
+      request_cpu = coalesce(
+        var.kafka_controller_request_cpu,
+        try(var.resources_config[local.kafka_presets.controller].requests.cpu, "192m")
+      )
+      request_memory = coalesce(
+        var.kafka_controller_request_memory,
+        try(var.resources_config[local.kafka_presets.controller].requests.memory, "384Mi")
+      )
+      limit_cpu = coalesce(
+        var.kafka_controller_limit_cpu,
+        try(var.resources_config[local.kafka_presets.controller].limits.cpu, "768m")
+      )
+      limit_memory = coalesce(
+        var.kafka_controller_limit_memory,
+        try(var.resources_config[local.kafka_presets.controller].limits.memory, "1536Mi")
+      )
+    }
+
+    broker = {
+      request_cpu = coalesce(
+        var.kafka_broker_request_cpu,
+        try(var.resources_config[local.kafka_presets.broker].requests.cpu, "128m")
+      )
+      request_memory = coalesce(
+        var.kafka_broker_request_memory,
+        try(var.resources_config[local.kafka_presets.broker].requests.memory, "256Mi")
+      )
+      limit_cpu = coalesce(
+        var.kafka_broker_limit_cpu,
+        try(var.resources_config[local.kafka_presets.broker].limits.cpu, "512m")
+      )
+      limit_memory = coalesce(
+        var.kafka_broker_limit_memory,
+        try(var.resources_config[local.kafka_presets.broker].limits.memory, "1024Mi")
+      )
+    }
+
+    volume_permissions = {
+      request_cpu = coalesce(
+        var.volume_permissions_request_cpu,
+        try(var.resources_config[local.kafka_presets.volume_permissions].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.volume_permissions_request_memory,
+        try(var.resources_config[local.kafka_presets.volume_permissions].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.volume_permissions_limit_cpu,
+        try(var.resources_config[local.kafka_presets.volume_permissions].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.volume_permissions_limit_memory,
+        try(var.resources_config[local.kafka_presets.volume_permissions].limits.memory, "256Mi")
+      )
+    }
+  }
 }

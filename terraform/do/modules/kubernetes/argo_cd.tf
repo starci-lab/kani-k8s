@@ -34,69 +34,64 @@ resource "helm_release" "argo_cd" {
   name      = local.argo_cd_name
   namespace = kubernetes_namespace.argo_cd.metadata[0].name
 
-  // Bitnami Argo CD chart from Docker Hub OCI registry
   chart = "oci://registry-1.docker.io/bitnamicharts/argo-cd"
 
-  // Render Helm values from template and inject Terraform variables
   values = [
     templatefile("${path.module}/yamls/argo-cd.yaml", {
-
-      // =========================
-      // Admin authentication
-      // =========================
-      // NOTE: Username is always "admin"; password must be bcrypt-hashed
+      # =========================
+      # Admin authentication
+      # =========================
       admin_password = var.argo_cd_admin_password
 
-      // =========================
-      // Application controller
-      // =========================
+      # =========================
+      # Application controller
+      # =========================
       controller_replica_count  = var.argo_cd_controller_replica_count
-      controller_request_cpu    = var.argo_cd_controller_request_cpu
-      controller_request_memory = var.argo_cd_controller_request_memory
-      controller_limit_cpu      = var.argo_cd_controller_limit_cpu
-      controller_limit_memory   = var.argo_cd_controller_limit_memory
+      controller_request_cpu    = local.argocd.controller.request_cpu
+      controller_request_memory = local.argocd.controller.request_memory
+      controller_limit_cpu      = local.argocd.controller.limit_cpu
+      controller_limit_memory   = local.argocd.controller.limit_memory
 
-      // =========================
-      // ApplicationSet controller
-      // =========================
-      application_set_request_cpu    = var.argo_cd_application_set_request_cpu
-      application_set_request_memory = var.argo_cd_application_set_request_memory
-      application_set_limit_cpu      = var.argo_cd_application_set_limit_cpu
-      application_set_limit_memory   = var.argo_cd_application_set_limit_memory
+      # =========================
+      # ApplicationSet controller
+      # =========================
+      application_set_request_cpu    = local.argocd.application_set.request_cpu
+      application_set_request_memory = local.argocd.application_set.request_memory
+      application_set_limit_cpu      = local.argocd.application_set.limit_cpu
+      application_set_limit_memory   = local.argocd.application_set.limit_memory
 
-      // =========================
-      // Notifications controller
-      // =========================
-      notifications_request_cpu    = var.argo_cd_notifications_request_cpu
-      notifications_request_memory = var.argo_cd_notifications_request_memory
-      notifications_limit_cpu      = var.argo_cd_notifications_limit_cpu
-      notifications_limit_memory   = var.argo_cd_notifications_limit_memory
+      # =========================
+      # Notifications controller
+      # =========================
+      notifications_request_cpu    = local.argocd.notifications.request_cpu
+      notifications_request_memory = local.argocd.notifications.request_memory
+      notifications_limit_cpu      = local.argocd.notifications.limit_cpu
+      notifications_limit_memory   = local.argocd.notifications.limit_memory
 
-      // =========================
-      // Argo CD API / UI server
-      // =========================
-      server_request_cpu    = var.argo_cd_server_request_cpu
-      server_request_memory = var.argo_cd_server_request_memory
-      server_limit_cpu      = var.argo_cd_server_limit_cpu
-      server_limit_memory   = var.argo_cd_server_limit_memory
+      # =========================
+      # Argo CD API / UI server
+      # =========================
+      server_request_cpu    = local.argocd.server.request_cpu
+      server_request_memory = local.argocd.server.request_memory
+      server_limit_cpu      = local.argocd.server.limit_cpu
+      server_limit_memory   = local.argocd.server.limit_memory
 
-      // =========================
-      // Repo-server
-      // =========================
-      repo_server_request_cpu    = var.argo_cd_repo_server_request_cpu
-      repo_server_request_memory = var.argo_cd_repo_server_request_memory
-      repo_server_limit_cpu      = var.argo_cd_repo_server_limit_cpu
-      repo_server_limit_memory   = var.argo_cd_repo_server_limit_memory
+      # =========================
+      # Repo-server
+      # =========================
+      repo_server_request_cpu    = local.argocd.repo_server.request_cpu
+      repo_server_request_memory = local.argocd.repo_server.request_memory
+      repo_server_limit_cpu      = local.argocd.repo_server.limit_cpu
+      repo_server_limit_memory   = local.argocd.repo_server.limit_memory
 
-      // =========================
-      // External Redis
-      // =========================
+      # =========================
+      # External Redis
+      # =========================
       redis_host     = var.argo_cd_redis_host
       redis_password = var.argo_cd_redis_password
     })
   ]
 
-  // Ensure Redis and namespace exist before installing Argo CD
   depends_on = [
     helm_release.redis_cluster,
     kubernetes_namespace.argo_cd
@@ -145,7 +140,7 @@ resource "kubernetes_ingress_v1" "argo_cd" {
     namespace = kubernetes_namespace.argo_cd.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"

@@ -6,25 +6,29 @@
 variable "operator_request_cpu" {
   type        = string
   description = "CPU resource request for the Prometheus Operator"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "operator_request_memory" {
   type        = string
   description = "Memory resource request for the Prometheus Operator"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "operator_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Prometheus Operator"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "operator_limit_memory" {
   type        = string
   description = "Memory resource limit for the Prometheus Operator"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -35,25 +39,29 @@ variable "operator_limit_memory" {
 variable "prometheus_request_cpu" {
   type        = string
   description = "CPU resource request for Prometheus server"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "prometheus_request_memory" {
   type        = string
   description = "Memory resource request for Prometheus server"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "prometheus_limit_cpu" {
   type        = string
   description = "CPU resource limit for Prometheus server"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "prometheus_limit_memory" {
   type        = string
   description = "Memory resource limit for Prometheus server"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "prometheus_persistence_size" {
@@ -70,25 +78,29 @@ variable "prometheus_persistence_size" {
 variable "thanos_request_cpu" {
   type        = string
   description = "CPU resource request for Thanos sidecar"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_request_memory" {
   type        = string
   description = "Memory resource request for Thanos sidecar"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_limit_cpu" {
   type        = string
   description = "CPU resource limit for Thanos sidecar"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_limit_memory" {
   type        = string
   description = "Memory resource limit for Thanos sidecar"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -99,25 +111,29 @@ variable "thanos_limit_memory" {
 variable "alertmanager_request_cpu" {
   type        = string
   description = "CPU resource request for Alertmanager"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "alertmanager_request_memory" {
   type        = string
   description = "Memory resource request for Alertmanager"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "alertmanager_limit_cpu" {
   type        = string
   description = "CPU resource limit for Alertmanager"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "alertmanager_limit_memory" {
   type        = string
   description = "Memory resource limit for Alertmanager"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "alertmanager_persistence_size" {
@@ -135,25 +151,29 @@ variable "alertmanager_persistence_size" {
 variable "blackbox_exporter_request_cpu" {
   type        = string
   description = "CPU resource request for Blackbox Exporter"
-  default     = "16m"
+  nullable    = true
+  default     = null
 }
 
 variable "blackbox_exporter_request_memory" {
   type        = string
   description = "Memory resource request for Blackbox Exporter"
-  default     = "32Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "blackbox_exporter_limit_cpu" {
   type        = string
   description = "CPU resource limit for Blackbox Exporter"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "blackbox_exporter_limit_memory" {
   type        = string
   description = "Memory resource limit for Blackbox Exporter"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -164,25 +184,29 @@ variable "blackbox_exporter_limit_memory" {
 variable "thanos_ruler_request_cpu" {
   type        = string
   description = "CPU resource request for Thanos Ruler"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_ruler_request_memory" {
   type        = string
   description = "Memory resource request for Thanos Ruler"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_ruler_limit_cpu" {
   type        = string
   description = "CPU resource limit for Thanos Ruler"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "thanos_ruler_limit_memory" {
   type        = string
   description = "Memory resource limit for Thanos Ruler"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -199,4 +223,133 @@ variable "prometheus_alertmanager_htpasswd" {
   type        = string
   description = "HTPASSWD for Prometheus Alertmanager basic authentication"
   sensitive   = true
+}
+
+locals {
+  prometheus_presets = {
+    operator          = "16"
+    prometheus        = "32"
+    thanos            = "16"
+    alertmanager      = "16"
+    blackbox_exporter = "16"
+    thanos_ruler      = "16"
+  }
+}
+
+locals {
+  prometheus = {
+    operator = {
+      request_cpu = coalesce(
+        var.operator_request_cpu,
+        try(var.resources_config[local.prometheus_presets.operator].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.operator_request_memory,
+        try(var.resources_config[local.prometheus_presets.operator].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.operator_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.operator].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.operator_limit_memory,
+        try(var.resources_config[local.prometheus_presets.operator].limits.memory, "512Mi")
+      )
+    }
+
+    prometheus = {
+      request_cpu = coalesce(
+        var.prometheus_request_cpu,
+        try(var.resources_config[local.prometheus_presets.prometheus].requests.cpu, "64m")
+      )
+      request_memory = coalesce(
+        var.prometheus_request_memory,
+        try(var.resources_config[local.prometheus_presets.prometheus].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.prometheus_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.prometheus].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.prometheus_limit_memory,
+        try(var.resources_config[local.prometheus_presets.prometheus].limits.memory, "512Mi")
+      )
+    }
+
+    thanos = {
+      request_cpu = coalesce(
+        var.thanos_request_cpu,
+        try(var.resources_config[local.prometheus_presets.thanos].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.thanos_request_memory,
+        try(var.resources_config[local.prometheus_presets.thanos].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.thanos_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.thanos].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.thanos_limit_memory,
+        try(var.resources_config[local.prometheus_presets.thanos].limits.memory, "256Mi")
+      )
+    }
+
+    alertmanager = {
+      request_cpu = coalesce(
+        var.alertmanager_request_cpu,
+        try(var.resources_config[local.prometheus_presets.alertmanager].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.alertmanager_request_memory,
+        try(var.resources_config[local.prometheus_presets.alertmanager].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.alertmanager_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.alertmanager].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.alertmanager_limit_memory,
+        try(var.resources_config[local.prometheus_presets.alertmanager].limits.memory, "256Mi")
+      )
+    }
+
+    blackbox_exporter = {
+      request_cpu = coalesce(
+        var.blackbox_exporter_request_cpu,
+        try(var.resources_config[local.prometheus_presets.blackbox_exporter].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.blackbox_exporter_request_memory,
+        try(var.resources_config[local.prometheus_presets.blackbox_exporter].requests.memory, "32Mi")
+      )
+      limit_cpu = coalesce(
+        var.blackbox_exporter_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.blackbox_exporter].limits.cpu, "64m")
+      )
+      limit_memory = coalesce(
+        var.blackbox_exporter_limit_memory,
+        try(var.resources_config[local.prometheus_presets.blackbox_exporter].limits.memory, "128Mi")
+      )
+    }
+
+    thanos_ruler = {
+      request_cpu = coalesce(
+        var.thanos_ruler_request_cpu,
+        try(var.resources_config[local.prometheus_presets.thanos_ruler].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.thanos_ruler_request_memory,
+        try(var.resources_config[local.prometheus_presets.thanos_ruler].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.thanos_ruler_limit_cpu,
+        try(var.resources_config[local.prometheus_presets.thanos_ruler].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.thanos_ruler_limit_memory,
+        try(var.resources_config[local.prometheus_presets.thanos_ruler].limits.memory, "256Mi")
+      )
+    }
+  }
 }

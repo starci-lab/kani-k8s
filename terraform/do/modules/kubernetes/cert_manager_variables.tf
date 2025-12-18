@@ -13,25 +13,29 @@ variable "cert_manager_install_crds" {
 variable "cert_manager_cert_manager_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager core component"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cert_manager_request_memory" {
   type        = string
   description = "Memory resource request for the cert-manager core component"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cert_manager_limit_cpu" {
   type        = string
   description = "CPU resource limit for the cert-manager core component (4x request)"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cert_manager_limit_memory" {
   type        = string
   description = "Memory resource limit for the cert-manager core component (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -43,25 +47,29 @@ variable "cert_manager_cert_manager_limit_memory" {
 variable "cert_manager_webhook_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager webhook"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_webhook_request_memory" {
   type        = string
   description = "Memory resource request for the cert-manager webhook"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_webhook_limit_cpu" {
   type        = string
   description = "CPU resource limit for the cert-manager webhook (4x request)"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_webhook_limit_memory" {
   type        = string
   description = "Memory resource limit for the cert-manager webhook (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -73,25 +81,29 @@ variable "cert_manager_webhook_limit_memory" {
 variable "cert_manager_cainjector_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager CA injector"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cainjector_request_memory" {
   type        = string
   description = "Memory resource request for the cert-manager CA injector"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cainjector_limit_cpu" {
   type        = string
   description = "CPU resource limit for the cert-manager CA injector (4x request)"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_cainjector_limit_memory" {
   type        = string
   description = "Memory resource limit for the cert-manager CA injector (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -103,25 +115,29 @@ variable "cert_manager_cainjector_limit_memory" {
 variable "cert_manager_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager controller"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_controller_request_memory" {
   type        = string
   description = "Memory resource request for the cert-manager controller"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_controller_limit_cpu" {
   type        = string
   description = "CPU resource limit for the cert-manager controller (4x request)"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "cert_manager_controller_limit_memory" {
   type        = string
   description = "Memory resource limit for the cert-manager controller (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -139,4 +155,93 @@ variable "cert_manager_email" {
   type        = string
   description = "Email address used for ACME registration with the certificate authority"
   default     = "cuongnvtse160875@gmail.com"
+}
+
+locals {
+  cert_manager_presets = {
+    cert_manager = "16"
+    webhook      = "16"
+    cainjector   = "16"
+    controller   = "16"
+  }
+}
+
+locals {
+  cert_manager = {
+    cert_manager = {
+      request_cpu = coalesce(
+        var.cert_manager_cert_manager_request_cpu,
+        try(var.resources_config[local.cert_manager_presets.cert_manager].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.cert_manager_cert_manager_request_memory,
+        try(var.resources_config[local.cert_manager_presets.cert_manager].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.cert_manager_cert_manager_limit_cpu,
+        try(var.resources_config[local.cert_manager_presets.cert_manager].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.cert_manager_cert_manager_limit_memory,
+        try(var.resources_config[local.cert_manager_presets.cert_manager].limits.memory, "512Mi")
+      )
+    }
+
+    webhook = {
+      request_cpu = coalesce(
+        var.cert_manager_webhook_request_cpu,
+        try(var.resources_config[local.cert_manager_presets.webhook].requests.cpu, "64m")
+      )
+      request_memory = coalesce(
+        var.cert_manager_webhook_request_memory,
+        try(var.resources_config[local.cert_manager_presets.webhook].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.cert_manager_webhook_limit_cpu,
+        try(var.resources_config[local.cert_manager_presets.webhook].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.cert_manager_webhook_limit_memory,
+        try(var.resources_config[local.cert_manager_presets.webhook].limits.memory, "512Mi")
+      )
+    }
+
+    cainjector = {
+      request_cpu = coalesce(
+        var.cert_manager_cainjector_request_cpu,
+        try(var.resources_config[local.cert_manager_presets.cainjector].requests.cpu, "64m")
+      )
+      request_memory = coalesce(
+        var.cert_manager_cainjector_request_memory,
+        try(var.resources_config[local.cert_manager_presets.cainjector].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.cert_manager_cainjector_limit_cpu,
+        try(var.resources_config[local.cert_manager_presets.cainjector].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.cert_manager_cainjector_limit_memory,
+        try(var.resources_config[local.cert_manager_presets.cainjector].limits.memory, "512Mi")
+      )
+    }
+
+    controller = {
+      request_cpu = coalesce(
+        var.cert_manager_controller_request_cpu,
+        try(var.resources_config[local.cert_manager_presets.controller].requests.cpu, "64m")
+      )
+      request_memory = coalesce(
+        var.cert_manager_controller_request_memory,
+        try(var.resources_config[local.cert_manager_presets.controller].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.cert_manager_controller_limit_cpu,
+        try(var.resources_config[local.cert_manager_presets.controller].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.cert_manager_controller_limit_memory,
+        try(var.resources_config[local.cert_manager_presets.controller].limits.memory, "512Mi")
+      )
+    }
+  }
 }

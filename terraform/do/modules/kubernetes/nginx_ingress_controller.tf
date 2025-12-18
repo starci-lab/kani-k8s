@@ -48,19 +48,19 @@ resource "helm_release" "nginx_ingress_controller" {
       // Controller resources
       // =========================
       replica_count = var.nginx_ingress_controller_replica_count
-      request_cpu    = var.nginx_ingress_controller_request_cpu
-      request_memory = var.nginx_ingress_controller_request_memory
-      limit_cpu      = var.nginx_ingress_controller_limit_cpu
-      limit_memory   = var.nginx_ingress_controller_limit_memory
+      request_cpu    = local.nginx_ingress_controller.controller.request_cpu
+      request_memory = local.nginx_ingress_controller.controller.request_memory
+      limit_cpu      = local.nginx_ingress_controller.controller.limit_cpu
+      limit_memory   = local.nginx_ingress_controller.controller.limit_memory
 
       // =========================
       // Default backend resources
       // =========================
       // Serves fallback responses (e.g., 404) when no ingress rule matches
-      default_backend_request_cpu    = var.nginx_ingress_controller_default_backend_request_cpu
-      default_backend_request_memory = var.nginx_ingress_controller_default_backend_request_memory
-      default_backend_limit_cpu      = var.nginx_ingress_controller_default_backend_limit_cpu
-      default_backend_limit_memory   = var.nginx_ingress_controller_default_backend_limit_memory
+      default_backend_request_cpu    = local.nginx_ingress_controller.default_backend.request_cpu
+      default_backend_request_memory = local.nginx_ingress_controller.default_backend.request_memory
+      default_backend_limit_cpu      = local.nginx_ingress_controller.default_backend.limit_cpu
+      default_backend_limit_memory   = local.nginx_ingress_controller.default_backend.limit_memory
     })
   ]
 

@@ -38,20 +38,20 @@ resource "helm_release" "kafka" {
       // =========================
       // Kafka controller resources & persistence
       // =========================
-      controller_request_cpu          = var.kafka_controller_request_cpu
-      controller_request_memory       = var.kafka_controller_request_memory
-      controller_limit_cpu            = var.kafka_controller_limit_cpu
-      controller_limit_memory         = var.kafka_controller_limit_memory
+      controller_request_cpu          = local.kafka.controller.request_cpu
+      controller_request_memory       = local.kafka.controller.request_memory
+      controller_limit_cpu            = local.kafka.controller.limit_cpu
+      controller_limit_memory         = local.kafka.controller.limit_memory
       controller_persistence_size     = var.kafka_controller_persistence_size
       controller_log_persistence_size = var.kafka_controller_log_persistence_size
 
       // =========================
       // Kafka broker resources
       // =========================
-      broker_request_cpu    = var.kafka_broker_request_cpu
-      broker_request_memory = var.kafka_broker_request_memory
-      broker_limit_cpu      = var.kafka_broker_limit_cpu
-      broker_limit_memory   = var.kafka_broker_limit_memory
+      broker_request_cpu    = local.kafka.broker.request_cpu
+      broker_request_memory = local.kafka.broker.request_memory
+      broker_limit_cpu      = local.kafka.broker.limit_cpu
+      broker_limit_memory   = local.kafka.broker.limit_memory
 
       // =========================
       // Node scheduling
@@ -62,10 +62,10 @@ resource "helm_release" "kafka" {
       // =========================
       // Volume permissions init container
       // =========================
-      volume_permissions_request_cpu    = var.volume_permissions_request_cpu
-      volume_permissions_request_memory = var.volume_permissions_request_memory
-      volume_permissions_limit_cpu      = var.volume_permissions_limit_cpu
-      volume_permissions_limit_memory   = var.volume_permissions_limit_memory
+      volume_permissions_request_cpu    = local.kafka.volume_permissions.request_cpu
+      volume_permissions_request_memory = local.kafka.volume_permissions.request_memory
+      volume_permissions_limit_cpu      = local.kafka.volume_permissions.limit_cpu
+      volume_permissions_limit_memory   = local.kafka.volume_permissions.limit_memory
     })
   ]
 

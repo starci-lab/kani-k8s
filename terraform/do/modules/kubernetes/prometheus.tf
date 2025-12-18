@@ -49,18 +49,18 @@ resource "helm_release" "prometheus" {
       // =========================
       // Prometheus Operator resources
       // =========================
-      operator_request_cpu    = var.operator_request_cpu
-      operator_request_memory = var.operator_request_memory
-      operator_limit_cpu      = var.operator_limit_cpu
-      operator_limit_memory   = var.operator_limit_memory
+      operator_request_cpu    = local.prometheus.operator.request_cpu
+      operator_request_memory = local.prometheus.operator.request_memory
+      operator_limit_cpu      = local.prometheus.operator.limit_cpu
+      operator_limit_memory   = local.prometheus.operator.limit_memory
 
       // =========================
       // Prometheus server resources
       // =========================
-      prometheus_request_cpu    = var.prometheus_request_cpu
-      prometheus_request_memory = var.prometheus_request_memory
-      prometheus_limit_cpu      = var.prometheus_limit_cpu
-      prometheus_limit_memory   = var.prometheus_limit_memory
+      prometheus_request_cpu    = local.prometheus.prometheus.request_cpu
+      prometheus_request_memory = local.prometheus.prometheus.request_memory
+      prometheus_limit_cpu      = local.prometheus.prometheus.limit_cpu
+      prometheus_limit_memory   = local.prometheus.prometheus.limit_memory
 
       // =========================
       // Prometheus persistence
@@ -70,18 +70,18 @@ resource "helm_release" "prometheus" {
       // =========================
       // Thanos sidecar resources
       // =========================
-      thanos_request_cpu    = var.thanos_request_cpu
-      thanos_request_memory = var.thanos_request_memory
-      thanos_limit_cpu      = var.thanos_limit_cpu
-      thanos_limit_memory   = var.thanos_limit_memory
+      thanos_request_cpu    = local.prometheus.thanos.request_cpu
+      thanos_request_memory = local.prometheus.thanos.request_memory
+      thanos_limit_cpu      = local.prometheus.thanos.limit_cpu
+      thanos_limit_memory   = local.prometheus.thanos.limit_memory
 
       // =========================
       // Alertmanager resources
       // =========================
-      alertmanager_request_cpu    = var.alertmanager_request_cpu
-      alertmanager_request_memory = var.alertmanager_request_memory
-      alertmanager_limit_cpu      = var.alertmanager_limit_cpu
-      alertmanager_limit_memory   = var.alertmanager_limit_memory
+      alertmanager_request_cpu    = local.prometheus.alertmanager.request_cpu
+      alertmanager_request_memory = local.prometheus.alertmanager.request_memory
+      alertmanager_limit_cpu      = local.prometheus.alertmanager.limit_cpu
+      alertmanager_limit_memory   = local.prometheus.alertmanager.limit_memory
 
       // =========================
       // Alertmanager persistence
@@ -91,18 +91,18 @@ resource "helm_release" "prometheus" {
       // =========================
       // Blackbox Exporter resources
       // =========================
-      blackbox_exporter_request_cpu    = var.blackbox_exporter_request_cpu
-      blackbox_exporter_request_memory = var.blackbox_exporter_request_memory
-      blackbox_exporter_limit_cpu      = var.blackbox_exporter_limit_cpu
-      blackbox_exporter_limit_memory   = var.blackbox_exporter_limit_memory
+      blackbox_exporter_request_cpu    = local.prometheus.blackbox_exporter.request_cpu
+      blackbox_exporter_request_memory = local.prometheus.blackbox_exporter.request_memory
+      blackbox_exporter_limit_cpu      = local.prometheus.blackbox_exporter.limit_cpu
+      blackbox_exporter_limit_memory   = local.prometheus.blackbox_exporter.limit_memory
 
       // =========================
       // Thanos Ruler resources
       // =========================
-      thanos_ruler_request_cpu    = var.thanos_ruler_request_cpu
-      thanos_ruler_request_memory = var.thanos_ruler_request_memory
-      thanos_ruler_limit_cpu      = var.thanos_ruler_limit_cpu
-      thanos_ruler_limit_memory   = var.thanos_ruler_limit_memory
+      thanos_ruler_request_cpu    = local.prometheus.thanos_ruler.request_cpu
+      thanos_ruler_request_memory = local.prometheus.thanos_ruler.request_memory
+      thanos_ruler_limit_cpu      = local.prometheus.thanos_ruler.limit_cpu
+      thanos_ruler_limit_memory   = local.prometheus.thanos_ruler.limit_memory
 
       // =========================
       // Node scheduling
@@ -190,7 +190,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
     namespace = kubernetes_namespace.prometheus.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"
@@ -262,7 +262,7 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
     namespace = kubernetes_namespace.prometheus.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"

@@ -13,25 +13,29 @@ variable "nginx_ingress_controller_replica_count" {
 variable "nginx_ingress_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the NGINX Ingress Controller"
-  default     = "64m"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_request_memory" {
   type        = string
   description = "Memory resource request for the NGINX Ingress Controller"
-  default     = "128Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_limit_cpu" {
   type        = string
   description = "CPU resource limit for the NGINX Ingress Controller (4x request)"
-  default     = "256m"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_limit_memory" {
   type        = string
   description = "Memory resource limit for the NGINX Ingress Controller (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -43,23 +47,76 @@ variable "nginx_ingress_controller_limit_memory" {
 variable "nginx_ingress_controller_default_backend_request_cpu" {
   type        = string
   description = "CPU resource request for the NGINX Ingress default backend"
-  default     = "32m"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_default_backend_request_memory" {
   type        = string
   description = "Memory resource request for the NGINX Ingress default backend"
-  default     = "64Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_default_backend_limit_cpu" {
   type        = string
   description = "CPU resource limit for the NGINX Ingress default backend (4x request)"
-  default     = "128m"
+  nullable    = true
+  default     = null
 }
 
 variable "nginx_ingress_controller_default_backend_limit_memory" {
   type        = string
   description = "Memory resource limit for the NGINX Ingress default backend (4x request)"
-  default     = "256Mi"
+  nullable    = true
+  default     = null
+}
+
+locals {
+  nginx_ingress_controller_presets = {
+    controller     = "32"
+    default_backend = "16"
+  }
+}
+
+locals {
+  nginx_ingress_controller = {
+    controller = {
+      request_cpu = coalesce(
+        var.nginx_ingress_controller_request_cpu,
+        try(var.resources_config[local.nginx_ingress_controller_presets.controller].requests.cpu, "64m")
+      )
+      request_memory = coalesce(
+        var.nginx_ingress_controller_request_memory,
+        try(var.resources_config[local.nginx_ingress_controller_presets.controller].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.nginx_ingress_controller_limit_cpu,
+        try(var.resources_config[local.nginx_ingress_controller_presets.controller].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.nginx_ingress_controller_limit_memory,
+        try(var.resources_config[local.nginx_ingress_controller_presets.controller].limits.memory, "512Mi")
+      )
+    }
+
+    default_backend = {
+      request_cpu = coalesce(
+        var.nginx_ingress_controller_default_backend_request_cpu,
+        try(var.resources_config[local.nginx_ingress_controller_presets.default_backend].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.nginx_ingress_controller_default_backend_request_memory,
+        try(var.resources_config[local.nginx_ingress_controller_presets.default_backend].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.nginx_ingress_controller_default_backend_limit_cpu,
+        try(var.resources_config[local.nginx_ingress_controller_presets.default_backend].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.nginx_ingress_controller_default_backend_limit_memory,
+        try(var.resources_config[local.nginx_ingress_controller_presets.default_backend].limits.memory, "256Mi")
+      )
+    }
+  }
 }

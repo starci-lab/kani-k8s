@@ -12,25 +12,29 @@ variable "argo_cd_controller_replica_count" {
 variable "argo_cd_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD application controller"
-  default     = "64m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_controller_request_memory" {
   type        = string
   description = "Memory resource request for the Argo CD application controller"
-  default     = "128Mi"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_controller_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Argo CD application controller (4x request)"
-  default     = "256m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_controller_limit_memory" {
   type        = string
   description = "Memory resource limit for the Argo CD application controller (4x request)"
-  default     = "512Mi"
+  nullable    = true
+  default = null
 }
 
 // =========================
@@ -42,25 +46,29 @@ variable "argo_cd_controller_limit_memory" {
 variable "argo_cd_application_set_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD ApplicationSet controller"
-  default     = "32m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_application_set_request_memory" {
   type        = string
   description = "Memory resource request for the Argo CD ApplicationSet controller"
-  default     = "64Mi"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_application_set_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Argo CD ApplicationSet controller (4x request)"
-  default     = "128m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_application_set_limit_memory" {
   type        = string
   description = "Memory resource limit for the Argo CD ApplicationSet controller (4x request)"
-  default     = "256Mi"
+  nullable    = true
+  default = null
 }
 
 // =========================
@@ -72,25 +80,29 @@ variable "argo_cd_application_set_limit_memory" {
 variable "argo_cd_notifications_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD Notifications controller"
-  default     = "32m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_notifications_request_memory" {
   type        = string
   description = "Memory resource request for the Argo CD Notifications controller"
-  default     = "64Mi"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_notifications_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Argo CD Notifications controller (4x request)"
-  default     = "128m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_notifications_limit_memory" {
   type        = string
   description = "Memory resource limit for the Argo CD Notifications controller (4x request)"
-  default     = "256Mi"
+  nullable    = true
+  default = null
 }
 
 // =========================
@@ -101,25 +113,29 @@ variable "argo_cd_notifications_limit_memory" {
 variable "argo_cd_server_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD server"
-  default     = "32m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_server_request_memory" {
   type        = string
   description = "Memory resource request for the Argo CD server"
-  default     = "64Mi"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_server_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Argo CD server (4x request)"
-  default     = "128m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_server_limit_memory" {
   type        = string
   description = "Memory resource limit for the Argo CD server (4x request)"
-  default     = "256Mi"
+  nullable    = true
+  default = null
 }
 
 // =========================
@@ -131,25 +147,29 @@ variable "argo_cd_server_limit_memory" {
 variable "argo_cd_repo_server_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD repo-server"
-  default     = "32m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_repo_server_request_memory" {
   type        = string
   description = "Memory resource request for the Argo CD repo-server"
-  default     = "64Mi"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_repo_server_limit_cpu" {
   type        = string
   description = "CPU resource limit for the Argo CD repo-server (4x request)"
-  default     = "128m"
+  nullable    = true
+  default = null
 }
 
 variable "argo_cd_repo_server_limit_memory" {
   type        = string
   description = "Memory resource limit for the Argo CD repo-server (4x request)"
-  default     = "256Mi"
+  nullable    = true
+  default = null
 }
 
 // =========================
@@ -179,4 +199,113 @@ variable "argo_cd_redis_password" {
   type        = string
   description = "Authentication password for the Redis instance used by Argo CD"
   sensitive   = true
+}
+
+locals {
+  argocd_presets = {
+    server         = "32"
+    repo_server    = "16"
+    notifications  = "16"
+    applicationSet = "16"
+    controller     = "16"
+  }
+}
+
+locals {
+  argocd = {
+    server = {
+      request_cpu = coalesce(
+        var.argo_cd_server_request_cpu,
+        try(var.resources_config[local.argocd_presets.server].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.argo_cd_server_request_memory,
+        try(var.resources_config[local.argocd_presets.server].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.argo_cd_server_limit_cpu,
+        try(var.resources_config[local.argocd_presets.server].limits.cpu, "256m")
+      )
+      limit_memory = coalesce(
+        var.argo_cd_server_limit_memory,
+        try(var.resources_config[local.argocd_presets.server].limits.memory, "512Mi")
+      )
+    }
+
+    repo_server = {
+      request_cpu = coalesce(
+        var.argo_cd_repo_server_request_cpu,
+        try(var.resources_config[local.argocd_presets.repo_server].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.argo_cd_repo_server_request_memory,
+        try(var.resources_config[local.argocd_presets.repo_server].requests.memory, "32Mi")
+      )
+      limit_cpu = coalesce(
+        var.argo_cd_repo_server_limit_cpu,
+        try(var.resources_config[local.argocd_presets.repo_server].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.argo_cd_repo_server_limit_memory,
+        try(var.resources_config[local.argocd_presets.repo_server].limits.memory, "256Mi")
+      )
+    }
+
+    notifications = {
+      request_cpu = coalesce(
+        var.argo_cd_notifications_request_cpu,
+        try(var.resources_config[local.argocd_presets.notifications].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.argo_cd_notifications_request_memory,
+        try(var.resources_config[local.argocd_presets.notifications].requests.memory, "32Mi")
+      )
+      limit_cpu = coalesce(
+        var.argo_cd_notifications_limit_cpu,
+        try(var.resources_config[local.argocd_presets.notifications].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.argo_cd_notifications_limit_memory,
+        try(var.resources_config[local.argocd_presets.notifications].limits.memory, "256Mi")
+      )
+    }
+
+    application_set = {
+      request_cpu = coalesce(
+        var.argo_cd_application_set_request_cpu,
+        try(var.resources_config[local.argocd_presets.applicationSet].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.argo_cd_application_set_request_memory,
+        try(var.resources_config[local.argocd_presets.applicationSet].requests.memory, "32Mi")
+      )
+      limit_cpu = coalesce(
+        var.argo_cd_application_set_limit_cpu,
+        try(var.resources_config[local.argocd_presets.applicationSet].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.argo_cd_application_set_limit_memory,
+        try(var.resources_config[local.argocd_presets.applicationSet].limits.memory, "256Mi")
+      )
+    }
+
+    controller = {
+      request_cpu = coalesce(
+        var.argo_cd_controller_request_cpu,
+        try(var.resources_config[local.argocd_presets.controller].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.argo_cd_controller_request_memory,
+        try(var.resources_config[local.argocd_presets.controller].requests.memory, "32Mi")
+      )
+      limit_cpu = coalesce(
+        var.argo_cd_controller_limit_cpu,
+        try(var.resources_config[local.argocd_presets.controller].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.argo_cd_controller_limit_memory,
+        try(var.resources_config[local.argocd_presets.controller].limits.memory, "256Mi")
+      )
+    }
+  }
 }

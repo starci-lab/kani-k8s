@@ -50,10 +50,10 @@ resource "helm_release" "grafana" {
       // =========================
       // Grafana server resources
       // =========================
-      request_cpu    = var.grafana_request_cpu
-      request_memory = var.grafana_request_memory
-      limit_cpu      = var.grafana_limit_cpu
-      limit_memory   = var.grafana_limit_memory
+      request_cpu    = local.grafana.grafana.request_cpu
+      request_memory = local.grafana.grafana.request_memory
+      limit_cpu      = local.grafana.grafana.limit_cpu
+      limit_memory   = local.grafana.grafana.limit_memory
       persistence_size = var.grafana_persistence_size
 
       // =========================
@@ -124,7 +124,7 @@ resource "kubernetes_ingress_v1" "grafana" {
     namespace = kubernetes_namespace.grafana.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"

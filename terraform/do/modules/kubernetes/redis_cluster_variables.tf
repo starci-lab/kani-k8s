@@ -46,25 +46,29 @@ variable "redis_replicas" {
 variable "redis_request_cpu" {
   type        = string
   description = "CPU resource request for each Redis Cluster node"
-  default     = "96m"
+  nullable    = true
+  default     = null
 }
 
 variable "redis_request_memory" {
   type        = string
   description = "Memory resource request for each Redis Cluster node"
-  default     = "192Mi"
+  nullable    = true
+  default     = null
 }
 
 variable "redis_limit_cpu" {
   type        = string
   description = "CPU resource limit for each Redis Cluster node (2x request)"
-  default     = "192m"
+  nullable    = true
+  default     = null
 }
 
 variable "redis_limit_memory" {
   type        = string
   description = "Memory resource limit for each Redis Cluster node (2x request)"
-  default     = "384Mi"
+  nullable    = true
+  default     = null
 }
 
 // =========================
@@ -77,4 +81,33 @@ variable "redis_persistence_size" {
   type        = string
   description = "Persistent volume size for each Redis Cluster node"
   default     = "2Gi"
+}
+
+locals {
+  redis_presets = {
+    redis = "64"
+  }
+}
+
+locals {
+  redis = {
+    redis = {
+      request_cpu = coalesce(
+        var.redis_request_cpu,
+        try(var.resources_config[local.redis_presets.redis].requests.cpu, "96m")
+      )
+      request_memory = coalesce(
+        var.redis_request_memory,
+        try(var.resources_config[local.redis_presets.redis].requests.memory, "192Mi")
+      )
+      limit_cpu = coalesce(
+        var.redis_limit_cpu,
+        try(var.resources_config[local.redis_presets.redis].limits.cpu, "192m")
+      )
+      limit_memory = coalesce(
+        var.redis_limit_memory,
+        try(var.resources_config[local.redis_presets.redis].limits.memory, "384Mi")
+      )
+    }
+  }
 }

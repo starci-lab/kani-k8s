@@ -45,10 +45,10 @@ resource "helm_release" "portainer" {
       // =========================
       // Portainer server resources
       // =========================
-      request_cpu    = var.portainer_request_cpu
-      request_memory = var.portainer_request_memory
-      limit_cpu      = var.portainer_limit_cpu
-      limit_memory   = var.portainer_limit_memory
+      request_cpu    = local.portainer.portainer.request_cpu
+      request_memory = local.portainer.portainer.request_memory
+      limit_cpu      = local.portainer.portainer.limit_cpu
+      limit_memory   = local.portainer.portainer.limit_memory
       persistence_size = var.portainer_persistence_size
       // =========================
       // Node scheduling
@@ -106,7 +106,7 @@ resource "kubernetes_ingress_v1" "portainer" {
     namespace = kubernetes_namespace.portainer.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = "letsencrypt-prod"
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"
