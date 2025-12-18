@@ -1,117 +1,136 @@
-# Cert Manager
-# =========================
+// =========================
+// Core Variables
+// =========================
+// Controls the cert-manager core component responsible for
+// managing certificate lifecycle and ACME workflows.
+
 variable "cert_manager_cert_manager_request_cpu" {
   type        = string
-  description = "Requested CPU for cert manager"
-  default     = "64m"
+  description = "CPU resource request for the cert-manager core component"
+  default     = "32m"
 }
 
 variable "cert_manager_cert_manager_request_memory" {
   type        = string
-  description = "Requested memory for cert manager"
+  description = "Memory resource request for the cert-manager core component"
   default     = "128Mi"
 }
 
 variable "cert_manager_cert_manager_limit_cpu" {
   type        = string
-  description = "CPU limit for cert manager"
-  default     = "128m"
+  description = "CPU resource limit for the cert-manager core component (4x request)"
+  default     = "256m"
 }
 
 variable "cert_manager_cert_manager_limit_memory" {
   type        = string
-  description = "Memory limit for cert manager"
-  default     = "256Mi"
+  description = "Memory resource limit for the cert-manager core component (4x request)"
+  default     = "512Mi"
 }
-# Webhook
-# =========================
+
+// =========================
+// Webhook Variables
+// =========================
+// Controls resource allocation for the webhook component,
+// which validates and mutates cert-manager resources.
+
 variable "cert_manager_webhook_request_cpu" {
   type        = string
-  description = "Requested CPU for webhook"
+  description = "CPU resource request for the cert-manager webhook"
   default     = "64m"
 }
 
 variable "cert_manager_webhook_request_memory" {
   type        = string
-  description = "Requested memory for webhook"
+  description = "Memory resource request for the cert-manager webhook"
   default     = "128Mi"
 }
 
 variable "cert_manager_webhook_limit_cpu" {
   type        = string
-  description = "CPU limit for webhook"
-  default     = "128m"
+  description = "CPU resource limit for the cert-manager webhook (4x request)"
+  default     = "256m"
 }
 
 variable "cert_manager_webhook_limit_memory" {
   type        = string
-  description = "Memory limit for webhook"
-  default     = "256Mi"
+  description = "Memory resource limit for the cert-manager webhook (4x request)"
+  default     = "512Mi"
 }
-# CA Injector
-# =========================
+
+// =========================
+// CA Injector Variables
+// =========================
+// Controls the CA injector component responsible for
+// injecting CA bundles into Kubernetes resources.
+
 variable "cert_manager_cainjector_request_cpu" {
   type        = string
-  description = "Requested CPU for cainjector"
+  description = "CPU resource request for the cert-manager CA injector"
   default     = "64m"
 }
 
 variable "cert_manager_cainjector_request_memory" {
   type        = string
-  description = "Requested memory for cainjector"
+  description = "Memory resource request for the cert-manager CA injector"
   default     = "128Mi"
 }
 
 variable "cert_manager_cainjector_limit_cpu" {
   type        = string
-  description = "CPU limit for cainjector"
-  default     = "128m"
+  description = "CPU resource limit for the cert-manager CA injector (4x request)"
+  default     = "256m"
 }
 
 variable "cert_manager_cainjector_limit_memory" {
   type        = string
-  description = "Memory limit for cainjector"
-  default     = "256Mi"
+  description = "Memory resource limit for the cert-manager CA injector (4x request)"
+  default     = "512Mi"
 }
 
-# Controller
-# =========================
+// =========================
+// Controller Variables
+// =========================
+// Controls the controller responsible for reconciling
+// Certificate, Issuer, and ClusterIssuer resources.
+
 variable "cert_manager_controller_request_cpu" {
   type        = string
-  description = "Requested CPU for controller"
-  default     = "64m"   
+  description = "CPU resource request for the cert-manager controller"
+  default     = "64m"
 }
 
 variable "cert_manager_controller_request_memory" {
   type        = string
-  description = "Requested memory for controller"
+  description = "Memory resource request for the cert-manager controller"
   default     = "128Mi"
 }
 
 variable "cert_manager_controller_limit_cpu" {
   type        = string
-  description = "CPU limit for controller"
-  default     = "128m"
+  description = "CPU resource limit for the cert-manager controller (4x request)"
+  default     = "256m"
 }
 
 variable "cert_manager_controller_limit_memory" {
   type        = string
-  description = "Memory limit for controller"
-  default     = "256Mi"
+  description = "Memory resource limit for the cert-manager controller (4x request)"
+  default     = "512Mi"
 }
 
-# Cluster Issuer Name
-# =========================
+// =========================
+// ClusterIssuer Configuration
+// =========================
+// Used for ACME-based certificate issuance (e.g. Let's Encrypt).
+
 variable "cert_manager_cluster_issuer_name" {
   type        = string
-  description = "Name of the cluster issuer"
+  description = "Name of the cert-manager ClusterIssuer used for issuing TLS certificates"
   default     = "letsencrypt-prod"
 }
 
-# Email
-# =========================
 variable "cert_manager_email" {
   type        = string
-  description = "Email for the cluster issuer"
-  default = "cuongnvtse160875@gmail.com"
+  description = "Email address used for ACME registration with the certificate authority"
+  default     = "cuongnvtse160875@gmail.com"
 }

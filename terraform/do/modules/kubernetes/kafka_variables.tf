@@ -1,118 +1,116 @@
-# =========================
-# Authentication
-# =========================
+// =========================
+// Kafka authentication variables
+// =========================
+// Controls SASL authentication used by Kafka clients and brokers.
+
 variable "kafka_sasl_user" {
   type        = string
-  description = "SASL user for Kafka"
+  description = "SASL authentication username used by Kafka clients and brokers"
   default     = "kani-kafka-user"
 }
 
 variable "kafka_sasl_password" {
   type        = string
-  description = "SASL password for Kafka"
+  description = "SASL authentication password for Kafka"
   sensitive   = true
 }
-# =========================
-# Limits
-# =========================
-variable "kafka_limit_cpu" {
-  type        = string
-  description = "CPU limit for Kafka"
-  default     = "512m"
-}
 
-variable "kafka_limit_memory" {
-  type        = string
-  description = "Memory limit for Kafka"
-  default     = "1024Mi"
-}
+// =========================
+// Kafka controller variables
+// =========================
+// Controls resource allocation and persistence for Kafka controllers.
 
-# =========================
-# Controller
-# =========================
 variable "kafka_controller_request_cpu" {
   type        = string
-  description = "Requested CPU for Kafka Controller"
-  default     = "384m"
+  description = "CPU resource request for the Kafka controller"
+  default     = "192m"
 }
 
 variable "kafka_controller_request_memory" {
   type        = string
-  description = "Requested memory for Kafka Controller"
-  default     = "768Mi"
+  description = "Memory resource request for the Kafka controller"
+  default     = "384Mi"
 }
 
 variable "kafka_controller_limit_cpu" {
   type        = string
-  description = "CPU limit for Kafka Controller"
+  description = "CPU resource limit for the Kafka controller"
   default     = "768m"
 }
 
 variable "kafka_controller_limit_memory" {
   type        = string
-  description = "Memory limit for Kafka Controller"
+  description = "Memory resource limit for the Kafka controller"
   default     = "1536Mi"
 }
 
-variable "kafka_controller_persistence_size" {  
+variable "kafka_controller_persistence_size" {
   type        = string
-  description = "Persistent volume size for Kafka Controller"
+  description = "Persistent volume size for Kafka controller data"
   default     = "8Gi"
 }
 
 variable "kafka_controller_log_persistence_size" {
   type        = string
-  description = "Persistent volume size for Kafka Controller logs"
+  description = "Persistent volume size for Kafka controller log data"
   default     = "4Gi"
 }
 
-variable "kafka_broker_request_cpu" {   
+// =========================
+// Kafka broker variables
+// =========================
+// Controls resource allocation for Kafka broker nodes.
+
+variable "kafka_broker_request_cpu" {
   type        = string
-  description = "Requested CPU for Kafka Broker"
-  default     = "256m"
+  description = "CPU resource request for Kafka brokers"
+  default     = "128m"
 }
 
 variable "kafka_broker_request_memory" {
   type        = string
-  description = "Requested memory for Kafka Broker"
-  default     = "512Mi"
+  description = "Memory resource request for Kafka brokers"
+  default     = "256Mi"
 }
 
 variable "kafka_broker_limit_cpu" {
   type        = string
-  description = "CPU limit for Kafka Broker"
+  description = "CPU resource limit for Kafka brokers"
   default     = "512m"
 }
 
 variable "kafka_broker_limit_memory" {
   type        = string
-  description = "Memory limit for Kafka Broker"
+  description = "Memory resource limit for Kafka brokers"
   default     = "1024Mi"
 }
 
-# =========================
-# Volume permissions
-# =========================
+// =========================
+// Volume permissions variables
+// =========================
+// Controls the init container responsible for setting filesystem
+// permissions on Kafka persistent volumes.
+
 variable "volume_permissions_request_cpu" {
   type        = string
-  description = "Requested CPU for volume permissions"
-  default     = "64m"
+  description = "CPU resource request for the volume permissions init container"
+  default     = "32m"
 }
 
 variable "volume_permissions_request_memory" {
   type        = string
-  description = "Requested memory for volume permissions"
-  default     = "128Mi" 
+  description = "Memory resource request for the volume permissions init container"
+  default     = "64Mi"
 }
 
 variable "volume_permissions_limit_cpu" {
   type        = string
-  description = "CPU limit for volume permissions"
+  description = "CPU resource limit for the volume permissions init container"
   default     = "128m"
 }
 
 variable "volume_permissions_limit_memory" {
   type        = string
-  description = "Memory limit for volume permissions"
+  description = "Memory resource limit for the volume permissions init container"
   default     = "256Mi"
 }

@@ -1,28 +1,17 @@
-# Cloudflare provider
+// =========================
+// Cloudflare provider
+// =========================
+// Used to manage DNS records and other Cloudflare resources
+// such as zones, certificates, and security settings.
 provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
-# Digital Ocean provider
+
+// =========================
+// DigitalOcean provider
+// =========================
+// Used to provision and manage DigitalOcean infrastructure
+// including Kubernetes clusters, networking, and related resources.
 provider "digitalocean" {
   token = var.digitalocean_token
-}
-
-# Kubernetes provider
-provider "kubernetes" {
-  host  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
-  token = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token
-  cluster_ca_certificate = base64decode(
-    digitalocean_kubernetes_cluster.kubernetes.kube_config[0].cluster_ca_certificate
-  )
-}
-
-# Helm provider
-provider "helm" {
-  kubernetes {
-    host  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
-    token = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token
-    cluster_ca_certificate = base64decode(
-      digitalocean_kubernetes_cluster.kubernetes.kube_config[0].cluster_ca_certificate
-    )
-  }
 }

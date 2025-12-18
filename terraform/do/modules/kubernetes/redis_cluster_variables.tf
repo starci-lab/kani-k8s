@@ -1,53 +1,80 @@
-# =========================
-# Authentication
-# =========================
+// =========================
+// Redis Cluster enable variables
+// =========================
+// Controls whether the Redis Cluster is enabled.
+variable "enable_redis_cluster" {
+  type        = bool
+  description = "Enable Redis Cluster"
+  default     = true
+}
+
+// =========================
+// Redis Cluster authentication variables
+// =========================
+// Defines authentication credentials used by clients and
+// internal Redis nodes within the cluster.
+
 variable "redis_password" {
   type        = string
-  description = "Password for Redis Cluster"
+  description = "Authentication password for the Redis Cluster"
   sensitive   = true
 }
 
-# =========================
-# Nodes
-# =========================
+// =========================
+// Redis Cluster topology variables
+// =========================
+// Controls the number of Redis nodes and replicas forming
+// the Redis Cluster.
+
 variable "redis_nodes" {
   type        = number
-  description = "Number of nodes for Redis Cluster"
+  description = "Total number of Redis nodes in the Redis Cluster"
   default     = 6
 }
 
 variable "redis_replicas" {
   type        = number
-  description = "Number of replicas for Redis Cluster"
+  description = "Number of replica nodes per Redis primary node"
   default     = 1
 }
 
+// =========================
+// Redis Cluster resource requests and limits
+// =========================
+// Defines CPU and memory resource allocation for each Redis node.
+
 variable "redis_request_cpu" {
   type        = string
-  description = "Requested CPU for Redis Cluster"
-  default     = "192m"
+  description = "CPU resource request for each Redis Cluster node"
+  default     = "96m"
 }
 
 variable "redis_request_memory" {
   type        = string
-  description = "Requested memory for Redis Cluster"
-  default     = "384Mi"
+  description = "Memory resource request for each Redis Cluster node"
+  default     = "192Mi"
 }
 
 variable "redis_limit_cpu" {
   type        = string
-  description = "CPU limit for Redis Cluster"
-  default     = "384m"
+  description = "CPU resource limit for each Redis Cluster node (2x request)"
+  default     = "192m"
 }
 
 variable "redis_limit_memory" {
   type        = string
-  description = "Memory limit for Redis Cluster"
-  default     = "768Mi"
+  description = "Memory resource limit for each Redis Cluster node (2x request)"
+  default     = "384Mi"
 }
+
+// =========================
+// Redis Cluster persistence variables
+// =========================
+// Defines persistent storage size for Redis data to ensure
+// durability across pod restarts.
 
 variable "redis_persistence_size" {
   type        = string
-  description = "Persistent volume size for Redis Cluster"
+  description = "Persistent volume size for each Redis Cluster node"
   default     = "2Gi"
 }

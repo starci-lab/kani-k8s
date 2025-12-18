@@ -1,37 +1,48 @@
-# Get the zone id
+// =========================
+// Cloudflare DNS zone lookup
+// =========================
+// Retrieves the Cloudflare zone corresponding to the base domain.
+// This zone ID is required to manage DNS records via the Cloudflare provider.
 data "cloudflare_zone" "zone" {
-  name = var.base_domain_name
+  name = var.domain_name
 }
 
-# Get the domain name
+// =========================
+// Public domain names
+// =========================
+// Constructs fully-qualified domain names (FQDNs) for platform services
+// by combining service-specific subdomain prefixes with the base domain.
 locals {
-  domain_name = var.base_domain_name
+  argo_cd_domain_name     = "${var.argo_cd_prefix}.${var.domain_name}"
+  prometheus_domain_name = "${var.prometheus_prefix}.${var.domain_name}"
+  api_domain_name         = "${var.api_prefix}.${var.domain_name}"
 }
 
-locals {
-    argo_cd_domain_name = "argo-cd.${local.domain_name}"
-    prometheus_domain_name = "prometheus.${local.domain_name}"
-    api_domain_name = "api.${local.domain_name}"
-}
-
-# Create the NS records in Cloudflare for each name server
+// =========================
+// Cloudflare DNS records
+// =========================
+// Creates public A records in Cloudflare that point service domains
+// to the external IP address of the NGINX Ingress controller.
+//
+// Traffic flow:
+// Internet → Cloudflare DNS → NGINX Ingress → Kubernetes Services
 resource "cloudflare_record" "argo_cd" {
-  name     = local.argo_cd_domain_name
-  type     = "A"
-  content  = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
-  zone_id  = data.cloudflare_zone.zone.id
+  name    = local.argo_cd_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
 }
 
 resource "cloudflare_record" "prometheus" {
-  name     = local.prometheus_domain_name
-  type     = "A"
-  content  = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
-  zone_id  = data.cloudflare_zone.zone.id
+  name    = local.prometheus_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
 }
 
 resource "cloudflare_record" "api" {
-  name     = local.api_domain_name
-  type     = "A"
-  content  = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
-  zone_id  = data.cloudflare_zone.zone.id
+  name    = local.api_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
 }
