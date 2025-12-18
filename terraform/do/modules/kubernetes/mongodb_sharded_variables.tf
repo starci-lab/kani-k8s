@@ -7,13 +7,19 @@
 variable "mongodb_root_username" {
   type        = string
   description = "Root (admin) username for MongoDB with full cluster privileges"
-  sensitive   = true
+  default     = "root"
 }
 
 variable "mongodb_root_password" {
   type        = string
   description = "Root (admin) password for MongoDB; must be provided securely"
   sensitive   = true
+}
+
+variable "mongodb_replica_set_key" {
+  type        = string
+  description = "Replica set key for MongoDB"
+  default     = "OP6XsccLjf3751U4pngAcoutAoFqIEzk"
 }
 
 // =========================

@@ -37,6 +37,7 @@ resource "helm_release" "mongodb_sharded" {
       // Root credentials used to initialize and manage the MongoDB cluster
       username = var.mongodb_root_username
       password = var.mongodb_root_password
+      replica_set_key = var.mongodb_replica_set_key
 
       // =========================
       // Sharding configuration

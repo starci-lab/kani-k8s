@@ -13,9 +13,12 @@ data "cloudflare_zone" "zone" {
 // Constructs fully-qualified domain names (FQDNs) for platform services
 // by combining service-specific subdomain prefixes with the base domain.
 locals {
-  argo_cd_domain_name     = "${var.argo_cd_prefix}.${var.domain_name}"
-  prometheus_domain_name = "${var.prometheus_prefix}.${var.domain_name}"
-  api_domain_name         = "${var.api_prefix}.${var.domain_name}"
+  argo_cd_domain_name                = "${var.argo_cd_prefix}.${var.domain_name}"
+  prometheus_domain_name              = "${var.prometheus_prefix}.${var.domain_name}"
+  prometheus_alertmanager_domain_name = "${var.prometheus_alertmanager_prefix}.${var.domain_name}"
+  grafana_domain_name                 = "${var.grafana_prefix}.${var.domain_name}"
+  portainer_domain_name               = "${var.portainer_prefix}.${var.domain_name}"
+  api_domain_name                     = "${var.api_prefix}.${var.domain_name}"
 }
 
 // =========================
@@ -35,6 +38,27 @@ resource "cloudflare_record" "argo_cd" {
 
 resource "cloudflare_record" "prometheus" {
   name    = local.prometheus_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
+}
+
+resource "cloudflare_record" "prometheus_alertmanager" {
+  name    = local.prometheus_alertmanager_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
+}
+
+resource "cloudflare_record" "grafana" {
+  name    = local.grafana_domain_name
+  type    = "A"
+  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+  zone_id = data.cloudflare_zone.zone.id
+}
+
+resource "cloudflare_record" "portainer" {
+  name    = local.portainer_domain_name
   type    = "A"
   content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
   zone_id = data.cloudflare_zone.zone.id

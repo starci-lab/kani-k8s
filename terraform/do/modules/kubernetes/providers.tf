@@ -30,3 +30,19 @@ provider "helm" {
     )
   }
 }
+
+// =========================
+// Kubectl provider
+// =========================
+// Used to apply raw Kubernetes manifests and perform imperative
+// Kubernetes operations not covered by the Kubernetes provider.
+// This provider reuses the same Kubernetes cluster credentials as above
+// to apply raw Kubernetes manifests.
+provider "kubectl" {
+  host                   = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
+  cluster_ca_certificate = base64decode(
+    digitalocean_kubernetes_cluster.kubernetes.kube_config[0].cluster_ca_certificate
+    )  # Decodes the certificate authority from the cluster data
+  token                  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token  # Authentication token for Kubernetes API access
+  load_config_file       = false
+}

@@ -29,6 +29,32 @@ variable "prometheus_prefix" {
   default     = "prometheus"
 }
 
+variable "prometheus_alertmanager_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Prometheus Alertmanager server (combined with domain_name)"
+  default     = "prometheus-alertmanager"
+}
+
+// =========================
+// Grafana domain configuration
+// =========================
+
+variable "grafana_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Grafana server (combined with domain_name)"
+  default     = "grafana"
+}
+
+// =========================
+// Portainer domain configuration
+// =========================
+
+variable "portainer_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Portainer server (combined with domain_name)"
+  default     = "portainer"
+}
+
 // =========================
 // API domain configuration
 // =========================

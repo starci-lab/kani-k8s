@@ -25,8 +25,7 @@ module "kubernetes" {
   // ==================================================
   // MongoDB Sharded configuration
   // ==================================================
-  // Root user credentials for MongoDB Sharded cluster
-  mongodb_root_username = var.mongodb_root_user
+  // Root password for MongoDB Sharded cluster
   mongodb_root_password = var.mongodb_root_password
   // ==================================================
   // Redis configuration
@@ -53,4 +52,25 @@ module "kubernetes" {
   // ==================================================
   // Base domain name (used for Argo CD, Prometheus, API, etc.)
   domain_name = var.domain_name
+  // ==================================================
+  // Prometheus configuration
+  // ==================================================
+  // Htpasswd for Prometheus basic authentication
+  prometheus_htpasswd = var.prometheus_htpasswd
+  prometheus_alertmanager_htpasswd = var.prometheus_alertmanager_htpasswd
+  // ==================================================
+  // Grafana configuration
+  // ==================================================
+  // Grafana user
+  grafana_user = var.grafana_user
+  // Grafana password
+  grafana_password = var.grafana_password
+  // Prometheus Alertmanager basic authentication username
+  prometheus_alertmanager_basic_auth_username = var.prometheus_alertmanager_basic_auth_username
+  // Prometheus Alertmanager basic authentication password
+  prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
+  // Prometheus basic authentication username
+  prometheus_basic_auth_username = var.prometheus_basic_auth_username
+  // Prometheus basic authentication password
+  prometheus_basic_auth_password = var.prometheus_basic_auth_password
 }

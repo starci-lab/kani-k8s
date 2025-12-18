@@ -28,10 +28,10 @@ resource "helm_release" "cert_manager" {
   // Render Helm values from a Terraform template and inject resource variables
   values = [
     templatefile("${path.module}/yamls/cert-manager.yaml", {
-
       // =========================
       // cert-manager core component resources
       // =========================
+      install_crds                = var.cert_manager_install_crds
       cert_manager_request_cpu    = var.cert_manager_cert_manager_request_cpu
       cert_manager_request_memory = var.cert_manager_cert_manager_request_memory
       cert_manager_limit_cpu      = var.cert_manager_cert_manager_limit_cpu
@@ -77,7 +77,6 @@ resource "helm_release" "cert_manager" {
 resource "kubectl_manifest" "cluster_issuer_letsencrypt_prod" {
   // Ensure cert-manager is fully installed before creating the ClusterIssuer
   depends_on = [helm_release.cert_manager]
-
   yaml_body = <<YAML
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer

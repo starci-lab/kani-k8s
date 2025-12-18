@@ -1,4 +1,3 @@
-// =========================
 // Argo CD controller variables
 // =========================
 // Controls the Argo CD application controller responsible for

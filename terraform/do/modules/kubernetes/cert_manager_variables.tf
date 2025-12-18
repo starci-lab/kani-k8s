@@ -4,6 +4,12 @@
 // Controls the cert-manager core component responsible for
 // managing certificate lifecycle and ACME workflows.
 
+variable "cert_manager_install_crds" {
+  type        = bool
+  description = "Install cert-manager CRDs"
+  default     = true
+}
+
 variable "cert_manager_cert_manager_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager core component"
