@@ -46,3 +46,16 @@ provider "kubectl" {
   token                  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token  # Authentication token for Kubernetes API access
   load_config_file       = false
 }
+
+// =========================
+// Argo CD provider
+// =========================
+// Used to interact with the Argo CD API,
+// allowing Terraform to manage Argo CD resources such as
+// Applications and Projects.
+provider "argocd" {
+  server_addr = local.argo_cd_domain_name
+  username    = "admin"
+  password    = var.argo_cd_admin_password
+  insecure    = true
+}

@@ -22,5 +22,9 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 4.0"
     }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = ">= 7.0.0"
+    }
   }
 }

@@ -73,4 +73,15 @@ module "kubernetes" {
   prometheus_basic_auth_username = var.prometheus_basic_auth_username
   // Prometheus basic authentication password
   prometheus_basic_auth_password = var.prometheus_basic_auth_password
+  // Argo CD Git repository URL
+  argo_cd_git_ssh_private_key = var.argo_cd_git_ssh_private_key
 }
+
+// ======================================================
+// Argo CD module
+// ======================================================
+// This module is responsible for provisioning:
+// - Argo CD
+// - Argo CD Applications
+// - Argo CD Projects
+// ======================================================

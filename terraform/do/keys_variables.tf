@@ -17,3 +17,13 @@ variable "cloudflare_api_token" {
   description = "API token used by Terraform to authenticate and manage DNS and other resources in the Cloudflare account"
   sensitive   = true
 }
+
+// =========================
+// GitHub SSH private key variables
+// =========================
+
+variable "argo_cd_git_ssh_private_key" {
+  type        = string
+  description = "SSH private key used by Terraform to authenticate and manage Argo CD Git repository"
+  sensitive   = true
+}
