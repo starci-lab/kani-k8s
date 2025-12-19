@@ -1,0 +1,67 @@
+name: Publish Helm Repo (GitHub Pages)
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "charts/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+env:
+  CHART_DIR: charts/repo/service
+  OUT_DIR: charts
+  PKG_DIR: charts/packages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.4
+
+      - name: Helm dependency build (if needed)
+        run: |
+          helm dependency build "${CHART_DIR}" || true
+
+      - name: Package chart
+        run: |
+          mkdir -p "${PKG_DIR}"
+          helm package "${CHART_DIR}" --destination "${PKG_DIR}"
+
+      - name: Generate index.yaml
+        run: |
+          OWNER="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)"
+          REPO="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f2)"
+          BASE_URL="https://${OWNER}.github.io/${REPO}/charts"
+
+          helm repo index "${OUT_DIR}" --url "${BASE_URL}"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: charts
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
