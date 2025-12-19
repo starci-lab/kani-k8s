@@ -65,7 +65,6 @@ resource "argocd_project" "kani" {
     // Git repositories allowed for this project
     // Wildcard is acceptable for development or academic use
     source_repos = ["*"]
-
     // --------------------------------------------------
     // Deployment destination restrictions
     // --------------------------------------------------
@@ -211,15 +210,9 @@ resource "argocd_application" "kani_app" {
     source {
       // Git repository URL
       // Must match the repository configured in argocd_repository
-      repo_url = var.argo_cd_git_repo_url
-      // Git branch, tag, or commit SHA to track
-      // Every push to this branch will be detected by Argo CD
-      target_revision = "main"
-      // Path inside the repository that contains:
-      // - Kubernetes manifests, OR
-      // - Kustomize config, OR
-      // - Helm chart
-      path = ".argocd/k8s"
+      repo_url = var.argo_cd_helm_repo_url
+      // Helm chart name
+      chart = "service"
     }
 
     destination {

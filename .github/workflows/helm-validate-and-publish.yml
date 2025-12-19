@@ -18,8 +18,8 @@ concurrency:
 
 env:
   CHART_DIR: charts/repo/service
-  OUT_DIR: charts
-  PKG_DIR: charts/packages
+  OUT_DIR: public/charts
+  PKG_DIR: public/charts
 
 jobs:
   validate:
@@ -34,12 +34,10 @@ jobs:
           version: v3.14.4
 
       - name: Helm lint
-        run: |
-          helm lint ./charts/repo/service
+        run: helm lint "${CHART_DIR}"
 
       - name: Helm template (smoke test)
-        run: |
-          helm template test ./charts/repo/service > /dev/null
+        run: helm template test "${CHART_DIR}" > /dev/null
 
   build:
     needs: validate
@@ -54,37 +52,27 @@ jobs:
           version: v3.14.4
 
       - name: Helm dependency build (if needed)
-        run: |
-          helm dependency build "${CHART_DIR}" || true
+        run: helm dependency build "${CHART_DIR}" || true
 
       - name: Package chart
         run: |
           mkdir -p "${PKG_DIR}"
           helm package "${CHART_DIR}" --destination "${PKG_DIR}"
 
-      - name: Prepare charts directory
-        run: |
-          mkdir -p "${OUT_DIR}"
-          # Copy packages to charts directory for indexing
-          cp "${PKG_DIR}"/*.tgz "${OUT_DIR}/" 2>/dev/null || true
-
       - name: Generate index.yaml
         run: |
+          mkdir -p "${OUT_DIR}"
+
           OWNER="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)"
           REPO="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f2)"
           BASE_URL="https://${OWNER}.github.io/${REPO}/charts"
 
-          # Merge with existing index.yaml if it exists
-          if [ -f "${OUT_DIR}/index.yaml" ]; then
-            helm repo index "${OUT_DIR}" --url "${BASE_URL}" --merge "${OUT_DIR}/index.yaml"
-          else
-            helm repo index "${OUT_DIR}" --url "${BASE_URL}"
-          fi
+          helm repo index "${OUT_DIR}" --url "${BASE_URL}"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: charts
+          path: public
 
   deploy:
     needs: build

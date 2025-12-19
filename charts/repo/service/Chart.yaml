@@ -14,7 +14,7 @@ maintainers:
   - name: starci183
     url: "https://x.com/0xstacynguyen"
 name: kani
-version: 1.0.4
+version: 1.0.5
 dependencies:
   - name: common
     version: 2.x.x

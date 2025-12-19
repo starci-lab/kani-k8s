@@ -377,3 +377,13 @@ variable "argo_cd_git_ssh_private_key" {
   description = "SSH private key used by Argo CD to access the Git repository"
   sensitive   = true
 }
+
+// =========================
+// Argo CD Helm repository configuration
+// =========================
+
+variable "argo_cd_helm_repo_url" {
+  type        = string
+  description = "URL of the Kani Kubernetes Helm repository"
+  default     = "http://starci-lab.github.io/kani-k8s/charts"
+}
