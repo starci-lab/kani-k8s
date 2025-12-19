@@ -213,6 +213,8 @@ resource "argocd_application" "kani_app" {
       repo_url = var.argo_cd_helm_repo_url
       // Helm chart name
       chart = "service"
+      // Helm chart version
+      target_revision = "^1.0.0"
     }
 
     destination {

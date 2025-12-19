@@ -27,3 +27,13 @@ variable "argo_cd_git_ssh_private_key" {
   description = "SSH private key used by Terraform to authenticate and manage Argo CD Git repository"
   sensitive   = true
 }
+
+// =========================
+// GCP project ID variables
+// =========================
+// Controls the GCP project ID used by External Secrets.
+variable "gcp_project_id" {
+  type        = string
+  description = "GCP project ID"
+  sensitive = true
+}

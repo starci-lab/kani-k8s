@@ -75,6 +75,8 @@ module "kubernetes" {
   prometheus_basic_auth_password = var.prometheus_basic_auth_password
   // Argo CD Git repository URL
   argo_cd_git_ssh_private_key = var.argo_cd_git_ssh_private_key
+  // GCP project ID
+  gcp_project_id = var.gcp_project_id
 }
 
 // ======================================================

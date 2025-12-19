@@ -66,9 +66,9 @@ jobs:
           OWNER="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)"
           REPO="$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f2)"
           BASE_URL="https://${OWNER}.github.io/${REPO}/charts"
-
+ 
           helm repo index "${OUT_DIR}" --url "${BASE_URL}"
-
+ 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
