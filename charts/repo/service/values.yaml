@@ -1,0 +1,214 @@
+global:
+  imageRegistry: ""  # Set the image registry URL (e.g., docker.io).
+  imagePullSecrets: []  # Optionally, specify secrets to pull images from a private registry.
+  defaultStorageClass: ""  # Define default storage class for persistent volumes.
+  storageClass: ""  # Specify the storage class for persistent volumes.
+  
+  # Security parameters
+  security:
+    allowInsecureImages: false  # Set to true to allow skipping image verification.
+  
+  # Compatibility adaptations for Kubernetes platforms
+  compatibility:
+    openshift:
+      adaptSecurityContext: auto  # Adapt securityContext for OpenShift restricted SCC.
+
+kubeVersion: ""  # Override Kubernetes version if necessary.
+nameOverride: ""  # Override the name used in the deployment.
+fullnameOverride: ""  # Fully override the fullname.
+
+replicaCount: 2  # Set the number of replicas for the deployment.
+
+# Labels and Annotations (removed test entries)
+commonLabels: {}  # Add common labels if needed, otherwise leave empty.
+commonAnnotations: {}  # Add common annotations if needed, otherwise leave empty.
+
+lifecycleHooks: {}  # Define any lifecycle hooks if necessary.
+extraDeploy: []  # Add any extra deployments or configurations.
+
+# Diagnostic Mode
+diagnosticMode:
+  enabled: false  # Disable diagnostic mode (set to true to disable probes and override command).
+  command:
+    - sleep  # Command to override containers.
+  args:
+    - infinity  # Arguments to override containers.
+
+# Pod Annotations and Labels
+podAnnotations: {}  # Add pod annotations if necessary.
+podLabels: {}  # Add pod labels if necessary.
+
+podAffinityPreset: ""  # Pod affinity preset, can be soft or hard, or empty.
+podAntiAffinityPreset: soft  # Anti-affinity preset for pod placement.
+
+args: []  # Additional command-line arguments for the container.
+
+# Deployment Update Strategy
+updateStrategy:
+  type: "RollingUpdate"  # Use rolling update strategy for pod updates.
+
+# Pod Affinity, Anti-Affinity, and Node Affinity
+podAntiAffinityPreset: soft  # Anti-affinity preset: 'soft' (preferred) or 'hard' (required).
+nodeAffinityPreset:
+  type: ""  # Node affinity type: 'soft' or 'hard'.
+  key: ""  # Node label key to match.
+  values: []  # List of node label values to match.
+
+affinity: {}  # Custom affinity rules for pod placement.
+nodeSelector: {}  # Node labels for pod assignment.
+
+resourcesPreset: "nano"  # Predefined resource presets, e.g., nano, micro, small.
+resources: {}  # Custom resource requests and limits for the container.
+
+# Image Configuration
+image:
+  registry: docker.io  # Docker registry URL for the image.
+  repository: cifarm/gameplay-service  # Repository for the container image.
+  tag: latest  # Tag for the image.
+  digest: ""  # Optionally specify an image digest.
+  pullPolicy: Always  # Image pull policy, can be 'Always', 'IfNotPresent', or 'Never'.
+  pullSecrets: []  # Secrets for private image pull.
+
+debug: false  # Enable debug mode for additional debugging.
+
+# Service Configuration
+service: 
+  type: "ClusterIP"  # Kubernetes service type: ClusterIP, LoadBalancer, NodePort, etc.
+  ports: 
+    app: 
+      enabled: true  # Enable the app service port.
+      port: 8080  # Port exposed by the service.
+    healthCheck: 
+      enabled: true  # Enable the health check service port.
+      port: 8081  # Health check port exposed by the service.
+  extraPorts: []  # Define extra service ports if necessary.
+
+# Environment Variables from ConfigMap and Secret
+envVarsCM: 
+  FOO: "bar"  # Example environment variable from ConfigMap.
+  FOO2: "bar2"  # Another example from ConfigMap.
+envVarsSecret:
+  FOO3: "bar"  # Example environment variable from Secret.
+  FOO4: "bar2"  # Another example from Secret.
+
+containerPorts:
+  app:
+    enabled: true  # Enable the app container port.
+    port: 8080  # Port exposed by the container.
+  healthCheck:
+    enabled: true  # Enable the health check container port.
+    port: 8081  # Health check port exposed by the container.
+  extraPorts: []  # Define extra container ports if necessary.
+
+# Startup, Liveness and Readiness Probes Configuration
+startupProbe:
+  path: "/startup"  # Path for the startup probe.
+  enabled: true # Enable startup probe.
+  initialDelaySeconds: 180
+  periodSeconds: 10 # Interval between probe checks.
+  timeoutSeconds: 5 # Timeout for probe response.
+  successThreshold: 1 # Number of successful probes needed.
+  failureThreshold: 6 # Number of failed probes before declaring the container not ready.
+
+livenessProbe:
+  path: "/liveness"  # Path for the liveness probe.
+  enabled: true  # Enable liveness probe.
+  initialDelaySeconds: 180  # Initial delay before the probe is run.
+  periodSeconds: 10  # Interval between probe checks.
+  timeoutSeconds: 5  # Timeout for probe response.
+  successThreshold: 1  # Number of successful probes needed.
+  failureThreshold: 6  # Number of failed probes before declaring the container unhealthy.
+
+readinessProbe:
+  path: "/readiness"  # Path for the readiness probe.
+  enabled: true  # Enable readiness probe.
+  initialDelaySeconds: 180  # Initial delay before the probe is run.
+  periodSeconds: 5  # Interval between probe checks.
+  timeoutSeconds: 3  # Timeout for probe response.
+  successThreshold: 1  # Number of successful probes needed.
+  failureThreshold: 3  # Number of failed probes before declaring the container not ready.
+
+customStartupProbe: {}  # Optionally, provide a custom startup probe.
+
+customLivenessProbe: {}  # Optionally, provide a custom liveness probe.
+
+customReadinessProbe: {}  # Optionally, provide a custom readiness probe.
+
+# Replicas and Autoscaling Configuration
+autoscaling:
+  enabled: false  # Enable autoscaling.
+  minReplicas: 1  # Minimum number of replicas.
+  maxReplicas: 3  # Maximum number of replicas.
+  cooldownPeriod: 30  # Time to wait after scaling before scaling again.
+  pollingInterval: 5  # Time between scale checks.
+  prometheus:
+    serverAddress:
+      host: "prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local"  # Prometheus server address.
+      port: 9090  # Prometheus port.
+    metricName: "example-metric"  # Name of the metric to scale on.
+    query: "sum(rate(container_cpu_usage_seconds_total{namespace=\"monitoring\", pod=~\"example-.*\"}[1m]))"  # Prometheus query for metric.
+    threshold: "0.75"  # Threshold value for scaling.
+
+# Resource Requests and Limits
+resources:
+  requests:
+    cpu: "10m"  # CPU request for the container.
+    memory: "20Mi"  # Memory request for the container.
+  limits:
+    cpu: "90m"  # CPU limit for the container.
+    memory: "180Mi"  # Memory limit for the container.
+
+# Container Security Context
+containerSecurityContext:
+  enabled: true
+  seLinuxOptions: {}
+  runAsUser: 1001
+  runAsGroup: 1001
+  runAsNonRoot: true
+  privileged: false
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: "RuntimeDefault"
+
+# Pod Security Context
+podSecurityContext:
+  enabled: true  # Enable pod security context.
+  fsGroupChangePolicy: Always  # Ensure file system group ownership.
+  sysctls: []  # Custom sysctls for the pod.
+  supplementalGroups: []  # Supplementary groups for the pod.
+  fsGroup: 1001  # File system group for the pod.
+
+# Extra Volumes and Volume Mounts
+extraVolumes: []  # Define extra volumes if necessary.
+extraVolumeMounts: []  # Define extra volume mounts if necessary.
+
+# Security Context for Volume Permissions
+volumePermissions:
+  enabled: false  # Disable volume permission management (set to true if needed).
+  image:
+    registry: docker.io  # Image registry for volume permission manager.
+    repository: bitnami/os-shell  # Image repository for volume permission manager.
+    tag: 12-debian-12-r33  # Image tag.
+    pullPolicy: IfNotPresent  # Image pull policy.
+  resourcesPreset: "nano"  # Resource preset for the volume permissions container.
+  resources: {}  # Custom resource requests and limits for the volume permissions container.
+  securityContext:
+    seLinuxOptions: {}  # SELinux options for the container.
+    runAsUser: 0  # Run as user for volume permissions container.
+
+# RBAC and Service Account Configuration
+rbac:
+  create: false  # Enable creation of RBAC resources.
+  rules:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list", "watch"]
+
+serviceAccount:
+  create: false  # Enable creation of a service account.
+  name: ""  # Optionally specify a service account name.
+  annotations: {}  # Add annotations for the service account if needed.
+  automountServiceAccountToken: false  # Do not automatically mount the service account token.

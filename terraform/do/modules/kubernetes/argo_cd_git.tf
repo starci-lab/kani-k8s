@@ -219,7 +219,7 @@ resource "argocd_application" "kani_app" {
       // - Kubernetes manifests, OR
       // - Kustomize config, OR
       // - Helm chart
-      path = "k8s"
+      path = ".argocd/k8s"
     }
 
     destination {

@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: MIT
+annotations:
+  category: Service
+  licenses: MIT
+apiVersion: v1
+appVersion: 1.0.0
+description: This chart is used to deploy the Kani service in a Kubernetes cluster.
+home: N/A
+icon: N/A
+keywords:
+  - service
+  - kani
+maintainers:
+  - name: starci183
+    url: "https://x.com/0xstacynguyen"
+name: kani
+version: 1.0.0
+dependencies:
+  - name: common
+    version: 2.x.x
+    repository: oci://registry-1.docker.io/bitnamicharts

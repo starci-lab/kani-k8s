@@ -1,0 +1,27 @@
+{{ if .Values.autoscaling.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: {{ include "common.names.fullname" . }}
+  minReplicaCount: {{ .Values.autoscaling.minReplicas }}
+  maxReplicaCount: {{ .Values.autoscaling.maxReplicas }}
+  cooldownPeriod:  {{ .Values.autoscaling.cooldownPeriod }}
+  pollingInterval: {{ .Values.autoscaling.pollingInterval }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: "http://{{ .Values.autoscaling.prometheus.serverAddress.host }}:{{ .Values.autoscaling.prometheus.serverAddress.port }}"
+        metricName: {{ .Values.autoscaling.prometheus.metricName }}
+        query: |
+          "{{ .Values.autoscaling.prometheus.query }}""
+        threshold: "{{ .Values.autoscaling.prometheus.threshold }}"
+{{- end }}
