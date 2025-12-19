@@ -1,4 +1,4 @@
-name: Helm Validate
+name: helm-validate
 
 on:
   push:

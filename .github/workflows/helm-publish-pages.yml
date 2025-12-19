@@ -1,11 +1,10 @@
-name: Publish Helm Repo (GitHub Pages)
+name: helm-publish-pages
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "charts/**"
-  workflow_dispatch: {}
+  workflow_run:
+    workflows: ["helm-validate"]
+    types:
+      - completed
 
 permissions:
   contents: read
