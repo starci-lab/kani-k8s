@@ -2,11 +2,11 @@
 annotations:
   category: Service
   licenses: MIT
-apiVersion: v1
+apiVersion: v2
 appVersion: 1.0.0
 description: This chart is used to deploy the Kani service in a Kubernetes cluster.
 home: N/A
-icon: N/A
+icon: https://r2.kanibot.xyz/kani.png
 keywords:
   - service
   - kani
