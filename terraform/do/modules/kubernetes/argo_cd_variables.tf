@@ -385,5 +385,5 @@ variable "argo_cd_git_ssh_private_key" {
 variable "argo_cd_helm_repo_url" {
   type        = string
   description = "URL of the Kani Kubernetes Helm repository"
-  default     = "http://starci-lab.github.io/kani-k8s/charts"
+  default     = "http://k8s.kanibot.xyz/charts"
 }
