@@ -115,9 +115,6 @@ resource "helm_release" "argo_cd" {
   ]
 
   depends_on = [
-    // ⚠️ This looks wrong in your snippet:
-    // - You created helm_release.argo_cd_redis above, but here you depend on helm_release.redis_cluster.
-    //   If you intended external Redis from this module, change to helm_release.argo_cd_redis.
     helm_release.argo_cd_redis,
     kubernetes_namespace.argo_cd
   ]

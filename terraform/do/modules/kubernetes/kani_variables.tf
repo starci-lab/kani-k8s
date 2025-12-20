@@ -33,25 +33,25 @@ variable "kani_aes_cbc_salt" {
 variable "kani_gcp_crypto_key_ed_sa_mount_path" {
   type        = string
   description = "Mount path for GCP crypto key encryptor/decryptor service account"
-  default     = "/app/.mounts/crypto-key-ed-sa"
+  default     = "/usr/src/app/crypto-key-ed-sa"
 }
 
 variable "kani_aes_mount_path" {
   type        = string
   description = "Mount path for AES encryption key"
-  default     = "/app/.mounts/aes"
+  default     = "/etc/secrets/aes"
 }
 
 variable "kani_jwt_secret_mount_path" {
   type        = string
   description = "Mount path for JWT secret"
-  default     = "/app/.mounts/jwt"
+  default     = "/etc/secrets/jwt"
 }
 
 variable "kani_stmp_mount_path" {
   type        = string
   description = "Mount path for SMTP configuration"
-  default     = "/app/.mounts/smtp"
+  default     = "/etc/secrets/smtp"
 }
 
 // =========================

@@ -20,25 +20,25 @@ locals {
     aes = {
       name                = "aes"
       target_secret_name  = "aes"
-      target_secret_key   = "key"
+      target_secret_key   = "data"
       gcp_secret_name     = "aes"
     }
     jwt_secret = {
       name                = "jwt-secret"
       target_secret_name  = "jwt-secret"
-      target_secret_key   = "key"
+      target_secret_key   = "data"
       gcp_secret_name     = "jwt-secret"
     }
     crypto-key-ed-sa = {
       name                = "crypto-key-ed-sa"
       target_secret_name  = "crypto-key-ed-sa"
-      target_secret_key   = "key"
+      target_secret_key   = "data"
       gcp_secret_name     = "crypto-key-ed-sa"
     }
     smtp = {
       name                = "smtp"
       target_secret_name  = "smtp"
-      target_secret_key   = "key"
+      target_secret_key   = "data"
       gcp_secret_name     = "smtp"
     }
   }

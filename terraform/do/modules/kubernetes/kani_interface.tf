@@ -53,24 +53,28 @@ resource "helm_release" "kani_interface" {
       redis_cache_host     = local.redis_cluster_service.host
       redis_cache_port     = local.redis_cluster_service.port
       redis_cache_password = var.redis_password
+      redis_cache_use_cluster = true
       // =========================
       // Redis Adapter configuration
       // =========================
       redis_adapter_host = local.redis_cluster_service.host
       redis_adapter_port = local.redis_cluster_service.port
-
+      redis_adapter_password = var.redis_password
+      redis_adapter_use_cluster = true
       // =========================
       // Redis BullMQ configuration
       // =========================
       redis_bullmq_host      = local.redis_cluster_service.host
       redis_bullmq_port      = local.redis_cluster_service.port
       redis_bullmq_use_cluster = true
-
+      redis_bullmq_password = var.redis_password
       // =========================
       // Redis Throttler configuration
       // =========================
       redis_throttler_host = local.redis_cluster_service.host
       redis_throttler_port = local.redis_cluster_service.port
+      redis_throttler_password = var.redis_password
+      redis_throttler_use_cluster = true
 
       // =========================
       // Secret mount paths
@@ -116,5 +120,83 @@ resource "helm_release" "kani_interface" {
   // Ensure the Kani namespace exists before installing the chart
   depends_on = [
     kubernetes_namespace.kani
+  ]
+}
+
+// -----------------------------------------------------------------------------
+// Read Kani Interface server Service (for Ingress wiring)
+// -----------------------------------------------------------------------------
+data "kubernetes_service" "kani_interface" {
+  metadata {
+    name      = "kani-interface-service"
+    namespace = kubernetes_namespace.kani.metadata[0].name
+  }
+
+  depends_on = [helm_release.kani_interface]
+}
+
+// Pick port if present; otherwise use the first declared service port
+locals {
+  kani_interface_server_port = coalesce(
+    try(
+      [
+        for p in data.kubernetes_service.kani_interface.spec[0].port :
+        p.port
+        if p.port == tonumber(var.kani_interface_port)
+      ][0],
+      null
+    ),
+    data.kubernetes_service.kani_interface.spec[0].port[0].port
+  )
+}
+
+// -----------------------------------------------------------------------------
+// Ingress (NGINX + cert-manager TLS)
+// -----------------------------------------------------------------------------
+resource "kubernetes_ingress_v1" "kani_interface" {
+  metadata {
+    name      = "kani-interface"
+    namespace = kubernetes_namespace.kani.metadata[0].name
+
+    annotations = {
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
+      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "acme.cert-manager.io/http01-edit-in-place"      = "true"
+    }
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+
+    rule {
+      host = local.api_domain_name
+
+      http {
+        path {
+          path = "/"
+
+          backend {
+            service {
+              name = data.kubernetes_service.kani_interface.metadata[0].name
+              port {
+                number = local.kani_interface_server_port
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tls {
+      hosts       = [local.api_domain_name]
+      secret_name = "kani-interface-tls"
+    }
+  }
+
+  depends_on = [
+    kubectl_manifest.cluster_issuer_letsencrypt_prod,
+    cloudflare_record.api,
+    helm_release.kani_interface
   ]
 }

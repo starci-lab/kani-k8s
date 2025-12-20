@@ -90,7 +90,7 @@ variable "kani_interface_limit_memory" {
 
 locals {
   kani_interface_presets = {
-    kani_interface = "16"
+    kani_interface = "64"
   }
 }
 
