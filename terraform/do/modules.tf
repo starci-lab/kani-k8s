@@ -77,6 +77,12 @@ module "kubernetes" {
   argo_cd_git_ssh_private_key = var.argo_cd_git_ssh_private_key
   // GCP project ID
   gcp_project_id = var.gcp_project_id
+  // GCP KMS key name
+  kani_gcp_kms_key_name = var.gcp_kms_key_name
+  // JWT salt
+  kani_jwt_salt = var.jwt_salt
+  // AES CBC salt
+  kani_aes_cbc_salt = var.aes_cbc_salt
 }
 
 // ======================================================

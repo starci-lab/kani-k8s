@@ -35,6 +35,12 @@ locals {
       target_secret_key   = "key"
       gcp_secret_name     = "crypto-key-ed-sa"
     }
+    smtp = {
+      name                = "smtp"
+      target_secret_name  = "smtp"
+      target_secret_key   = "key"
+      gcp_secret_name     = "smtp"
+    }
   }
 }
 

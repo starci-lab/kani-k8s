@@ -1,0 +1,121 @@
+replicaCount: ${replica_count}  # Number of pod replicas for this application.
+
+# Non-sensitive environment variables (stored in ConfigMap)
+envVarsCM:
+  NODE_ENV: production
+  KANI_INTERFACE_PORT: "${port}"
+
+  # Primary MongoDB (non-sensitive configuration)
+  PRIMARY_MONGO_DB_HOST: "${primary_mongodb_host}"
+  PRIMARY_MONGO_DB_PORT: "${primary_mongodb_port}"
+  PRIMARY_MONGO_DB_USERNAME: "${primary_mongodb_username}"
+  PRIMARY_MONGO_DB_NAME: "${primary_mongodb_database}"
+
+  # Kafka configuration
+  KAFKA_BROKER_HOST: "${kafka_broker_host}"
+  KAFKA_BROKER_PORT: "${kafka_broker_port}"
+  KAFKA_SASL_ENABLED: "${kafka_sasl_enabled}"
+  KAFKA_SASL_USERNAME: "${kafka_sasl_username}"
+
+  # Redis configuration
+  REDIS_CACHE_HOST: "${redis_cache_host}"
+  REDIS_CACHE_PORT: "${redis_cache_port}"
+
+  REDIS_ADAPTER_HOST: "${redis_adapter_host}"
+  REDIS_ADAPTER_PORT: "${redis_adapter_port}"
+
+  REDIS_BULLMQ_HOST: "${redis_bullmq_host}"
+  REDIS_BULLMQ_PORT: "${redis_bullmq_port}"
+  REDIS_BULLMQ_USE_CLUSTER: "${redis_bullmq_use_cluster}"
+
+  REDIS_THROTTLER_HOST: "${redis_throttler_host}"
+  REDIS_THROTTLER_PORT: "${redis_throttler_port}"
+
+  # Secret mount paths (file-based secrets)
+  GCP_CRYPTO_KEY_ED_SA_MOUNT_PATH: "${gcp_crypto_key_ed_sa_mount_path}"
+  AES_MOUNT_PATH: "${aes_mount_path}"
+  JWT_SECRET_MOUNT_PATH: "${jwt_secret_mount_path}"
+  STMP_MOUNT_PATH: "${stmp_mount_path}"
+
+# Sensitive environment variables (stored in Kubernetes Secrets)
+envVarsSecret:
+  PRIMARY_MONGO_DB_PASSWORD: "${primary_mongodb_password}"
+  KAFKA_SASL_PASSWORD: "${kafka_sasl_password}"
+  REDIS_CACHE_PASSWORD: "${redis_cache_password}"
+  GCP_KMS_KEY_NAME: "${gcp_kms_key_name}"
+  JWT_SALT: "${jwt_salt}"
+  AES_CBC_SALT: "${aes_cbc_salt}"
+
+# Container ports exposed by the application
+containerPorts:
+  app:
+    port: ${port}  # Main application port
+  healthCheck:
+    port: ${port}  # Health check port inside the container
+
+# Service ports exposed inside the cluster
+service:
+  ports:
+    app:
+      port: ${port}  # Service port for application traffic
+    healthCheck:
+      port: ${port}  # Service port for health checks
+
+# Container image configuration
+image:
+  registry: docker.io
+  repository: kanibot/kani-interface
+  tag: latest
+  digest: ""          # Optional image digest (overrides tag if set)
+  pullPolicy: Always  # Always pull the latest image
+  pullSecrets: []     # Image pull secrets (if using private registry)
+
+# Node scheduling constraints
+nodeSelector:
+  "doks.digitalocean.com/node-pool": ${node_pool_label}
+
+# Resource requests and limits
+resources:
+  requests:
+    cpu: ${request_cpu}
+    memory: ${request_memory}
+  limits:
+    cpu: ${limit_cpu}
+    memory: ${limit_memory}
+
+# Extra volumes for mounting secrets
+extraVolumes:
+  - name: aes
+    secret:
+      secretName: aes
+  - name: crypto-key-ed-sa
+    secret:
+      secretName: crypto-key-ed-sa
+  - name: jwt-secret
+    secret:
+      secretName: jwt-secret
+  - name: smtp
+    secret:
+      secretName: smtp
+
+# Volume mounts inside the container
+extraVolumeMounts:
+  - name: aes
+    mountPath: "${aes_mount_path}"
+    readOnly: true
+  - name: crypto-key-ed-sa
+    mountPath: "${gcp_crypto_key_ed_sa_mount_path}"
+    readOnly: true
+  - name: jwt-secret
+    mountPath: "${jwt_secret_mount_path}"
+    readOnly: true
+  - name: smtp
+    mountPath: "${stmp_mount_path}"
+    readOnly: true
+# Probes configuration
+livenessProbe:
+  path: "${liveness_probe_path}"
+readinessProbe: 
+  path: "${readiness_probe_path}"
+startupProbe:
+  path: "${startup_probe_path}"

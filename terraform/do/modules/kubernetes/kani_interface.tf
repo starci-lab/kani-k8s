@@ -1,0 +1,120 @@
+// =========================
+// Kani Interface local identifiers
+// =========================
+// Defines naming conventions shared across Helm, Service lookup,
+// and Ingress configuration.
+locals {
+  // Helm release name for Kani Interface
+  kani_interface_name = "kani-interface"
+
+  // Service name exposed by the Kani Interface server component
+  // (created by the Helm chart)
+  kani_interface_server_service_name = "kani-interface"
+}
+
+// =========================
+// Kani Interface Helm release
+// =========================
+// Deploys Kani Interface using the custom Helm chart.
+// All configuration is injected via a Terraform-rendered values file.
+resource "helm_release" "kani_interface" {
+  name      = local.kani_interface_name
+  namespace = kubernetes_namespace.kani.metadata[0].name
+  // Custom Helm chart from chart repository
+  repository = "https://k8s.kanibot.xyz/charts"
+  chart = "service"
+  // Render Helm values from template and inject Terraform variables
+  values = [
+    templatefile("${path.module}/yamls/kani-interface.yaml", {
+      // =========================
+      // Application configuration
+      // =========================
+      replica_count = var.kani_interface_replica_count
+      port          = var.kani_interface_port
+      // =========================
+      // Primary MongoDB configuration
+      // =========================
+      primary_mongodb_host     = local.mongodb_sharded_service.host
+      primary_mongodb_port     = local.mongodb_sharded_service.port
+      primary_mongodb_database = var.kani_interface_primary_mongodb_database
+      primary_mongodb_username = var.mongodb_root_username
+      primary_mongodb_password = var.mongodb_root_password
+      // =========================
+      // Kafka configuration
+      // =========================
+      kafka_broker_host   = local.kafka_service.host
+      kafka_broker_port   = local.kafka_service.port
+      kafka_sasl_enabled  = var.kani_interface_kafka_sasl_enabled
+      kafka_sasl_username = var.kafka_sasl_user
+      kafka_sasl_password = var.kafka_sasl_password
+      // =========================
+      // Redis Cache configuration
+      // =========================
+      redis_cache_host     = local.redis_cluster_service.host
+      redis_cache_port     = local.redis_cluster_service.port
+      redis_cache_password = var.redis_password
+      // =========================
+      // Redis Adapter configuration
+      // =========================
+      redis_adapter_host = local.redis_cluster_service.host
+      redis_adapter_port = local.redis_cluster_service.port
+
+      // =========================
+      // Redis BullMQ configuration
+      // =========================
+      redis_bullmq_host      = local.redis_cluster_service.host
+      redis_bullmq_port      = local.redis_cluster_service.port
+      redis_bullmq_use_cluster = true
+
+      // =========================
+      // Redis Throttler configuration
+      // =========================
+      redis_throttler_host = local.redis_cluster_service.host
+      redis_throttler_port = local.redis_cluster_service.port
+
+      // =========================
+      // Secret mount paths
+      // =========================
+      gcp_crypto_key_ed_sa_mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
+      aes_mount_path                  = var.kani_aes_mount_path
+      jwt_secret_mount_path           = var.kani_jwt_secret_mount_path
+      stmp_mount_path                 = var.kani_stmp_mount_path
+      // =========================
+      // GCP KMS configuration
+      // =========================
+      gcp_kms_key_name = var.kani_gcp_kms_key_name
+
+      // =========================
+      // JWT and AES configuration
+      // =========================
+      jwt_salt   = var.kani_jwt_salt
+      aes_cbc_salt = var.kani_aes_cbc_salt
+
+      // =========================
+      // Resource configuration
+      // =========================
+      request_cpu    = local.kani_interface.kani_interface.request_cpu
+      request_memory = local.kani_interface.kani_interface.request_memory
+      limit_cpu      = local.kani_interface.kani_interface.limit_cpu
+      limit_memory   = local.kani_interface.kani_interface.limit_memory
+
+      // =========================
+      // Node scheduling
+      // =========================
+      // Ensures Kani Interface pods are scheduled onto the primary node pool
+      node_pool_label = var.kubernetes_primary_node_pool_name
+
+      // =========================
+      // Probes configuration
+      // =========================
+      liveness_probe_path = var.kani_liveness_probe_path
+      readiness_probe_path = var.kani_readiness_probe_path
+      startup_probe_path = var.kani_startup_probe_path
+    })
+  ]
+
+  // Ensure the Kani namespace exists before installing the chart
+  depends_on = [
+    kubernetes_namespace.kani
+  ]
+}

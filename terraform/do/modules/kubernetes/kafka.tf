@@ -74,3 +74,25 @@ resource "helm_release" "kafka" {
     kubernetes_namespace.kafka
   ]
 }
+
+// =========================
+// Kafka Service
+// =========================
+// Retrieves the Kafka service name.
+data "kubernetes_service" "kafka" {
+  metadata {
+    name = "kafka"
+    namespace = kubernetes_namespace.kafka.metadata[0].name
+  }
+}
+
+// =========================
+// Kafka Host
+// =========================
+// Constructs the Kafka host name.
+locals {
+  kafka_service = {
+    host = "${data.kubernetes_service.kafka.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
+    port = 9092
+  }
+}

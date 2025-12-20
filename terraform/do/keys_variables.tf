@@ -37,3 +37,33 @@ variable "gcp_project_id" {
   description = "GCP project ID"
   sensitive = true
 }
+
+// =========================
+// GCP KMS key name variables
+// =========================
+// Controls the GCP KMS key name used by External Secrets.
+variable "gcp_kms_key_name" {
+  type        = string
+  description = "GCP KMS key name"
+  sensitive = true
+}
+
+// =========================
+// JWT salt variables
+// =========================
+// Controls the JWT salt used by Kani Interface.
+variable "jwt_salt" {
+  type        = string
+  description = "JWT salt"
+  sensitive = true
+}
+
+// =========================
+// AES CBC salt variables
+// =========================
+// Controls the AES CBC salt used by Kani Interface.
+variable "aes_cbc_salt" {
+  type        = string
+  description = "AES CBC salt"
+  sensitive = true
+}

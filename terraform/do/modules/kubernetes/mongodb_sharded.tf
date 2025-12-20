@@ -90,3 +90,25 @@ resource "helm_release" "mongodb_sharded" {
     kubernetes_namespace.mongodb_sharded
   ]
 }
+
+// =========================
+// MongoDB Sharded Service
+// =========================
+// Retrieves the MongoDB Sharded service name.
+data "kubernetes_service" "mongodb_sharded" {
+  metadata {
+    name = "mongodb-sharded"
+    namespace = kubernetes_namespace.mongodb_sharded.metadata[0].name
+  }
+}
+
+// =========================
+// MongoDB Sharded Host
+// =========================
+// Constructs the MongoDB Sharded host name.
+locals {
+  mongodb_sharded_service = {
+    host = "${data.kubernetes_service.mongodb_sharded.metadata[0].name}.${kubernetes_namespace.mongodb_sharded.metadata[0].name}.svc.cluster.local"
+    port = 27017
+  }
+}

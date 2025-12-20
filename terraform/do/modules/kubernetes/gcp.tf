@@ -15,3 +15,10 @@ resource "kubernetes_secret" "gcp_secret_accessor" {
 
   type = "Opaque"
 }
+
+data "kubernetes_secret" "gcp_secret_accessor" {
+  metadata {
+    name      = "gcp-secret-accessor"
+    namespace = kubernetes_namespace.external_secrets.metadata[0].name
+  }
+}
