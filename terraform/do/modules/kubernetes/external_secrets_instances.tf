@@ -29,6 +29,12 @@ locals {
       target_secret_key   = "key"
       gcp_secret_name     = "jwt-secret"
     }
+    crypto-key-ed-sa = {
+      name                = "crypto-key-ed-sa"
+      target_secret_name  = "crypto-key-ed-sa"
+      target_secret_key   = "key"
+      gcp_secret_name     = "crypto-key-ed-sa"
+    }
   }
 }
 

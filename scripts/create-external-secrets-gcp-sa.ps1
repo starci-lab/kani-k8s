@@ -9,12 +9,12 @@ $ErrorActionPreference = "Stop"
 # --------------------------
 
 $PROJECT_ID   = "kani-473603"
-$SA_NAME      = "secret-accessor-sa"
+$SA_NAME      = "crypto-key-encryptor-decryptor-sa"
 $SA_EMAIL     = "$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
 # Output key file
 $OUTPUT_DIR   = ".\secrets"
-$KEY_FILE     = "$OUTPUT_DIR\secret-accessor.json"
+$KEY_FILE     = "$OUTPUT_DIR\crypto-key-encryptor-decryptor-sa.json"
 
 Write-Host "==============================================" -ForegroundColor Cyan
 Write-Host "GCP Service Account setup + export key" -ForegroundColor Cyan
@@ -38,7 +38,7 @@ Write-Host ">>> Creating GCP Service Account (if not exists)..." -ForegroundColo
 
 try {
     gcloud iam service-accounts create $SA_NAME `
-        --display-name="External Secrets GCP SA" `
+        --display-name="Crypto Key Encryptor Decryptor SA" `
         --project=$PROJECT_ID
 } catch {
     Write-Host "Service Account already exists. Skipping..." -ForegroundColor DarkYellow
