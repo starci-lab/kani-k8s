@@ -14,7 +14,7 @@ maintainers:
   - name: starci183
     url: "https://x.com/0xstacynguyen"
 name: service
-version: 1.0.6
+version: 1.0.7
 dependencies:
   - name: common
     version: 2.x.x
