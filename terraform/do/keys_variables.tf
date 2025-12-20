@@ -67,3 +67,23 @@ variable "aes_cbc_salt" {
   description = "AES CBC salt"
   sensitive = true
 }
+
+// =========================
+// Jenkins user variables
+// =========================
+// Controls the Jenkins user used by Jenkins.
+variable "jenkins_user" {
+  type        = string
+  description = "Jenkins user"
+  sensitive = true
+}
+
+// =========================
+// Jenkins password variables
+// =========================
+// Controls the Jenkins password used by Jenkins.
+variable "jenkins_password" {
+  type        = string
+  description = "Jenkins password"
+  sensitive = true
+}

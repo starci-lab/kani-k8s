@@ -64,3 +64,13 @@ variable "api_prefix" {
   description = "Subdomain prefix for the API server (combined with domain_name)"
   default     = "api"
 }
+
+// =========================
+// Jenkins domain configuration
+// =========================
+
+variable "jenkins_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Jenkins server (combined with domain_name)"
+  default     = "jenkins"
+}

@@ -83,6 +83,10 @@ module "kubernetes" {
   kani_jwt_salt = var.jwt_salt
   // AES CBC salt
   kani_aes_cbc_salt = var.aes_cbc_salt
+  // Jenkins user
+  jenkins_user = var.jenkins_user
+  // Jenkins password
+  jenkins_password = var.jenkins_password
 }
 
 // ======================================================
