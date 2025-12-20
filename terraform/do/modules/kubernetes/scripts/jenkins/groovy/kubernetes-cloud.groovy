@@ -5,10 +5,12 @@ import org.csanchez.jenkins.plugins.kubernetes.PodTemplate
 import org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate
 
 // Define the variables
+def podTemplateName = "${pod_template_name}"
 def nodeSelector = "${node_selector}"
 def namespace = "${namespace}"
 def deploymentRolloutAgentYaml = '''${deployment_rollout_agent_yaml}'''
 def containerCap = ${container_cap}
+def serviceAccount = "${service_account}"
 
 // Define the cloud name
 def cloudName = "kani-kubernetes"
@@ -33,11 +35,15 @@ kubernetesCloud.setContainerCap(containerCap)                                   
 
 // Create pod templates
 def podTemplate = new PodTemplate()
-podTemplate.setName("Deployment Rollout Agent")
+podTemplate.setName(podTemplateName)
 podTemplate.setLabel("deployment-rollout-agent")  // Label for the pod template
 podTemplate.setNamespace(namespace)
+podTemplate.setServiceAccount(serviceAccount)
 podTemplate.setNodeSelector(nodeSelector) // Node selector for the pod template
-
+podTemplate.setAgentInjection(true)
+podTemplate.setInheritYamlMergeStrategy(true)
+podTemplate.setShowRawYaml(true)
+podTemplate.setRunAsUser(1000)
 // Set yaml
 podTemplate.setYaml(deploymentRolloutAgentYaml)
 

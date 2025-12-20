@@ -1,17 +1,12 @@
 apiVersion: v1
 kind: Pod
 spec:
-  serviceAccountName: jenkins-agent
-  nodeSelector:
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
   containers:
     - name: kubectl
       image: bitnami/kubectl:latest
       command:
         - sleep
         - infinity
-      securityContext:
-        runAsUser: 1001
       resources:
         requests:
           cpu: "${request_cpu}"

@@ -133,7 +133,7 @@ variable "jenkins_agent_container_cap" {
 
 locals {
   jenkins_presets = {
-    jenkins            = "64"
+    jenkins            = "96"
     volume_permissions = "16"
     agent              = "32"
   }

@@ -68,7 +68,6 @@ resource "helm_release" "jenkins" {
       // =========================
       init_hook_scripts_cm = kubernetes_config_map.jenkins_init_groovy_cm.metadata[0].name
       init_hook_scripts_secret = ""
-
     })
   ]
 

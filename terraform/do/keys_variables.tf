@@ -87,3 +87,13 @@ variable "jenkins_password" {
   description = "Jenkins password"
   sensitive = true
 }
+
+// =========================
+// Kani Interface Deployment Rollout Webhook Token variables
+// =========================
+// Controls the webhook token for Kani Interface Deployment Rollout.
+variable "kani_interface_deployment_rollout_webhook_token" {
+  type = string
+  description = "Webhook token for Kani Interface Deployment Rollout"
+  sensitive = true
+}

@@ -1,5 +1,5 @@
 # =========================
-# ServiceAccount for Jenkins Agent
+# ServiceAccount for Jenkins Agent (namespace: jenkins)
 # =========================
 resource "kubernetes_service_account" "jenkins_agent" {
   metadata {
@@ -8,29 +8,30 @@ resource "kubernetes_service_account" "jenkins_agent" {
   }
 }
 
-# =========================
-# Role: allow rollout deployment
-# =========================
-resource "kubernetes_role" "jenkins_agent_rollout_role" {
+# ==========================================
+# Role: allow jenkins-agent to list / get / patch deployments in kani namespace
+# Namespace: kani
+# ==========================================
+resource "kubernetes_role" "jenkins_agent_kani_deploy_role" {
   metadata {
-    name      = "jenkins-agent-rollout-role"
-    namespace = kubernetes_namespace.jenkins.metadata[0].name
+    name      = "jenkins-agent-deploy-role"
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   rule {
     api_groups = ["apps"]
     resources  = ["deployments"]
-    verbs      = ["get", "patch"]
+    verbs      = ["get", "list", "patch"]
   }
 }
 
-# =========================
-# RoleBinding: assign Role to SA jenkins agent
-# =========================
-resource "kubernetes_role_binding" "jenkins_agent_rollout_binding" {
+# =====================================================
+# RoleBinding: bind Role to ServiceAccount jenkins-agent in kani namespace
+# =====================================================
+resource "kubernetes_role_binding" "jenkins_agent_kani_deploy_binding" {
   metadata {
-    name      = "jenkins-agent-rollout-binding"
-    namespace = kubernetes_namespace.jenkins.metadata[0].name
+    name      = "jenkins-agent-deploy-binding"
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   subject {
@@ -41,7 +42,7 @@ resource "kubernetes_role_binding" "jenkins_agent_rollout_binding" {
 
   role_ref {
     kind      = "Role"
-    name      = kubernetes_role.jenkins_agent_rollout_role.metadata[0].name
+    name      = kubernetes_role.jenkins_agent_kani_deploy_role.metadata[0].name
     api_group = "rbac.authorization.k8s.io"
   }
 }
