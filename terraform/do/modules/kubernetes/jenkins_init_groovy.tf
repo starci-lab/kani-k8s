@@ -45,11 +45,11 @@ locals {
       namespace        = kubernetes_namespace.jenkins.metadata[0].name,
       deployment_rollout_agent_yaml = local.pod_templates["deployment-rollout-jenkins-agent"].yaml,
       container_cap    = var.jenkins_agent_container_cap,
-      service_account  = kubernetes_service_account.jenkins_agent.metadata[0].name
+      service_account  = kubernetes_service_account.jenkins_agent.metadata[0].name,
       pod_template_name = local.pod_templates["deployment-rollout-jenkins-agent"].name
     })
   }
-   jenkins_init_groovy_cm_2 = {
+  jenkins_init_groovy_cm_2 = {
     for job in local.containers :
     "${job.file}.groovy" => templatefile("${path.module}/scripts/jenkins/groovy/generic-webhook-trigger-pipeline.groovy", {
       job_name = job.name
@@ -63,8 +63,12 @@ locals {
 
 resource "kubernetes_config_map" "jenkins_init_groovy_cm" {
   metadata {
-    name = local.jenkins_init_groovy_name
+    name      = local.jenkins_init_groovy_name
     namespace = kubernetes_namespace.jenkins.metadata[0].name
   }
   data = local.jenkins_init_groovy_cm
+
+  depends_on = [
+    kubernetes_service_account.jenkins_agent
+  ]
 }

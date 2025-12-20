@@ -43,7 +43,7 @@ podTemplate.setNodeSelector(nodeSelector) // Node selector for the pod template
 podTemplate.setAgentInjection(true)
 podTemplate.setInheritYamlMergeStrategy(true)
 podTemplate.setShowRawYaml(true)
-podTemplate.setRunAsUser(1000)
+podTemplate.setRunAsUser("1000")
 // Set yaml
 podTemplate.setYaml(deploymentRolloutAgentYaml)
 
