@@ -76,3 +76,38 @@ variable "kani_startup_probe_path" {
   description = "Path for the startup probe"
   default     = "/api/terminus/startup"
 }
+
+
+// =========================
+// Primary MongoDB configuration
+// =========================
+// Configures connection to the primary MongoDB database.
+
+variable "kani_primary_mongodb_port" {
+  type        = number
+  description = "Port number for primary MongoDB database"
+  default     = 27017
+}
+
+variable "kani_primary_mongodb_database" {
+  type        = string
+  description = "Database name for primary MongoDB"
+  default     = "kani"
+}
+
+// =========================
+// Kafka configuration
+// =========================
+// Configures connection to Kafka broker for message queuing.
+
+variable "kani_kafka_broker_port" {
+  type        = number
+  description = "Port number for Kafka broker"
+  default     = 9092
+}
+
+variable "kani_kafka_sasl_enabled" {
+  type        = string
+  description = "Enable SASL authentication for Kafka (true/false)"
+  default     = "true"
+}

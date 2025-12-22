@@ -89,6 +89,8 @@ module "kubernetes" {
   jenkins_password = var.jenkins_password
   // Kani Interface Deployment Rollout Webhook Token
   kani_interface_deployment_rollout_webhook_token = var.kani_interface_deployment_rollout_webhook_token
+  // Kani Coordinator Deployment Rollout Webhook Token
+  kani_coordinator_deployment_rollout_webhook_token = var.kani_coordinator_deployment_rollout_webhook_token
 }
 
 // ======================================================

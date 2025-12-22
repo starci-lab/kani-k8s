@@ -32,7 +32,18 @@ locals {
         inherit_from = local.pod_templates["deployment-rollout-jenkins-agent"].name
       })
       webhook_token = var.kani_interface_deployment_rollout_webhook_token
-    } 
+    }
+    kani_coordinator = {
+      file        = "kani-coordinator-deployment-rollout-pipeline"
+      name        = "kani-coordinator-deployment-rollout-pipeline"                                          # Name of the Jenkins pipeline job
+      description = "Rollout the kani coordinator deployment using Kubernetes" # Job description
+      pipeline_script = templatefile("${path.module}/scripts/jenkins/jenkinsfiles/deployment-rollout.jenkinsfile", {
+        deployment_name = "kani-coordinator-service"
+        namespace = "kani"
+        inherit_from = local.pod_templates["deployment-rollout-jenkins-agent"].name
+      })
+      webhook_token = var.kani_coordinator_deployment_rollout_webhook_token
+    }
   }
 }
 

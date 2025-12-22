@@ -9,9 +9,12 @@ replicaCount: ${replica_count}
 envVarsCM:
   # Application runtime environment
   NODE_ENV: production
+  
+  # Kani Executor image
+  KANI_EXECUTOR_IMAGE: "${kani_executor_image}"
 
   # Application listening port (must match containerPorts & service ports)
-  KANI_INTERFACE_PORT: "${port}"
+  KANI_COORDINATOR_PORT: "${port}"
 
   # ------------------------
   # PRIMARY MONGODB SETTINGS
@@ -111,7 +114,7 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: kanibot/kani-interface
+  repository: kanibot/kani-coordinator
   tag: latest            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
@@ -197,3 +200,15 @@ startupProbe:
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
+
+serviceAccount:
+  create: true
+  name: kani-deployment-manager
+  automountServiceAccountToken: true
+
+rbac:
+  create: true
+  rules:
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list", "create", "patch"]

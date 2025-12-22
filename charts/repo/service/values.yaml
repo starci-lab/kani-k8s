@@ -212,3 +212,5 @@ serviceAccount:
   name: ""  # Optionally specify a service account name.
   annotations: {}  # Add annotations for the service account if needed.
   automountServiceAccountToken: false  # Do not automatically mount the service account token.
+
+configOnly: false  # Enable config-only mode for the service. If enabled, we wont create any resources except for the ConfigMap and Secret.
