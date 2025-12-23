@@ -33,7 +33,7 @@ variable "kani_aes_cbc_salt" {
 variable "kani_gcp_crypto_key_ed_sa_mount_path" {
   type        = string
   description = "Mount path for GCP crypto key encryptor/decryptor service account"
-  default     = "/usr/src/app/crypto-key-ed-sa"
+  default     = "/etc/crypto-key-ed-sa"
 }
 
 variable "kani_aes_mount_path" {

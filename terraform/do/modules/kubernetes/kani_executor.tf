@@ -1,41 +1,36 @@
 // =========================
-// Kani Coordinator local identifiers
+// Kani Executor local identifiers
 // =========================
 // Defines naming conventions shared across Helm, Service lookup,
 // and Ingress configuration.
 locals {
-  // Helm release name for Kani Coordinator
-  kani_coordinator_name = "kani-coordinator"
+  // Helm release name for Kani Executor
+  kani_executor_name = "kani-executor"
 
-  // Service name exposed by the Kani Coordinator server component
+  // Service name exposed by the Kani Executor server component
   // (created by the Helm chart)
-  kani_coordinator_server_service_name = "kani-coordinator"
+  kani_executor_server_service_name = "kani-executor"
 }
 
 // =========================
-// Kani Coordinator Helm release
+// Kani Executor Helm release
 // =========================
-// Deploys Kani Coordinator using the custom Helm chart.
+// Deploys Kani Executor using the custom Helm chart.
 // All configuration is injected via a Terraform-rendered values file.
-resource "helm_release" "kani_coordinator" {
-  name      = local.kani_coordinator_name
+resource "helm_release" "kani_executor" {
+  name      = local.kani_executor_name
   namespace = kubernetes_namespace.kani.metadata[0].name
   // Custom Helm chart from chart repository
   repository = "https://k8s.kanibot.xyz/charts"
   chart = "service"
   // Render Helm values from template and inject Terraform variables
   values = [
-    templatefile("${path.module}/yamls/kani-coordinator.yaml", {
-      // =========================
-      // Kani Executor image
-      // =========================
-      kani_executor_image = var.kani_executor_image
+    templatefile("${path.module}/yamls/kani-executor.yaml", {
       // =========================
       // Application configuration
       // =========================
-      replica_count = var.kani_coordinator_replica_count
-      port          = var.kani_coordinator_port
-      kani_executor_port = var.kani_executor_port
+      replica_count = var.kani_executor_replica_count
+      port          = var.kani_executor_port
       // =========================
       // Primary MongoDB configuration
       // =========================
@@ -99,15 +94,15 @@ resource "helm_release" "kani_coordinator" {
       // =========================
       // Resource configuration
       // =========================
-      request_cpu    = local.kani_coordinator.kani_coordinator.request_cpu
-      request_memory = local.kani_coordinator.kani_coordinator.request_memory
-      limit_cpu      = local.kani_coordinator.kani_coordinator.limit_cpu
-      limit_memory   = local.kani_coordinator.kani_coordinator.limit_memory
+      request_cpu    = local.kani_executor.kani_executor.request_cpu
+      request_memory = local.kani_executor.kani_executor.request_memory
+      limit_cpu      = local.kani_executor.kani_executor.limit_cpu
+      limit_memory   = local.kani_executor.kani_executor.limit_memory
 
       // =========================
       // Node scheduling
       // =========================
-      // Ensures Kani Coordinator pods are scheduled onto the primary node pool
+      // Ensures Kani Executor pods are scheduled onto the primary node pool
       node_pool_label = var.kubernetes_primary_node_pool_name
 
       // =========================

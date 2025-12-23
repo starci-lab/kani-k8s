@@ -11,8 +11,7 @@ envVarsCM:
   NODE_ENV: production
 
   # Application listening port (must match containerPorts & service ports)
-  KANI_INTERFACE_PORT: "${port}"
-
+  KANI_EXECUTOR_PORT: "${port}"
   # ------------------------
   # PRIMARY MONGODB SETTINGS
   # ------------------------
@@ -111,7 +110,7 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: kanibot/kani-interface
+  repository: kanibot/kani-executor
   tag: latest            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
@@ -197,3 +196,5 @@ startupProbe:
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
+
+configOnly: true

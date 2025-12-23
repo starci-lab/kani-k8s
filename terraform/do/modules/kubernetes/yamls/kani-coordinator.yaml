@@ -15,6 +15,7 @@ envVarsCM:
 
   # Application listening port (must match containerPorts & service ports)
   KANI_COORDINATOR_PORT: "${port}"
+  KANI_EXECUTOR_PORT: "${kani_executor_port}"
 
   # ------------------------
   # PRIMARY MONGODB SETTINGS
@@ -179,7 +180,7 @@ extraVolumeMounts:
 # =========================================================
 livenessProbe:
   path: "${liveness_probe_path}"     # Endpoint to check if app is alive
-  initialDelaySeconds: 30
+  initialDelaySeconds: 60
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
@@ -187,7 +188,7 @@ livenessProbe:
 
 readinessProbe:
   path: "${readiness_probe_path}"    # Endpoint to check if app is ready to serve traffic
-  initialDelaySeconds: 30
+  initialDelaySeconds: 60
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
@@ -195,7 +196,7 @@ readinessProbe:
 
 startupProbe:
   path: "${startup_probe_path}"      # Endpoint used during application startup
-  initialDelaySeconds: 30
+  initialDelaySeconds: 60
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
@@ -203,7 +204,7 @@ startupProbe:
 
 serviceAccount:
   create: true
-  name: kani-deployment-manager
+  name: kani-coordinator
   automountServiceAccountToken: true
 
 rbac:
@@ -211,4 +212,7 @@ rbac:
   rules:
     - apiGroups: ["apps"]
       resources: ["deployments"]
-      verbs: ["get", "list", "create", "patch"]
+      verbs: ["get", "list", "create", "patch", "delete"]
+    - apiGroups: [""]
+      resources: ["services"]
+      verbs: ["get", "list", "create", "patch", "delete"]
