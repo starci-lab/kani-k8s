@@ -44,6 +44,17 @@ locals {
       })
       webhook_token = var.kani_coordinator_deployment_rollout_webhook_token
     }
+    kani_observer = {
+      file        = "kani-observer-deployment-rollout-pipeline"
+      name        = "kani-observer-deployment-rollout-pipeline"                                          # Name of the Jenkins pipeline job
+      description = "Rollout the kani observer deployment using Kubernetes" # Job description
+      pipeline_script = templatefile("${path.module}/scripts/jenkins/jenkinsfiles/deployment-rollout.jenkinsfile", {
+        deployment_name = "kani-observer-service"
+        namespace = "kani"
+        inherit_from = local.pod_templates["deployment-rollout-jenkins-agent"].name
+      })
+      webhook_token = var.kani_observer_deployment_rollout_webhook_token
+    }
   }
 }
 

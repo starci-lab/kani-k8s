@@ -107,3 +107,13 @@ variable "kani_coordinator_deployment_rollout_webhook_token" {
   description = "Webhook token for Kani Coordinator Deployment Rollout"
   sensitive = true
 }
+
+// =========================
+// Kani Observer Deployment Rollout Webhook Token variables
+// =========================
+// Controls the webhook token for Kani Observer Deployment Rollout.
+variable "kani_observer_deployment_rollout_webhook_token" {
+  type = string
+  description = "Webhook token for Kani Observer Deployment Rollout"
+  sensitive = true
+}
