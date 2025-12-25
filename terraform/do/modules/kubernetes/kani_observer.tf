@@ -82,6 +82,8 @@ resource "helm_release" "kani_observer" {
       aes_mount_path                  = var.kani_aes_mount_path
       jwt_secret_mount_path           = var.kani_jwt_secret_mount_path
       stmp_mount_path                 = var.kani_stmp_mount_path
+      api_keys_mount_path             = var.kani_api_keys_mount_path
+      rpcs_mount_path                 = var.kani_rpcs_mount_path
       // =========================
       // GCP KMS configuration
       // =========================
@@ -116,6 +118,12 @@ resource "helm_release" "kani_observer" {
 
   // Ensure the Kani namespace exists before installing the chart
   depends_on = [
-    kubernetes_namespace.kani
+    kubernetes_namespace.kani,
+    kubectl_manifest.external_secret["api-keys"],
+    kubectl_manifest.external_secret["rpcs"],
+    kubectl_manifest.external_secret["aes"],
+    kubectl_manifest.external_secret["crypto-key-ed-sa"],
+    kubectl_manifest.external_secret["jwt-secret"],
+    kubectl_manifest.external_secret["smtp"]
   ]
 }

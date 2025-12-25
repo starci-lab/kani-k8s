@@ -66,6 +66,8 @@ envVarsCM:
   AES_MOUNT_PATH: "${aes_mount_path}/data"
   JWT_SECRET_MOUNT_PATH: "${jwt_secret_mount_path}/data"
   SMTP_MOUNT_PATH: "${stmp_mount_path}/data"
+  API_KEYS_MOUNT_PATH: "${api_keys_mount_path}/data"
+  RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
 
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
@@ -152,6 +154,12 @@ extraVolumes:
   - name: smtp
     secret:
       secretName: smtp
+  - name: api-keys
+    secret:
+      secretName: api-keys
+  - name: rpcs
+    secret:
+      secretName: rpcs
 
 # =========================================================
 # VOLUME MOUNTS INSIDE CONTAINER
@@ -168,6 +176,12 @@ extraVolumeMounts:
     readOnly: true
   - name: smtp
     mountPath: "${stmp_mount_path}"
+    readOnly: true
+  - name: api-keys
+    mountPath: "${api_keys_mount_path}"
+    readOnly: true
+  - name: rpcs
+    mountPath: "${rpcs_mount_path}"
     readOnly: true
 
 # =========================================================

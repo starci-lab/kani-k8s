@@ -18,28 +18,46 @@ locals {
   // - gcp_secret_name: The secret name in Google Cloud Secret Manager
   external_secrets_instances = {
     aes = {
-      name                = "aes"
-      target_secret_name  = "aes"
-      target_secret_key   = "data"
-      gcp_secret_name     = "aes"
+      name               = "aes"
+      target_secret_name = "aes"
+      target_secret_key  = "data"
+      gcp_secret_name    = "aes"
+      version            = 1
     }
     jwt_secret = {
-      name                = "jwt-secret"
-      target_secret_name  = "jwt-secret"
-      target_secret_key   = "data"
-      gcp_secret_name     = "jwt-secret"
+      name               = "jwt-secret"
+      target_secret_name = "jwt-secret"
+      target_secret_key  = "data"
+      gcp_secret_name    = "jwt-secret"
+      version            = 1
     }
     crypto-key-ed-sa = {
-      name                = "crypto-key-ed-sa"
-      target_secret_name  = "crypto-key-ed-sa"
-      target_secret_key   = "data"
-      gcp_secret_name     = "crypto-key-ed-sa"
+      name               = "crypto-key-ed-sa"
+      target_secret_name = "crypto-key-ed-sa"
+      target_secret_key  = "data"
+      gcp_secret_name    = "crypto-key-ed-sa"
+      version            = 1
     }
     smtp = {
-      name                = "smtp"
-      target_secret_name  = "smtp"
-      target_secret_key   = "data"
-      gcp_secret_name     = "smtp"
+      name               = "smtp"
+      target_secret_name = "smtp"
+      target_secret_key  = "data"
+      gcp_secret_name    = "smtp"
+      version            = 2
+    }
+    api-keys = {
+      name               = "api-keys"
+      target_secret_name = "api-keys"
+      target_secret_key  = "data"
+      gcp_secret_name    = "api-keys"
+      version            = 1
+    }
+    rpcs = {
+      name               = "rpcs"
+      target_secret_name = "rpcs"
+      target_secret_key  = "data"
+      gcp_secret_name    = "rpcs"
+      version            = 3
     }
   }
 }
@@ -82,6 +100,7 @@ spec:
     - secretKey: ${each.value.target_secret_key}
       remoteRef:
         key: ${each.value.gcp_secret_name}
+        version: "${tostring(each.value.version)}"
 YAML
 }
 

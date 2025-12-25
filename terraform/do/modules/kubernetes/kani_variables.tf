@@ -54,6 +54,18 @@ variable "kani_stmp_mount_path" {
   default     = "/etc/secrets/smtp"
 }
 
+variable "kani_api_keys_mount_path" {
+  type        = string
+  description = "Mount path for API keys"
+  default     = "/etc/secrets/api-keys"
+}
+
+variable "kani_rpcs_mount_path" {
+  type        = string
+  description = "Mount path for RPCs"
+  default     = "/etc/secrets/rpcs"
+}
+
 // =========================
 // Probes configuration
 // =========================
@@ -110,4 +122,21 @@ variable "kani_kafka_sasl_enabled" {
   type        = string
   description = "Enable SASL authentication for Kafka (true/false)"
   default     = "true"
+}
+
+// =========================
+// Frontend URL configuration
+// =========================
+// Configures the frontend URL for the Kani Interface pod.
+
+variable "kani_frontend_url_1" {
+  type        = string
+  description = "Frontend URL 1"
+  default     = "https://kanibot.xyz"
+}
+
+variable "kani_frontend_url_2" {
+  type        = string
+  description = "Frontend URL 2"
+  default     = "https://app.kanibot.xyz"
 }
