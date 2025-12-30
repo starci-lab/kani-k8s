@@ -67,6 +67,7 @@ envVarsCM:
   SMTP_MOUNT_PATH: "${stmp_mount_path}/data"
   API_KEYS_MOUNT_PATH: "${api_keys_mount_path}/data"
   RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
+  GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${google_drive_ud_sa_mount_path}/data"
 
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
@@ -112,7 +113,7 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: kanibot/kani-executor
+  repository: ${kani_executor_image}
   tag: latest            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
@@ -159,6 +160,9 @@ extraVolumes:
   - name: rpcs
     secret:
       secretName: rpcs
+  - name: google-drive-ud-sa
+    secret:
+      secretName: google-drive-ud-sa
 
 # =========================================================
 # VOLUME MOUNTS INSIDE CONTAINER
@@ -181,6 +185,9 @@ extraVolumeMounts:
     readOnly: true
   - name: rpcs
     mountPath: "${rpcs_mount_path}"
+    readOnly: true
+  - name: google-drive-ud-sa
+    mountPath: "${google_drive_ud_sa_mount_path}"
     readOnly: true
 
 # =========================================================

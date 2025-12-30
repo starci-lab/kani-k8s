@@ -27,8 +27,9 @@ resource "helm_release" "kani_observer" {
   values = [
     templatefile("${path.module}/yamls/kani-observer.yaml", {
       // =========================
-      // Application configuration
+      // Kani Observer image
       // =========================
+      kani_observer_image = var.kani_observer_image
       replica_count = var.kani_observer_replica_count
       port          = var.kani_observer_port
       // =========================
@@ -84,6 +85,7 @@ resource "helm_release" "kani_observer" {
       stmp_mount_path                 = var.kani_stmp_mount_path
       api_keys_mount_path             = var.kani_api_keys_mount_path
       rpcs_mount_path                 = var.kani_rpcs_mount_path
+      google_drive_ud_sa_mount_path   = var.kani_google_drive_ud_sa_mount_path
       // =========================
       // GCP KMS configuration
       // =========================

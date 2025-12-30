@@ -27,15 +27,13 @@ resource "helm_release" "kani_coordinator" {
   values = [
     templatefile("${path.module}/yamls/kani-coordinator.yaml", {
       // =========================
-      // Kani Executor image
-      // =========================
-      kani_executor_image = var.kani_executor_image
-      // =========================
       // Application configuration
       // =========================
-      replica_count = var.kani_coordinator_replica_count
-      port          = var.kani_coordinator_port
-      kani_executor_port = var.kani_executor_port
+      kani_coordinator_image = var.kani_coordinator_image
+      kani_executor_image    = var.kani_executor_image
+      replica_count          = var.kani_coordinator_replica_count
+      port                   = var.kani_coordinator_port
+      kani_executor_port     = var.kani_executor_port
       // =========================
       // Primary MongoDB configuration
       // =========================

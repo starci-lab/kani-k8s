@@ -7,13 +7,10 @@ replicaCount: ${replica_count}
 # These variables are visible in plain text inside the cluster
 # =========================================================
 envVarsCM:
-  # Cors
-  CORS_ORIGIN_1: "${cors_origin_1}"
-  CORS_ORIGIN_2: "${cors_origin_2}"
   # Application runtime environment
   NODE_ENV: production
   # Application listening port (must match containerPorts & service ports)
-  KANI_INTERFACE_PORT: "${port}"
+  KANI_CLI_PORT: "${port}"
   # ------------------------
   # PRIMARY MONGODB SETTINGS
   # ------------------------
@@ -70,6 +67,7 @@ envVarsCM:
   API_KEYS_MOUNT_PATH: "${api_keys_mount_path}/data"
   RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
   GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${google_drive_ud_sa_mount_path}/data"
+
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
 # These values are base64-encoded and not visible in plain text
@@ -114,7 +112,7 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: ${kani_interface_image}
+  repository: ${kani_cli_image}
   tag: latest            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
@@ -218,3 +216,5 @@ startupProbe:
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
+
+configOnly: true

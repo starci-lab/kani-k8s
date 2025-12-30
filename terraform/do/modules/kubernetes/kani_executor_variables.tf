@@ -1,5 +1,5 @@
 // =========================
-// Kani Coordinator application configuration
+// Kani Executor application configuration
 // =========================
 // Controls basic application settings like replica count and port.
 
@@ -17,9 +17,9 @@ variable "kani_executor_port" {
 
 
 // =========================
-// Kani Coordinator resource variables
+// Kani Executor resource variables
 // =========================
-// Controls resource allocation for Kani Coordinator pods.
+// Controls resource allocation for Kani Executor pods.
 
 variable "kani_executor_request_cpu" {
   type        = string
@@ -50,7 +50,17 @@ variable "kani_executor_limit_memory" {
 }
 
 // =========================
-// Kani Coordinator resource presets
+// Kani Executor image
+// =========================
+// Configures the image for the Kani Executor.
+variable "kani_executor_image" {
+  type        = string
+  description = "Image for the Kani Executor"
+  default     = "kanibot/kani-executor:latest"
+}
+
+// =========================
+// Kani Executor resource presets
 // =========================
 // Defines preset resource configurations that can be referenced
 // via the resources_config variable.

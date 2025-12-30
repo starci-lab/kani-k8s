@@ -66,6 +66,12 @@ variable "kani_rpcs_mount_path" {
   default     = "/etc/secrets/rpcs"
 }
 
+variable "kani_google_drive_ud_sa_mount_path" {
+  type        = string
+  description = "Mount path for Google Drive UD SA"
+  default     = "/etc/secrets/google-drive-ud-sa"
+}
+
 // =========================
 // Probes configuration
 // =========================

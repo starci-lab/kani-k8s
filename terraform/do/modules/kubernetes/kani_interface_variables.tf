@@ -49,6 +49,17 @@ variable "kani_interface_limit_memory" {
 }
 
 // =========================
+// Kani Interface image
+// =========================
+// Configures the image for the Kani Interface.
+
+variable "kani_interface_image" {
+  type        = string
+  description = "Image for the Kani Interface"
+  default     = "kanibot/kani-interface:latest"
+}
+
+// =========================
 // Kani Interface resource presets
 // =========================
 // Defines preset resource configurations that can be referenced

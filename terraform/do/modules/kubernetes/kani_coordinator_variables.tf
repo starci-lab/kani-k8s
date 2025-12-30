@@ -50,14 +50,14 @@ variable "kani_coordinator_limit_memory" {
 }
 
 // =========================
-// Kani Executor image
+// Kani Coordinator image
 // =========================
-// Configures the image for the Kani Executor.
+// Configures the image for the Kani Coordinator.
 
-variable "kani_executor_image" {
+variable "kani_coordinator_image" {
   type        = string
-  description = "Image for the Kani Executor"
-  default     = "kanibot/kani-executor:latest"
+  description = "Image for the Kani Coordinator"
+  default     = "kanibot/kani-coordinator:latest"
 }
 
 // =========================

@@ -50,7 +50,7 @@ locals {
       target_secret_name = "api-keys"
       target_secret_key  = "data"
       gcp_secret_name    = "api-keys"
-      version            = 1
+      version            = 3
     }
     rpcs = {
       name               = "rpcs"
@@ -58,6 +58,13 @@ locals {
       target_secret_key  = "data"
       gcp_secret_name    = "rpcs"
       version            = 3
+    }
+    google-drive-ud-sa = {
+      name               = "google-drive-ud-sa"
+      target_secret_name = "google-drive-ud-sa"
+      target_secret_key  = "data"
+      gcp_secret_name    = "google-drive-ud-sa"
+      version            = 1
     }
   }
 }

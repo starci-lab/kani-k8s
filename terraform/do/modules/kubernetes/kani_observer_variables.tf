@@ -52,12 +52,12 @@ variable "kani_observer_limit_memory" {
 // =========================
 // Kani Observer image
 // =========================
-// Configures the image for the Kani Executor.
+// Configures the image for the Kani Observer.
 
 variable "kani_observer_image" {
   type        = string
   description = "Image for the Kani Observer"
-  default     = "kanibot/kani-executor:latest"
+  default     = "kanibot/kani-observer:latest"
 }
 
 // =========================
