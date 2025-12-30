@@ -29,6 +29,8 @@ resource "helm_release" "kani_executor" {
       // =========================
       // Application configuration
       // =========================
+      kani_executor_image_repository = var.kani_executor_image_repository
+      kani_executor_image_tag = var.kani_executor_image_tag
       replica_count = var.kani_executor_replica_count
       port          = var.kani_executor_port
       // =========================
@@ -84,6 +86,7 @@ resource "helm_release" "kani_executor" {
       stmp_mount_path                 = var.kani_stmp_mount_path
       api_keys_mount_path             = var.kani_api_keys_mount_path
       rpcs_mount_path                 = var.kani_rpcs_mount_path
+      google_drive_ud_sa_mount_path   = var.kani_google_drive_ud_sa_mount_path
       // =========================
       // GCP KMS configuration
       // =========================

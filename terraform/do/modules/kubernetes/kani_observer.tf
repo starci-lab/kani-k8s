@@ -29,7 +29,8 @@ resource "helm_release" "kani_observer" {
       // =========================
       // Kani Observer image
       // =========================
-      kani_observer_image = var.kani_observer_image
+      kani_observer_image_repository = var.kani_observer_image_repository
+      kani_observer_image_tag = var.kani_observer_image_tag
       replica_count = var.kani_observer_replica_count
       port          = var.kani_observer_port
       // =========================

@@ -53,10 +53,16 @@ variable "kani_interface_limit_memory" {
 // =========================
 // Configures the image for the Kani Interface.
 
-variable "kani_interface_image" {
+variable "kani_interface_image_repository" {
   type        = string
   description = "Image for the Kani Interface"
-  default     = "kanibot/kani-interface:latest"
+  default     = "kanibot/kani-interface"
+}
+
+variable "kani_interface_image_tag" {
+  type        = string
+  description = "Tag for the Kani Interface"
+  default     = "latest"
 }
 
 // =========================

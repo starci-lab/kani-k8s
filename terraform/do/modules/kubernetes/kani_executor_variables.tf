@@ -53,10 +53,16 @@ variable "kani_executor_limit_memory" {
 // Kani Executor image
 // =========================
 // Configures the image for the Kani Executor.
-variable "kani_executor_image" {
+variable "kani_executor_image_repository" {
   type        = string
   description = "Image for the Kani Executor"
-  default     = "kanibot/kani-executor:latest"
+  default     = "kanibot/kani-executor"
+}
+
+variable "kani_executor_image_tag" {
+  type        = string
+  description = "Tag for the Kani Executor"
+  default     = "latest"
 }
 
 // =========================

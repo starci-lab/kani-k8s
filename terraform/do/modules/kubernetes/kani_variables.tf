@@ -72,6 +72,12 @@ variable "kani_google_drive_ud_sa_mount_path" {
   default     = "/etc/secrets/google-drive-ud-sa"
 }
 
+variable "kani_google_drive_mount_path" {
+  type        = string
+  description = "Mount path for Google Drive"
+  default     = "/etc/google-drive"
+}
+
 // =========================
 // Probes configuration
 // =========================

@@ -29,7 +29,8 @@ resource "helm_release" "kani_cli" {
       // =========================
       // Application configuration
       // =========================
-      kani_cli_image = var.kani_cli_image
+      kani_cli_image_repository = var.kani_cli_image_repository
+      kani_cli_image_tag = var.kani_cli_image_tag
       replica_count = var.kani_cli_replica_count
       port          = var.kani_cli_port
       // =========================
@@ -86,6 +87,7 @@ resource "helm_release" "kani_cli" {
       api_keys_mount_path             = var.kani_api_keys_mount_path
       rpcs_mount_path                 = var.kani_rpcs_mount_path
       google_drive_ud_sa_mount_path   = var.kani_google_drive_ud_sa_mount_path
+      google_drive_mount_path         = var.kani_google_drive_mount_path
       // =========================
       // GCP KMS configuration
       // =========================

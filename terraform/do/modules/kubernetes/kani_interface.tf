@@ -29,7 +29,8 @@ resource "helm_release" "kani_interface" {
       // =========================
       // Application configuration
       // =========================
-      kani_interface_image = var.kani_interface_image
+      kani_interface_image_repository = var.kani_interface_image_repository
+      kani_interface_image_tag = var.kani_interface_image_tag
       replica_count = var.kani_interface_replica_count
       port          = var.kani_interface_port
       // =========================

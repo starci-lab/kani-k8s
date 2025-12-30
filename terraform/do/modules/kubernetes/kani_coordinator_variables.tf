@@ -54,10 +54,16 @@ variable "kani_coordinator_limit_memory" {
 // =========================
 // Configures the image for the Kani Coordinator.
 
-variable "kani_coordinator_image" {
+variable "kani_coordinator_image_repository" {
   type        = string
   description = "Image for the Kani Coordinator"
-  default     = "kanibot/kani-coordinator:latest"
+  default     = "kanibot/kani-coordinator"
+}
+
+variable "kani_coordinator_image_tag" {
+  type        = string
+  description = "Tag for the Kani Coordinator"
+  default     = "latest"
 }
 
 // =========================

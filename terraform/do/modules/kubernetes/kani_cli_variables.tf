@@ -54,10 +54,16 @@ variable "kani_cli_limit_memory" {
 // =========================
 // Configures the image for the Kani CLI.
 
-variable "kani_cli_image" {
+variable "kani_cli_image_repository" {
   type        = string
   description = "Image for the Kani CLI"
-  default     = "kanibot/kani-cli:latest"
+  default     = "kanibot/kani-cli"
+}
+
+variable "kani_cli_image_tag" {
+  type        = string
+  description = "Tag for the Kani CLI"
+  default     = "latest"
 }
 
 // =========================

@@ -703,7 +703,9 @@ controller:
   config: {}
   ## @param controller.overrideConfiguration Kafka configuration override for Kafka controller-eligible nodes. Values defined here takes precedence over the ones defined at `controller.config`
   ##
-  overrideConfiguration: {}
+  overrideConfiguration:
+    ## Disable auto creation of topics
+    auto.create.topics.enable: "false"
   ## @param controller.existingConfigmap Name of an existing ConfigMap with the Kafka configuration for Kafka controller-eligible nodes
   ##
   existingConfigmap: ""

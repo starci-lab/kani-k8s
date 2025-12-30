@@ -113,8 +113,8 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: ${kani_executor_image}
-  tag: latest            # Image tag (avoid 'latest' in production if possible)
+  repository: ${kani_executor_image_repository}
+  tag: ${kani_executor_image_tag}            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
   pullSecrets: []        # Add secrets here if using private registry
