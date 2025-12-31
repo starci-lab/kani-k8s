@@ -225,6 +225,12 @@ variable "prometheus_alertmanager_htpasswd" {
   sensitive   = true
 }
 
+variable "kafka_ui_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Kafka UI basic authentication"
+  sensitive   = true
+}
+
 locals {
   prometheus_presets = {
     operator          = "16"

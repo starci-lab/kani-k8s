@@ -93,6 +93,8 @@ module "kubernetes" {
   kani_coordinator_deployment_rollout_webhook_token = var.kani_coordinator_deployment_rollout_webhook_token
   // Kani Observer Deployment Rollout Webhook Token
   kani_observer_deployment_rollout_webhook_token = var.kani_observer_deployment_rollout_webhook_token
+  // Kafka UI basic authentication htpasswd
+  kafka_ui_htpasswd = var.kafka_ui_htpasswd
 }
 
 // ======================================================

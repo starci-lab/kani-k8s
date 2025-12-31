@@ -1,0 +1,110 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: googleapis-backup-manual
+  namespace: kani
+  labels:
+    app: googleapis-backup
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+
+  template:
+    metadata:
+      labels:
+        app: googleapis-backup
+    spec:
+      restartPolicy: Never
+
+      nodeSelector:
+        doks.digitalocean.com/node-pool: kani-primary-node-pool
+
+      containers:
+        - name: googleapis-backup
+          image: kanibot/kani-cli:latest
+          imagePullPolicy: Always
+
+          command:
+            - kani
+            - googleapis
+            - backup
+
+          envFrom:
+            - configMapRef:
+                name: kani-cli-service-env-vars
+            - secretRef:
+                name: kani-cli-service-env-vars
+
+          resources:
+            requests:
+              cpu: 64m
+              memory: 128Mi
+            limits:
+              cpu: 512m
+              memory: 1Gi
+
+          volumeMounts:
+            - name: aes
+              mountPath: /etc/secrets/aes
+              readOnly: true
+
+            - name: crypto-key-ed-sa
+              mountPath: /etc/crypto-key-ed-sa
+              readOnly: true
+
+            - name: jwt-secret
+              mountPath: /etc/secrets/jwt
+              readOnly: true
+
+            - name: smtp
+              mountPath: /etc/secrets/smtp
+              readOnly: true
+
+            - name: api-keys
+              mountPath: /etc/secrets/api-keys
+              readOnly: true
+
+            - name: rpcs
+              mountPath: /etc/secrets/rpcs
+              readOnly: true
+
+            - name: google-drive-ud-sa
+              mountPath: /etc/secrets/google-drive-ud-sa
+              readOnly: true
+
+            # ✅ FIX QUAN TRỌNG
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: aes
+          secret:
+            secretName: aes
+
+        - name: crypto-key-ed-sa
+          secret:
+            secretName: crypto-key-ed-sa
+
+        - name: jwt-secret
+          secret:
+            secretName: jwt-secret
+
+        - name: smtp
+          secret:
+            secretName: smtp
+
+        - name: api-keys
+          secret:
+            secretName: api-keys
+
+        - name: rpcs
+          secret:
+            secretName: rpcs
+
+        - name: google-drive-ud-sa
+          secret:
+            secretName: google-drive-ud-sa
+
+        - name: data
+          emptyDir: {}

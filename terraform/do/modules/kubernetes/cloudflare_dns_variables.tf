@@ -74,3 +74,13 @@ variable "jenkins_prefix" {
   description = "Subdomain prefix for the Jenkins server (combined with domain_name)"
   default     = "jenkins"
 }
+
+// =========================
+// Kafka UI domain configuration
+// =========================
+
+variable "kafka_ui_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Kafka UI server (combined with domain_name)"
+  default     = "kafka-ui"
+}

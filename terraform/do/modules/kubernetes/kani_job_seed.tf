@@ -161,7 +161,7 @@ resource "kubernetes_job_v1" "seed" {
 
           volume_mount {
             name       = "google-drive-ud-sa"
-            mount_path = var.kani_google_drive_ud_sa_mount_path
+            mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
             read_only  = true
           }
 
@@ -225,7 +225,7 @@ resource "kubernetes_job_v1" "seed" {
         }
 
         volume {
-          name      = "dir-google-drive"
+          name = "dir-google-drive"
           empty_dir {}
         }
       }

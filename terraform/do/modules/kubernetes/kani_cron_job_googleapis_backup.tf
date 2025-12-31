@@ -11,6 +11,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
 
   spec {
     // Run every hour at minute 0
+    //schedule = "* * * * *"
     schedule = "0 * * * *"
 
     job_template {
@@ -89,7 +90,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
               // =========================
               // Mount secret volumes for encryption keys, credentials, and configuration
               volume_mount {
-                name       = "aes"
+                name       = local.external_secrets_instances.aes.name
                 mount_path = var.kani_aes_mount_path
                 read_only  = true
               }
@@ -126,13 +127,13 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
 
               volume_mount {
                 name       = "google-drive-ud-sa"
-                mount_path = var.kani_google_drive_ud_sa_mount_path
+                mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
                 read_only  = true
               }
 
               volume_mount {
-                name       = "dir-google-drive"
-                mount_path = var.kani_google_drive_mount_path
+                name       = "data"
+                mount_path = "data"
               }
             }
 
@@ -143,54 +144,54 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
             volume {
               name = "aes"
               secret {
-                secret_name = "aes"
+                secret_name = local.external_secrets_instances.aes.name
               }
             }
 
             volume {
               name = "crypto-key-ed-sa"
               secret {
-                secret_name = "crypto-key-ed-sa"
+                secret_name = local.external_secrets_instances.crypto-key-ed-sa.name
               }
             }
 
             volume {
               name = "jwt-secret"
               secret {
-                secret_name = "jwt-secret"
+                secret_name = local.external_secrets_instances.jwt_secret.name
               }
             }
 
             volume {
               name = "smtp"
               secret {
-                secret_name = "smtp"
+                secret_name = local.external_secrets_instances.smtp.name
               }
             }
 
             volume {
               name = "api-keys"
               secret {
-                secret_name = "api-keys"
+                secret_name = local.external_secrets_instances.api-keys.name
               }
             }
 
             volume {
               name = "rpcs"
               secret {
-                secret_name = "rpcs"
+                secret_name = local.external_secrets_instances.rpcs.name
               }
             }
 
             volume {
               name = "google-drive-ud-sa"
               secret {
-                secret_name = "google-drive-ud-sa"
+                secret_name = local.external_secrets_instances.google-drive-ud-sa.name
               }
             }
 
             volume {
-              name      = "dir-google-drive"
+              name      = "data"
               empty_dir {}
             }
           }

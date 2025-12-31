@@ -72,7 +72,7 @@ envVarsCM:
   SMTP_MOUNT_PATH: "${stmp_mount_path}/data"
   API_KEYS_MOUNT_PATH: "${api_keys_mount_path}/data"
   RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
-  GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${google_drive_ud_sa_mount_path}/data"
+  GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
 
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
@@ -192,7 +192,7 @@ extraVolumeMounts:
     mountPath: "${rpcs_mount_path}"
     readOnly: true
   - name: google-drive-ud-sa
-    mountPath: "${google_drive_ud_sa_mount_path}"
+    mountPath: "${gcp_google_drive_ud_sa_mount_path}"
     readOnly: true
 
 # =========================================================

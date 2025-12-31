@@ -5,7 +5,7 @@
 variable "kani_gcp_kms_key_name" {
   type        = string
   description = "GCP KMS key name for encryption/decryption operations"
-  sensitive = true
+  sensitive   = true
 }
 
 // =========================
@@ -66,7 +66,7 @@ variable "kani_rpcs_mount_path" {
   default     = "/etc/secrets/rpcs"
 }
 
-variable "kani_google_drive_ud_sa_mount_path" {
+variable "kani_gcp_google_drive_ud_sa_mount_path" {
   type        = string
   description = "Mount path for Google Drive UD SA"
   default     = "/etc/secrets/google-drive-ud-sa"
@@ -75,7 +75,7 @@ variable "kani_google_drive_ud_sa_mount_path" {
 variable "kani_google_drive_mount_path" {
   type        = string
   description = "Mount path for Google Drive"
-  default     = "/etc/google-drive"
+  default     = "/data/google-drive"
 }
 
 // =========================

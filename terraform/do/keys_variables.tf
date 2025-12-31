@@ -117,3 +117,4 @@ variable "kani_observer_deployment_rollout_webhook_token" {
   description = "Webhook token for Kani Observer Deployment Rollout"
   sensitive = true
 }
+

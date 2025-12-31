@@ -22,7 +22,7 @@ resource "helm_release" "kani_executor" {
   namespace = kubernetes_namespace.kani.metadata[0].name
   // Custom Helm chart from chart repository
   repository = "https://k8s.kanibot.xyz/charts"
-  chart = "service"
+  chart      = "service"
   // Render Helm values from template and inject Terraform variables
   values = [
     templatefile("${path.module}/yamls/kani-executor.yaml", {
@@ -30,9 +30,9 @@ resource "helm_release" "kani_executor" {
       // Application configuration
       // =========================
       kani_executor_image_repository = var.kani_executor_image_repository
-      kani_executor_image_tag = var.kani_executor_image_tag
-      replica_count = var.kani_executor_replica_count
-      port          = var.kani_executor_port
+      kani_executor_image_tag        = var.kani_executor_image_tag
+      replica_count                  = var.kani_executor_replica_count
+      port                           = var.kani_executor_port
       // =========================
       // Primary MongoDB configuration
       // =========================
@@ -52,41 +52,41 @@ resource "helm_release" "kani_executor" {
       // =========================
       // Redis Cache configuration
       // =========================
-      redis_cache_host     = local.redis_cluster_service.host
-      redis_cache_port     = local.redis_cluster_service.port
-      redis_cache_password = var.redis_password
+      redis_cache_host        = local.redis_cluster_service.host
+      redis_cache_port        = local.redis_cluster_service.port
+      redis_cache_password    = var.redis_password
       redis_cache_use_cluster = true
       // =========================
       // Redis Adapter configuration
       // =========================
-      redis_adapter_host = local.redis_cluster_service.host
-      redis_adapter_port = local.redis_cluster_service.port
-      redis_adapter_password = var.redis_password
+      redis_adapter_host        = local.redis_cluster_service.host
+      redis_adapter_port        = local.redis_cluster_service.port
+      redis_adapter_password    = var.redis_password
       redis_adapter_use_cluster = true
       // =========================
       // Redis BullMQ configuration
       // =========================
-      redis_bullmq_host      = local.redis_cluster_service.host
-      redis_bullmq_port      = local.redis_cluster_service.port
+      redis_bullmq_host        = local.redis_cluster_service.host
+      redis_bullmq_port        = local.redis_cluster_service.port
       redis_bullmq_use_cluster = true
-      redis_bullmq_password = var.redis_password
+      redis_bullmq_password    = var.redis_password
       // =========================
       // Redis Throttler configuration
       // =========================
-      redis_throttler_host = local.redis_cluster_service.host
-      redis_throttler_port = local.redis_cluster_service.port
-      redis_throttler_password = var.redis_password
+      redis_throttler_host        = local.redis_cluster_service.host
+      redis_throttler_port        = local.redis_cluster_service.port
+      redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
       // =========================
       // Secret mount paths
       // =========================
-      gcp_crypto_key_ed_sa_mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
-      aes_mount_path                  = var.kani_aes_mount_path
-      jwt_secret_mount_path           = var.kani_jwt_secret_mount_path
-      stmp_mount_path                 = var.kani_stmp_mount_path
-      api_keys_mount_path             = var.kani_api_keys_mount_path
-      rpcs_mount_path                 = var.kani_rpcs_mount_path
-      google_drive_ud_sa_mount_path   = var.kani_google_drive_ud_sa_mount_path
+      gcp_crypto_key_ed_sa_mount_path   = var.kani_gcp_crypto_key_ed_sa_mount_path
+      aes_mount_path                    = var.kani_aes_mount_path
+      jwt_secret_mount_path             = var.kani_jwt_secret_mount_path
+      stmp_mount_path                   = var.kani_stmp_mount_path
+      api_keys_mount_path               = var.kani_api_keys_mount_path
+      rpcs_mount_path                   = var.kani_rpcs_mount_path
+      gcp_google_drive_ud_sa_mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
       // =========================
       // GCP KMS configuration
       // =========================
@@ -94,7 +94,7 @@ resource "helm_release" "kani_executor" {
       // =========================
       // JWT and AES configuration
       // =========================
-      jwt_salt   = var.kani_jwt_salt
+      jwt_salt     = var.kani_jwt_salt
       aes_cbc_salt = var.kani_aes_cbc_salt
       // =========================
       // Resource configuration
@@ -113,9 +113,9 @@ resource "helm_release" "kani_executor" {
       // =========================
       // Probes configuration
       // =========================
-      liveness_probe_path = var.kani_liveness_probe_path
+      liveness_probe_path  = var.kani_liveness_probe_path
       readiness_probe_path = var.kani_readiness_probe_path
-      startup_probe_path = var.kani_startup_probe_path
+      startup_probe_path   = var.kani_startup_probe_path
     })
   ]
 

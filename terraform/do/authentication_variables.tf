@@ -89,6 +89,12 @@ variable "prometheus_basic_auth_password" {
   sensitive   = true
 }
 
+variable "kafka_ui_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Kafka UI basic authentication"
+  sensitive   = true
+}
+
 // =========================
 // Grafana basic authentication variables
 // =========================

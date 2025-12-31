@@ -60,6 +60,34 @@ variable "kafka_controller_log_persistence_size" {
   default     = "4Gi"
 }
 
+variable "kafka_ui_request_cpu" {
+  type        = string
+  description = "CPU resource request for Kafka UI"
+  nullable    = true
+  default     = null
+}
+
+variable "kafka_ui_request_memory" {
+  type        = string
+  description = "Memory resource request for Kafka UI"
+  nullable    = true
+  default     = null
+}
+
+variable "kafka_ui_limit_cpu" {
+  type        = string
+  description = "CPU resource limit for Kafka UI"
+  nullable    = true
+  default     = null
+}
+
+variable "kafka_ui_limit_memory" {
+  type        = string
+  description = "Memory resource limit for Kafka UI"
+  nullable    = true
+  default     = null
+}
+
 // =========================
 // Kafka broker variables
 // =========================
@@ -132,6 +160,7 @@ locals {
     controller        = "192"
     broker            = "128"
     volume_permissions = "16"
+    kafka_ui          = "64"
   }
 }
 
@@ -191,6 +220,25 @@ locals {
       limit_memory = coalesce(
         var.volume_permissions_limit_memory,
         try(var.resources_config[local.kafka_presets.volume_permissions].limits.memory, "256Mi")
+      )
+    }
+
+    kafka_ui = {
+      request_cpu = coalesce(
+        var.kafka_ui_request_cpu,
+        try(var.resources_config[local.kafka_presets.kafka_ui].requests.cpu, "16m")
+      )
+      request_memory = coalesce(
+        var.kafka_ui_request_memory,
+        try(var.resources_config[local.kafka_presets.kafka_ui].requests.memory, "32Mi")
+      )
+      limit_memory = coalesce(
+        var.kafka_ui_limit_memory,
+        try(var.resources_config[local.kafka_presets.kafka_ui].limits.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.kafka_ui_limit_cpu,
+        try(var.resources_config[local.kafka_presets.kafka_ui].limits.cpu, "32m")
       )
     }
   }

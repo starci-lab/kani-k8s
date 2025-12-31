@@ -74,7 +74,7 @@ variable "kani_cli_image_tag" {
 
 locals {
   kani_cli_presets = {
-    kani_cli = "32"
+    kani_cli = "64"
   }
 }
 
