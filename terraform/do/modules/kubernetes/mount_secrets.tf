@@ -1,18 +1,16 @@
-// =========================
-// Namespaces
-// =========================
 // ======================================================
-// External Secrets Namespace
+// Namespace: gcp-secrets
+// Stores all Kubernetes Secrets related to GCP credentials
 // ======================================================
 resource "kubernetes_namespace" "gcp_secrets" {
   metadata {
     name = "gcp-secrets"
   }
 }
+
 // ======================================================
-// GCP Service Account Secret
-// ======================================================
-// Creates a secret for the GCP service account used by External Secrets.
+// Secret: GCP Secret Accessor Service Account
+// Used by External Secrets to access GCP Secret Manager
 // ======================================================
 resource "kubernetes_secret" "gcp_secret_accessor" {
   metadata {
@@ -20,69 +18,95 @@ resource "kubernetes_secret" "gcp_secret_accessor" {
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
 
+  // Terraform automatically base64-encodes values
   data = {
-    "secret-access-credentials" = var.gcp_secret_accessor_sa
+    data = var.gcp_secret_accessor_sa
   }
 
   type = "Opaque"
 }
 
 // ======================================================
-// GCP Crypto Key ED Service Account Secret
-// ======================================================
-// Creates a secret for the GCP crypto key ED service account used by Kani Coordinator.
+// Secret: GCP Crypto Key Encrypt/Decrypt Service Account
+// Used by Kani Coordinator for encryption/decryption
 // ======================================================
 resource "kubernetes_secret" "gcp_crypto_key_ed" {
   metadata {
     name      = "gcp-crypto-key-ed"
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
+
+  data = {
+    data = var.gcp_crypto_key_ed_sa
+  }
+
+  type = "Opaque"
 }
 
 // ======================================================
-// GCP Cloud KMS Crypto Operator Service Account Secret
-// ======================================================
-// Creates a secret for the GCP cloud KMS crypto operator service account used by Kani Coordinator.
+// Secret: GCP Cloud KMS Crypto Operator Service Account
+// Used for Cloud KMS crypto operations
 // ======================================================
 resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator" {
   metadata {
     name      = "gcp-cloud-kms-crypto-operator"
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
+
+  data = {
+    data = var.gcp_cloud_kms_crypto_operator_sa
+  }
+
+  type = "Opaque"
 }
 
 // ======================================================
-// GCP Google Drive UD Service Account Secret
-// ======================================================
-// Creates a secret for the GCP Google Drive UD service account used by Kani Coordinator.
+// Secret: GCP Google Drive UD Service Account
+// Used by Kani Coordinator for Google Drive operations
 // ======================================================
 resource "kubernetes_secret" "gcp_google_drive_ud" {
   metadata {
     name      = "gcp-google-drive-ud"
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
+
+  data = {
+    data = var.gcp_google_drive_ud_sa
+  }
+
+  type = "Opaque"
 }
 
 // ======================================================
-// Encrypted AES Secret
-// ======================================================
-// Creates a secret for the encrypted AES key used by Kani Coordinator.
+// Secret: Encrypted AES Key
+// Stores the encrypted AES key used by Kani Coordinator
 // ======================================================
 resource "kubernetes_secret" "encrypted_aes" {
   metadata {
     name      = "encrypted-aes"
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
+
+  data = {
+    data = var.encrypted_aes
+  }
+
+  type = "Opaque"
 }
 
 // ======================================================
-// Encrypted JWT Secret
-// ======================================================
-// Creates a secret for the encrypted JWT secret used by Kani Coordinator.
+// Secret: Encrypted JWT Secret
+// Stores the encrypted JWT secret used by Kani Coordinator
 // ======================================================
 resource "kubernetes_secret" "encrypted_jwt_secret" {
   metadata {
     name      = "encrypted-jwt-secret"
     namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
   }
+
+  data = {
+    data = var.encrypted_jwt_secret
+  }
+
+  type = "Opaque"
 }
