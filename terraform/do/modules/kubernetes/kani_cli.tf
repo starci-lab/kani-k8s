@@ -80,18 +80,15 @@ resource "helm_release" "kani_cli" {
       // =========================
       // Secret mount paths
       // =========================
-      gcp_crypto_key_ed_sa_mount_path   = var.kani_gcp_crypto_key_ed_sa_mount_path
-      aes_mount_path                    = var.kani_aes_mount_path
-      jwt_secret_mount_path             = var.kani_jwt_secret_mount_path
-      stmp_mount_path                   = var.kani_stmp_mount_path
-      api_keys_mount_path               = var.kani_api_keys_mount_path
-      rpcs_mount_path                   = var.kani_rpcs_mount_path
+      // Terraform variables
+      gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
+      gcp_crypto_key_ed_sa_mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
       gcp_google_drive_ud_sa_mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
-      google_drive_mount_path           = var.kani_google_drive_mount_path
-      // =========================
-      // GCP KMS configuration
-      // =========================
-      gcp_kms_key_name = var.kani_gcp_kms_key_name
+      encrypted_aes_mount_path                    = var.kani_encrypted_aes_mount_path
+      encrypted_jwt_secret_mount_path             = var.kani_encrypted_jwt_secret_mount_path
+      // Configuration secrets
+      rpcs_mount_path                   = var.kani_rpcs_mount_path
+      app_mount_path                        = var.kani_app_mount_path
       // =========================
       // JWT and AES configuration
       // =========================

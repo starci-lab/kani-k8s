@@ -110,3 +110,23 @@ variable "grafana_password" {
   description = "Password for Grafana basic authentication"
   sensitive   = true
 }
+
+// =========================
+// Jenkins user variables
+// =========================
+// Controls the Jenkins user used by Jenkins.
+variable "jenkins_user" {
+  type        = string
+  description = "Jenkins user"
+  sensitive = true
+}
+
+// =========================
+// Jenkins password variables
+// =========================
+// Controls the Jenkins password used by Jenkins.
+variable "jenkins_password" {
+  type        = string
+  description = "Jenkins password"
+  sensitive = true
+}

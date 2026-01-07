@@ -67,12 +67,12 @@ envVarsCM:
   # Application reads secrets from files instead of env vars
   # ------------------------
   GCP_CRYPTO_KEY_ED_SA_MOUNT_PATH: "${gcp_crypto_key_ed_sa_mount_path}/data"
-  AES_MOUNT_PATH: "${aes_mount_path}/data"
-  JWT_SECRET_MOUNT_PATH: "${jwt_secret_mount_path}/data"
-  SMTP_MOUNT_PATH: "${stmp_mount_path}/data"
-  API_KEYS_MOUNT_PATH: "${api_keys_mount_path}/data"
+  GCP_CLOUD_KMS_CRYPTO_OPERATOR_SA_MOUNT_PATH: "${gcp_cloud_kms_crypto_operator_sa_mount_path}/data"
+  GCP_GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
+  ENCRYPTED_AES_MOUNT_PATH: "${encrypted_aes_mount_path}/data"
+  ENCRYPTED_JWT_SECRET_MOUNT_PATH: "${encrypted_jwt_secret_mount_path}/data"
   RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
-  GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
+  APP_MOUNT_PATH: "${app_mount_path}/data"
 
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
@@ -147,53 +147,58 @@ resources:
 # EXTRA VOLUMES (Kubernetes Secrets)
 # =========================================================
 extraVolumes:
-  - name: aes
+  # Terraform variables
+  - name: gcp-cloud-kms-crypto-operator-sa
     secret:
-      secretName: aes
-  - name: crypto-key-ed-sa
+      secretName: gcp-cloud-kms-crypto-operator-sa
+  - name: gcp-crypto-key-ed-sa
     secret:
-      secretName: crypto-key-ed-sa
-  - name: jwt-secret
+      secretName: gcp-crypto-key-ed-sa
+  - name: gcp-google-drive-ud-sa
     secret:
-      secretName: jwt-secret
-  - name: smtp
+      secretName: gcp-google-drive-ud-sa
+  - name: encrypted-aes
     secret:
-      secretName: smtp
-  - name: api-keys
+      secretName: encrypted-aes
+  - name: encrypted-jwt-secret
     secret:
-      secretName: api-keys
+      secretName: encrypted-jwt-secret
+  # Configuration secrets
+  - name: app
+    secret:
+      secretName: app
   - name: rpcs
     secret:
       secretName: rpcs
-  - name: google-drive-ud-sa
-    secret:
-      secretName: google-drive-ud-sa
 
 # =========================================================
 # VOLUME MOUNTS INSIDE CONTAINER
 # =========================================================
 extraVolumeMounts:
-  - name: aes
-    mountPath: "${aes_mount_path}"
+  # Terraform variables
+  - name: gcp-cloud-kms-crypto-operator-sa
+    mountPath: "${gcp_cloud_kms_crypto_operator_sa_mount_path}"
     readOnly: true
-  - name: crypto-key-ed-sa
+  - name: gcp-google-drive-ud-sa
+    mountPath: "${gcp_google_drive_ud_sa_mount_path}"
+    readOnly: true
+  - name: gcp-crypto-key-ed-sa
     mountPath: "${gcp_crypto_key_ed_sa_mount_path}"
     readOnly: true
-  - name: jwt-secret
-    mountPath: "${jwt_secret_mount_path}"
+  - name: encrypted-aes
+    mountPath: "${encrypted_aes_mount_path}"
     readOnly: true
-  - name: smtp
-    mountPath: "${stmp_mount_path}"
+  - name: encrypted-jwt-secret
+    mountPath: "${encrypted_jwt_secret_mount_path}"
     readOnly: true
-  - name: api-keys
-    mountPath: "${api_keys_mount_path}"
+  # Configuration secrets
+  - name: app
+    mountPath: "${app_mount_path}"
     readOnly: true
   - name: rpcs
     mountPath: "${rpcs_mount_path}"
     readOnly: true
-  - name: google-drive-ud-sa
-    mountPath: "${gcp_google_drive_ud_sa_mount_path}"
-    readOnly: true
+
 
 # =========================================================
 # HEALTH PROBES

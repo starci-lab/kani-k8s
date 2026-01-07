@@ -90,50 +90,39 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
               // =========================
               // Mount secret volumes for encryption keys, credentials, and configuration
               volume_mount {
-                name       = local.external_secrets_instances.aes.name
-                mount_path = var.kani_aes_mount_path
+                name       = "gcp-cloud-kms-crypto-operator-sa"
+                mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
                 read_only  = true
               }
-
               volume_mount {
-                name       = "crypto-key-ed-sa"
+                name       = "gcp-crypto-key-ed-sa"
                 mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
                 read_only  = true
               }
-
               volume_mount {
-                name       = "jwt-secret"
-                mount_path = var.kani_jwt_secret_mount_path
+                name       = "gcp-google-drive-ud-sa"
+                mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
                 read_only  = true
               }
-
               volume_mount {
-                name       = "smtp"
-                mount_path = var.kani_stmp_mount_path
+                name       = "encrypted-aes"
+                mount_path = var.kani_encrypted_aes_mount_path
                 read_only  = true
               }
-
               volume_mount {
-                name       = "api-keys"
-                mount_path = var.kani_api_keys_mount_path
+                name       = "encrypted-jwt-secret"
+                mount_path = var.kani_encrypted_jwt_secret_mount_path
                 read_only  = true
               }
-
               volume_mount {
                 name       = "rpcs"
                 mount_path = var.kani_rpcs_mount_path
                 read_only  = true
               }
-
               volume_mount {
-                name       = "google-drive-ud-sa"
-                mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
+                name       = "app"
+                mount_path = var.kani_app_mount_path
                 read_only  = true
-              }
-
-              volume_mount {
-                name       = "data"
-                mount_path = "data"
               }
             }
 
@@ -142,56 +131,49 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
             // =========================
             // Define secret volumes and empty directory for Google Drive operations
             volume {
-              name = "aes"
+              name = "gcp-cloud-kms-crypto-operator-sa"
               secret {
-                secret_name = local.external_secrets_instances.aes.name
+                secret_name = "gcp-cloud-kms-crypto-operator-sa"
               }
             }
-
             volume {
-              name = "crypto-key-ed-sa"
+              name = "gcp-crypto-key-ed-sa"
               secret {
-                secret_name = local.external_secrets_instances.crypto-key-ed-sa.name
+                secret_name = "gcp-crypto-key-ed-sa"
               }
             }
-
             volume {
-              name = "jwt-secret"
+              name = "gcp-google-drive-ud-sa"
               secret {
-                secret_name = local.external_secrets_instances.jwt_secret.name
+                secret_name = "gcp-google-drive-ud-sa"
               }
             }
-
             volume {
-              name = "smtp"
+              name = "encrypted-jwt-secret"
               secret {
-                secret_name = local.external_secrets_instances.smtp.name
+                secret_name = "encrypted-jwt-secret"
               }
             }
-
             volume {
-              name = "api-keys"
+              name = "encrypted-aes"
               secret {
-                secret_name = local.external_secrets_instances.api-keys.name
+                secret_name = "encrypted-aes"
               }
             }
-
             volume {
               name = "rpcs"
               secret {
-                secret_name = local.external_secrets_instances.rpcs.name
+                secret_name = "rpcs"
               }
             }
-
             volume {
-              name = "google-drive-ud-sa"
+              name = "app"
               secret {
-                secret_name = local.external_secrets_instances.google-drive-ud-sa.name
+                secret_name = "app"
               }
             }
-
             volume {
-              name      = "data"
+              name = "data"
               empty_dir {}
             }
           }

@@ -1,14 +1,4 @@
 // =========================
-// GCP KMS configuration
-// =========================
-// Configures Google Cloud KMS key for encryption operations.
-variable "kani_gcp_kms_key_name" {
-  type        = string
-  description = "GCP KMS key name for encryption/decryption operations"
-  sensitive   = true
-}
-
-// =========================
 // JWT and AES configuration
 // =========================
 // Configures salts and secrets for JWT and AES encryption.
@@ -24,7 +14,6 @@ variable "kani_aes_cbc_salt" {
   description = "Salt value for AES CBC encryption"
   sensitive   = true
 }
-
 // =========================
 // Secret mount paths configuration
 // =========================
@@ -33,51 +22,44 @@ variable "kani_aes_cbc_salt" {
 variable "kani_gcp_crypto_key_ed_sa_mount_path" {
   type        = string
   description = "Mount path for GCP crypto key encryptor/decryptor service account"
-  default     = "/etc/crypto-key-ed-sa"
+  default     = "/etc/terraform/gcp-crypto-key-ed-sa"
 }
 
-variable "kani_aes_mount_path" {
+variable "kani_gcp_cloud_kms_crypto_operator_sa_mount_path" {
+  type        = string
+  description = "Mount path for Cloud KMS crypto operator service account"
+  default     = "/etc/terraform/gcp-cloud-kms-crypto-operator-sa"
+}
+
+variable "kani_gcp_google_drive_ud_sa_mount_path" {
+  type        = string
+  description = "Mount path for Google Drive UD service account"
+  default     = "/etc/terraform/gcp-google-drive-ud-sa"
+}
+
+variable "kani_encrypted_aes_mount_path" {
   type        = string
   description = "Mount path for AES encryption key"
-  default     = "/etc/secrets/aes"
+  default     = "/etc/terraform/encrypted-aes"
 }
 
-variable "kani_jwt_secret_mount_path" {
+variable "kani_encrypted_jwt_secret_mount_path" {
   type        = string
   description = "Mount path for JWT secret"
-  default     = "/etc/secrets/jwt"
-}
-
-variable "kani_stmp_mount_path" {
-  type        = string
-  description = "Mount path for SMTP configuration"
-  default     = "/etc/secrets/smtp"
-}
-
-variable "kani_api_keys_mount_path" {
-  type        = string
-  description = "Mount path for API keys"
-  default     = "/etc/secrets/api-keys"
+  default     = "/etc/terraform/encrypted-jwt-secret"
 }
 
 variable "kani_rpcs_mount_path" {
   type        = string
   description = "Mount path for RPCs"
-  default     = "/etc/secrets/rpcs"
+  default     = "/etc/config/rpcs"
 }
 
-variable "kani_gcp_google_drive_ud_sa_mount_path" {
+variable "kani_app_mount_path" {
   type        = string
-  description = "Mount path for Google Drive UD SA"
-  default     = "/etc/secrets/google-drive-ud-sa"
+  description = "Mount path for app"
+  default     = "/etc/config/app"
 }
-
-variable "kani_google_drive_mount_path" {
-  type        = string
-  description = "Mount path for Google Drive"
-  default     = "/data/google-drive"
-}
-
 // =========================
 // Probes configuration
 // =========================

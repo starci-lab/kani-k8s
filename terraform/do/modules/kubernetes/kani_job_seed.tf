@@ -124,50 +124,39 @@ resource "kubernetes_job_v1" "seed" {
           // =========================
           // Mount secret volumes for encryption keys, credentials, and configuration
           volume_mount {
-            name       = "aes"
-            mount_path = var.kani_aes_mount_path
-            read_only  = true
+            name = "gcp-cloud-kms-crypto-operator-sa"
+            mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
+            read_only = true
           }
-
           volume_mount {
-            name       = "crypto-key-ed-sa"
+            name = "gcp-crypto-key-ed-sa"
             mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
-            read_only  = true
+            read_only = true
           }
-
           volume_mount {
-            name       = "jwt-secret"
-            mount_path = var.kani_jwt_secret_mount_path
-            read_only  = true
-          }
-
-          volume_mount {
-            name       = "smtp"
-            mount_path = var.kani_stmp_mount_path
-            read_only  = true
-          }
-
-          volume_mount {
-            name       = "api-keys"
-            mount_path = var.kani_api_keys_mount_path
-            read_only  = true
-          }
-
-          volume_mount {
-            name       = "rpcs"
-            mount_path = var.kani_rpcs_mount_path
-            read_only  = true
-          }
-
-          volume_mount {
-            name       = "google-drive-ud-sa"
+            name = "gcp-google-drive-ud-sa"
             mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
-            read_only  = true
+            read_only = true
           }
-
           volume_mount {
-            name       = "dir-google-drive"
-            mount_path = var.kani_google_drive_mount_path
+            name = "encrypted-aes"
+            mount_path = var.kani_encrypted_aes_mount_path
+            read_only = true
+          }
+          volume_mount {
+            name = "encrypted-jwt-secret"
+            mount_path = var.kani_encrypted_jwt_secret_mount_path
+            read_only = true
+          }
+          volume_mount {
+            name = "rpcs"
+            mount_path = var.kani_rpcs_mount_path
+            read_only = true
+          }
+          volume_mount {
+            name = "app"
+            mount_path = var.kani_app_mount_path
+            read_only = true
           }
         }
 
@@ -176,54 +165,47 @@ resource "kubernetes_job_v1" "seed" {
         // =========================
         // Define secret volumes and empty directory for Google Drive operations
         volume {
-          name = "aes"
+          name = "gcp-cloud-kms-crypto-operator-sa"
           secret {
-            secret_name = "aes"
+            secret_name = "gcp-cloud-kms-crypto-operator-sa"
           }
         }
-
         volume {
-          name = "crypto-key-ed-sa"
+          name = "gcp-crypto-key-ed-sa"
           secret {
-            secret_name = "crypto-key-ed-sa"
+            secret_name = "gcp-crypto-key-ed-sa"
           }
         }
-
         volume {
-          name = "jwt-secret"
+          name = "gcp-google-drive-ud-sa"
           secret {
-            secret_name = "jwt-secret"
+            secret_name = "gcp-google-drive-ud-sa"
           }
         }
-
         volume {
-          name = "smtp"
+          name = "encrypted-aes"
           secret {
-            secret_name = "smtp"
+            secret_name = "encrypted-aes"
           }
         }
-
         volume {
-          name = "api-keys"
+          name = "encrypted-jwt-secret"
           secret {
-            secret_name = "api-keys"
+            secret_name = "encrypted-jwt-secret"
           }
         }
-
         volume {
           name = "rpcs"
           secret {
             secret_name = "rpcs"
           }
         }
-
         volume {
-          name = "google-drive-ud-sa"
+          name = "app"
           secret {
-            secret_name = "google-drive-ud-sa"
+            secret_name = "app"
           }
         }
-
         volume {
           name = "dir-google-drive"
           empty_dir {}

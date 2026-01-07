@@ -75,10 +75,6 @@ module "kubernetes" {
   prometheus_basic_auth_password = var.prometheus_basic_auth_password
   // Argo CD Git repository URL
   argo_cd_git_ssh_private_key = var.argo_cd_git_ssh_private_key
-  // GCP project ID
-  gcp_project_id = var.gcp_project_id
-  // GCP KMS key name
-  kani_gcp_kms_key_name = var.gcp_kms_key_name
   // JWT salt
   kani_jwt_salt = var.jwt_salt
   // AES CBC salt
@@ -95,13 +91,18 @@ module "kubernetes" {
   kani_observer_deployment_rollout_webhook_token = var.kani_observer_deployment_rollout_webhook_token
   // Kafka UI basic authentication htpasswd
   kafka_ui_htpasswd = var.kafka_ui_htpasswd
+  // GCP project ID
+  gcp_project_id = var.gcp_project_id
+  // Encrypted AES key
+  encrypted_aes = var.encrypted_aes
+  // Encrypted JWT secret
+  encrypted_jwt_secret = var.encrypted_jwt_secret
+  // GCP secret accessor service account
+  gcp_secret_accessor_sa = local.gcp_secret_accessor_sa_decoded
+  // GCP crypto key encryptor/decryptor service account
+  gcp_crypto_key_ed_sa = local.gcp_crypto_key_ed_sa_decoded
+  // GCP Cloud KMS crypto operator service account
+  gcp_cloud_kms_crypto_operator_sa = local.gcp_cloud_kms_crypto_operator_sa_decoded
+  // GCP Google Drive UD service account
+  gcp_google_drive_ud_sa = local.gcp_google_drive_ud_sa_decoded
 }
-
-// ======================================================
-// Argo CD module
-// ======================================================
-// This module is responsible for provisioning:
-// - Argo CD
-// - Argo CD Applications
-// - Argo CD Projects
-// ======================================================
