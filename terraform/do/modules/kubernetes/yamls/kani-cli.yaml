@@ -200,7 +200,7 @@ extraVolumeMounts:
 livenessProbe:
   path: "${liveness_probe_path}"     # Endpoint to check if app is alive
   initialDelaySeconds: 60
-  periodSeconds: 10
+  periodSeconds: 120
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
@@ -208,7 +208,7 @@ livenessProbe:
 readinessProbe:
   path: "${readiness_probe_path}"    # Endpoint to check if app is ready to serve traffic
   initialDelaySeconds: 60
-  periodSeconds: 10
+  periodSeconds: 120
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
@@ -216,7 +216,7 @@ readinessProbe:
 startupProbe:
   path: "${startup_probe_path}"      # Endpoint used during application startup
   initialDelaySeconds: 60
-  periodSeconds: 10
+  periodSeconds: 120
   timeoutSeconds: 5
   failureThreshold: 3
   successThreshold: 1
