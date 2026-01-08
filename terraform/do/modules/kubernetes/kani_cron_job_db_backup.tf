@@ -51,7 +51,7 @@ resource "kubernetes_cron_job_v1" "db_backup" {
               // Always pull latest image for backup jobs
               image_pull_policy = "Always"
               // Execute database backup command
-              command = ["kani", "db-backup"]
+              command = ["kani", "db", "backup"]
 
               // =========================
               // Environment variables
