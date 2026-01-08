@@ -82,7 +82,6 @@ envVarsSecret:
   REDIS_THROTTLER_PASSWORD: "${redis_throttler_password}"
 
   # Cryptography & security secrets
-  GCP_KMS_KEY_NAME: "${gcp_kms_key_name}"
   JWT_SALT: "${jwt_salt}"
   AES_CBC_SALT: "${aes_cbc_salt}"
 
@@ -93,8 +92,6 @@ envVarsSecret:
 containerPorts:
   app:
     port: ${port}        # Main HTTP application port
-  healthCheck:
-    port: ${port}        # Health endpoint port (usually same as app)
 
 # =========================================================
 # SERVICE CONFIGURATION
@@ -104,8 +101,6 @@ service:
   ports:
     app:
       port: ${port}      # Service port for application traffic
-    healthCheck:
-      port: ${port}      # Service port for health probes
 
 # =========================================================
 # CONTAINER IMAGE SETTINGS

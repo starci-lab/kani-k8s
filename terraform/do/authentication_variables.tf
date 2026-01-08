@@ -89,6 +89,10 @@ variable "prometheus_basic_auth_password" {
   sensitive   = true
 }
 
+// =========================
+// Kafka UI basic authentication variables
+// =========================
+
 variable "kafka_ui_htpasswd" {
   type        = string
   description = "HTPASSWD for Kafka UI basic authentication"
@@ -112,9 +116,9 @@ variable "grafana_password" {
 }
 
 // =========================
-// Jenkins user variables
+// Jenkins authentication variables
 // =========================
-// Controls the Jenkins user used by Jenkins.
+
 variable "jenkins_user" {
   type        = string
   description = "Jenkins user"
@@ -122,9 +126,9 @@ variable "jenkins_user" {
 }
 
 // =========================
-// Jenkins password variables
+// Jenkins authentication variables
 // =========================
-// Controls the Jenkins password used by Jenkins.
+
 variable "jenkins_password" {
   type        = string
   description = "Jenkins password"

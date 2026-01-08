@@ -1,2 +1,3 @@
 // Auto approve
 terraform apply -auto-approve -var-file="env/dev.tfvars"
+terraform destroy -auto-approve -var-file="env/dev.tfvars"

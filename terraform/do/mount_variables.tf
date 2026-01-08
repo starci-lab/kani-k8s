@@ -1,3 +1,7 @@
+// =========================
+// Encrypted secret inputs (mounted / decrypted by workloads)
+// =========================
+
 variable "encrypted_aes" {
   type        = string
   description = "Encrypted AES key"
@@ -9,6 +13,10 @@ variable "encrypted_jwt_secret" {
   description = "Encrypted JWT secret"
   sensitive = true
 }
+
+// =========================
+// GCP service account inputs (base64-encoded JSON)
+// =========================
 
 variable "gcp_secret_accessor_sa" {
   type        = string
@@ -33,6 +41,10 @@ variable "gcp_google_drive_ud_sa" {
   description = "GCP Google Drive UD service account"
   sensitive = true
 }
+
+// =========================
+// Decoded service account JSON (locals)
+// =========================
 
 locals {
   gcp_secret_accessor_sa_decoded = base64decode(var.gcp_secret_accessor_sa)

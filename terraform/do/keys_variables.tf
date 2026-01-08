@@ -31,7 +31,7 @@ variable "argo_cd_git_ssh_private_key" {
 // =========================
 // JWT salt variables
 // =========================
-// Controls the JWT salt used by Kani Interface.
+// Salt used for JWT token generation (passed to Kani workloads).
 variable "jwt_salt" {
   type        = string
   description = "JWT salt"
@@ -41,7 +41,7 @@ variable "jwt_salt" {
 // =========================
 // AES CBC salt variables
 // =========================
-// Controls the AES CBC salt used by Kani Interface.
+// Salt used for AES-CBC encryption (passed to Kani workloads).
 variable "aes_cbc_salt" {
   type        = string
   description = "AES CBC salt"
@@ -51,7 +51,7 @@ variable "aes_cbc_salt" {
 // =========================
 // Kani Interface Deployment Rollout Webhook Token variables
 // =========================
-// Controls the webhook token for Kani Interface Deployment Rollout.
+// Webhook token used by Jenkins job triggers for Kani Interface rollout.
 variable "kani_interface_deployment_rollout_webhook_token" {
   type = string
   description = "Webhook token for Kani Interface Deployment Rollout"
@@ -61,7 +61,7 @@ variable "kani_interface_deployment_rollout_webhook_token" {
 // =========================
 // Kani Coordinator Deployment Rollout Webhook Token variables
 // =========================
-// Controls the webhook token for Kani Coordinator Deployment Rollout.
+// Webhook token used by Jenkins job triggers for Kani Coordinator rollout.
 variable "kani_coordinator_deployment_rollout_webhook_token" {
   type = string
   description = "Webhook token for Kani Coordinator Deployment Rollout"
@@ -71,7 +71,7 @@ variable "kani_coordinator_deployment_rollout_webhook_token" {
 // =========================
 // Kani Observer Deployment Rollout Webhook Token variables
 // =========================
-// Controls the webhook token for Kani Observer Deployment Rollout.
+// Webhook token used by Jenkins job triggers for Kani Observer rollout.
 variable "kani_observer_deployment_rollout_webhook_token" {
   type = string
   description = "Webhook token for Kani Observer Deployment Rollout"
@@ -81,7 +81,7 @@ variable "kani_observer_deployment_rollout_webhook_token" {
 // =========================
 // GCP project ID variables
 // =========================
-// Controls the GCP project ID used by External Secrets.
+// GCP project ID used by External Secrets / GCP integrations.
 variable "gcp_project_id" {
   type        = string
   description = "GCP project ID"

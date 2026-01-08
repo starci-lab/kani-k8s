@@ -1,6 +1,7 @@
-# =========================
-# ServiceAccount for Jenkins Agent (namespace: jenkins)
-# =========================
+// =========================
+// ServiceAccount for Jenkins Agent
+// =========================
+// Used by Jenkins Kubernetes agents to authenticate in the Jenkins namespace.
 resource "kubernetes_service_account" "jenkins_agent" {
   metadata {
     name      = "jenkins-agent"
@@ -8,10 +9,9 @@ resource "kubernetes_service_account" "jenkins_agent" {
   }
 }
 
-# ==========================================
-# Role: allow jenkins-agent to list / get / patch deployments in kani namespace
-# Namespace: kani
-# ==========================================
+// =========================
+// Role: allow jenkins-agent to manage deployments in kani namespace
+// =========================
 resource "kubernetes_role" "jenkins_agent_kani_deploy_role" {
   metadata {
     name      = "jenkins-agent-deploy-role"
@@ -25,9 +25,9 @@ resource "kubernetes_role" "jenkins_agent_kani_deploy_role" {
   }
 }
 
-# =====================================================
-# RoleBinding: bind Role to ServiceAccount jenkins-agent in kani namespace
-# =====================================================
+// =========================
+// RoleBinding: bind Role to ServiceAccount jenkins-agent in kani namespace
+// =========================
 resource "kubernetes_role_binding" "jenkins_agent_kani_deploy_binding" {
   metadata {
     name      = "jenkins-agent-deploy-binding"

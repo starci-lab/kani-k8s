@@ -17,54 +17,19 @@ locals {
   // - target_secret_key: The key name in the Kubernetes secret
   // - gcp_secret_name: The secret name in Google Cloud Secret Manager
   external_secrets_instances = {
-    aes = {
-      name               = "aes"
-      target_secret_name = "aes"
+    app = {
+      name               = "app"
+      target_secret_name = "app"
       target_secret_key  = "data"
-      gcp_secret_name    = "aes"
+      gcp_secret_name    = "app"
       version            = 1
-    }
-    jwt_secret = {
-      name               = "jwt-secret"
-      target_secret_name = "jwt-secret"
-      target_secret_key  = "data"
-      gcp_secret_name    = "jwt-secret"
-      version            = 1
-    }
-    crypto-key-ed-sa = {
-      name               = "crypto-key-ed-sa"
-      target_secret_name = "crypto-key-ed-sa"
-      target_secret_key  = "data"
-      gcp_secret_name    = "crypto-key-ed-sa"
-      version            = 1
-    }
-    smtp = {
-      name               = "smtp"
-      target_secret_name = "smtp"
-      target_secret_key  = "data"
-      gcp_secret_name    = "smtp"
-      version            = 2
-    }
-    api-keys = {
-      name               = "api-keys"
-      target_secret_name = "api-keys"
-      target_secret_key  = "data"
-      gcp_secret_name    = "api-keys"
-      version            = 3
     }
     rpcs = {
       name               = "rpcs"
       target_secret_name = "rpcs"
       target_secret_key  = "data"
       gcp_secret_name    = "rpcs"
-      version            = 3
-    }
-    google-drive-ud-sa = {
-      name               = "google-drive-ud-sa"
-      target_secret_name = "google-drive-ud-sa"
-      target_secret_key  = "data"
-      gcp_secret_name    = "google-drive-ud-sa"
-      version            = 1
+      version            = 4
     }
   }
 }
