@@ -53,6 +53,12 @@ resource "kubernetes_job_v1" "seed" {
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
+  }
+
   spec {
     // Run once, do not retry on failure
     backoff_limit = 0

@@ -7,3 +7,9 @@ variable "domain_name" {
   description = "Domain name for the Kubernetes cluster"
   default     = "kanibot.xyz"
 }
+
+variable "prefix_domain_name" {
+  type        = string
+  description = "Prefix for the domain name"
+  default     = "dev"
+}

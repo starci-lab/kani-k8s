@@ -1,3 +1,13 @@
+// we requre a time block for about 1 minute to ensure the domain is ready
+resource "time_sleep" "wait_for_argo_cd_domain" {
+  create_duration = "60s"
+  depends_on = [
+    helm_release.argo_cd,
+    cloudflare_record.argo_cd,
+    kubernetes_ingress_v1.argo_cd,
+  ]
+}
+
 locals {
   argo_cd_project_name = "kani"
 }
@@ -18,8 +28,7 @@ resource "argocd_repository" "kani" {
   // Insecure mode enabled (acceptable for lab / academic environments)
   insecure = true
   depends_on = [
-    digitalocean_kubernetes_cluster.kubernetes,
-    helm_release.argo_cd
+    time_sleep.wait_for_argo_cd_domain
   ]
 }
 
@@ -186,7 +195,8 @@ resource "argocd_project" "kani" {
   }
 
   depends_on = [
-    argocd_repository.kani
+    argocd_repository.kani,
+    time_sleep.wait_for_argo_cd_domain
   ]
 }
 
@@ -238,6 +248,7 @@ resource "argocd_application" "kani_app" {
 
   }
   depends_on = [
-    argocd_project.kani
+    argocd_project.kani,
+    time_sleep.wait_for_argo_cd_domain
   ]
 }

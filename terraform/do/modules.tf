@@ -52,6 +52,7 @@ module "kubernetes" {
   // =========================
   // Base domain name (used for Argo CD, Prometheus, API, etc.)
   domain_name = var.domain_name
+  prefix_domain_name = var.prefix_domain_name
   // =========================
   // Prometheus configuration
   // =========================

@@ -4,6 +4,11 @@
 // Defines the base domain and subdomain prefixes used
 // to expose platform services via ingress and DNS.
 
+variable "prefix_domain_name" {
+  type        = string
+  description = "Prefix for the domain name"
+}
+
 variable "domain_name" {
   type        = string
   description = "Base domain name used for all public-facing services (e.g. example.com)"
