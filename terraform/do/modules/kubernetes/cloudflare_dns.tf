@@ -13,14 +13,14 @@ data "cloudflare_zone" "zone" {
 // Constructs fully-qualified domain names (FQDNs) for platform services
 // by combining service-specific subdomain prefixes with the base domain.
 locals {
-  argo_cd_domain_name                = "${var.argo_cd_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  prometheus_domain_name              = "${var.prometheus_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  prometheus_alertmanager_domain_name = "${var.prometheus_alertmanager_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  grafana_domain_name                 = "${var.grafana_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  portainer_domain_name               = "${var.portainer_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  api_domain_name                     = "${var.api_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  jenkins_domain_name                 = "${var.jenkins_prefix}.${var.prefix_domain_name}.${var.domain_name}"
-  kafka_ui_domain_name                = "${var.kafka_ui_prefix}.${var.prefix_domain_name}.${var.domain_name}"
+  argo_cd_domain_name                = "${var.argo_cd_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  prometheus_domain_name              = "${var.prometheus_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  prometheus_alertmanager_domain_name = "${var.prometheus_alertmanager_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  grafana_domain_name                 = "${var.grafana_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  portainer_domain_name               = "${var.portainer_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  api_domain_name                     = "${var.api_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  jenkins_domain_name                 = "${var.jenkins_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  kafka_ui_domain_name                = "${var.kafka_ui_prefix}.${var.prefix_domain_name != "" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
 }
 
 // =========================
