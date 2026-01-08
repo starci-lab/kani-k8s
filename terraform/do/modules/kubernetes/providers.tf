@@ -21,7 +21,8 @@ provider "kubernetes" {
 // This provider reuses the same Kubernetes cluster credentials as above
 // to install and configure Helm releases.
 provider "helm" {
-  
+  repository_config_path = "${path.module}/.helm/repositories.yaml" 
+  repository_cache       = "${path.module}/.helm"
   kubernetes {
     host  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
     token = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token

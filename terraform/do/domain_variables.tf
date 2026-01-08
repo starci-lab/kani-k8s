@@ -11,5 +11,5 @@ variable "domain_name" {
 variable "prefix_domain_name" {
   type        = string
   description = "Prefix for the domain name"
-  default     = "dev"
+  default     = "none"
 }
