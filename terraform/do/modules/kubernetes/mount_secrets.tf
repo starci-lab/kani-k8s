@@ -1,21 +1,11 @@
 // ======================================================
-// Namespace: gcp-secrets
-// Stores all Kubernetes Secrets related to GCP credentials
-// ======================================================
-resource "kubernetes_namespace" "gcp_secrets" {
-  metadata {
-    name = "gcp-secrets"
-  }
-}
-
-// ======================================================
 // Secret: GCP Secret Accessor Service Account
 // Used by External Secrets to access GCP Secret Manager
 // ======================================================
 resource "kubernetes_secret" "gcp_secret_accessor" {
   metadata {
     name      = "gcp-secret-accessor"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   // Terraform automatically base64-encodes values
@@ -33,7 +23,7 @@ resource "kubernetes_secret" "gcp_secret_accessor" {
 resource "kubernetes_secret" "gcp_crypto_key_ed" {
   metadata {
     name      = "gcp-crypto-key-ed"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
@@ -50,7 +40,7 @@ resource "kubernetes_secret" "gcp_crypto_key_ed" {
 resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator" {
   metadata {
     name      = "gcp-cloud-kms-crypto-operator"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
@@ -67,7 +57,7 @@ resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator" {
 resource "kubernetes_secret" "gcp_google_drive_ud" {
   metadata {
     name      = "gcp-google-drive-ud"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
@@ -84,7 +74,7 @@ resource "kubernetes_secret" "gcp_google_drive_ud" {
 resource "kubernetes_secret" "encrypted_aes" {
   metadata {
     name      = "encrypted-aes"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
@@ -101,7 +91,7 @@ resource "kubernetes_secret" "encrypted_aes" {
 resource "kubernetes_secret" "encrypted_jwt_secret" {
   metadata {
     name      = "encrypted-jwt-secret"
-    namespace = kubernetes_namespace.gcp_secrets.metadata[0].name
+    namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {

@@ -66,11 +66,11 @@ module "kubernetes" {
   // Grafana password
   grafana_password = var.grafana_password
   // Prometheus Alertmanager basic authentication username
-  prometheus_alertmanager_basic_auth_username = var.prometheus_alertmanager_basic_auth_username
+  prometheus_alertmanager_basic_auth_user = var.prometheus_alertmanager_basic_auth_user
   // Prometheus Alertmanager basic authentication password
   prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
   // Prometheus basic authentication username
-  prometheus_basic_auth_username = var.prometheus_basic_auth_username
+  prometheus_basic_auth_user = var.prometheus_basic_auth_user
   // Prometheus basic authentication password
   prometheus_basic_auth_password = var.prometheus_basic_auth_password
   // Argo CD Git repository URL

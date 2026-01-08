@@ -217,6 +217,19 @@ resource "kubernetes_job_v1" "seed" {
   // Ensure the Kani namespace and CLI Helm release exist before creating the job
   depends_on = [
     kubernetes_namespace.kani,
-    helm_release.kani_cli
+    kubectl_manifest.external_secret["app"],
+    kubectl_manifest.external_secret["rpcs"],
+    helm_release.argo_cd,
+    helm_release.grafana,
+    helm_release.jenkins,
+    helm_release.kafka,
+    helm_release.mongodb_sharded,
+    helm_release.prometheus,
+    helm_release.redis_cluster,
+    kubernetes_secret.gcp_cloud_kms_crypto_operator,
+    kubernetes_secret.gcp_crypto_key_ed,
+    kubernetes_secret.gcp_google_drive_ud,
+    kubernetes_secret.encrypted_aes,
+    kubernetes_secret.encrypted_jwt_secret,
   ]
 }

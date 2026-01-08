@@ -70,7 +70,7 @@ variable "prometheus_url" {
   default     = "https://prometheus.kanibot.xyz"
 }
 
-variable "prometheus_basic_auth_username" {
+variable "prometheus_basic_auth_user" {
   type        = string
   description = "Username for Prometheus basic authentication"
 }
@@ -92,7 +92,7 @@ variable "prometheus_alertmanager_url" {
   default     = "https://prometheus-alertmanager.kanibot.xyz"
 }
 
-variable "prometheus_alertmanager_basic_auth_username" {
+variable "prometheus_alertmanager_basic_auth_user" {
   type        = string
   description = "Username for Alertmanager basic authentication"
 }

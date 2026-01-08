@@ -119,11 +119,19 @@ resource "helm_release" "kani_executor" {
   // Ensure the Kani namespace exists before installing the chart
   depends_on = [
     kubernetes_namespace.kani,
-    kubectl_manifest.external_secret["api-keys"],
+    kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
-    kubectl_manifest.external_secret["aes"],
-    kubectl_manifest.external_secret["crypto-key-ed-sa"],
-    kubectl_manifest.external_secret["jwt-secret"],
-    kubectl_manifest.external_secret["smtp"]
+    helm_release.argo_cd,
+    helm_release.grafana,
+    helm_release.jenkins,
+    helm_release.kafka,
+    helm_release.mongodb_sharded,
+    helm_release.prometheus,
+    helm_release.redis_cluster,
+    kubernetes_secret.gcp_cloud_kms_crypto_operator,
+    kubernetes_secret.gcp_crypto_key_ed,
+    kubernetes_secret.gcp_google_drive_ud,
+    kubernetes_secret.encrypted_aes,
+    kubernetes_secret.encrypted_jwt_secret,
   ]
 }

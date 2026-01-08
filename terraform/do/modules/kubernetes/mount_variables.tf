@@ -1,3 +1,9 @@
+// =========================
+// Encrypted secret inputs
+// =========================
+// These are encrypted payloads (e.g., produced by a KMS workflow) that are later
+// mounted into workloads via Kubernetes Secrets.
+
 variable "encrypted_aes" {
   type        = string
   description = "Encrypted AES key"
@@ -9,6 +15,12 @@ variable "encrypted_jwt_secret" {
   description = "Encrypted JWT secret"
   sensitive = true
 }
+
+// =========================
+// GCP service account inputs (base64-encoded JSON)
+// =========================
+// These values are expected to be base64-encoded service account JSON strings
+// and are stored as Kubernetes Secrets for use by workloads/operators.
 
 variable "gcp_secret_accessor_sa" {
   type        = string

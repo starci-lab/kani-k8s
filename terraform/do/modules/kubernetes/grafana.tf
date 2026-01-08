@@ -60,13 +60,13 @@ resource "helm_release" "grafana" {
       // Prometheus datasource
       // =========================
       prometheus_url                  = var.prometheus_url
-      prometheus_basic_auth_username  = var.prometheus_basic_auth_username
+      prometheus_basic_auth_user  = var.prometheus_basic_auth_user
       prometheus_basic_auth_password = var.prometheus_basic_auth_password
       // =========================
       // Alertmanager datasource
       // =========================
       prometheus_alertmanager_url                  = var.prometheus_alertmanager_url
-      prometheus_alertmanager_basic_auth_username  = var.prometheus_alertmanager_basic_auth_username
+      prometheus_alertmanager_basic_auth_user  = var.prometheus_alertmanager_basic_auth_user
       prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
       // =========================
       // Node scheduling

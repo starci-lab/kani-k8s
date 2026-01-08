@@ -59,7 +59,7 @@ variable "prometheus_htpasswd" {
   sensitive   = true
 }
 
-variable "prometheus_alertmanager_basic_auth_username" {
+variable "prometheus_alertmanager_basic_auth_user" {
   type        = string
   description = "Username for Prometheus Alertmanager basic authentication"
   default     = "kani"
@@ -77,7 +77,7 @@ variable "prometheus_alertmanager_htpasswd" {
   sensitive   = true
 }
 
-variable "prometheus_basic_auth_username" {
+variable "prometheus_basic_auth_user" {
   type        = string
   description = "Username for Prometheus basic authentication"
   default     = "kani"
