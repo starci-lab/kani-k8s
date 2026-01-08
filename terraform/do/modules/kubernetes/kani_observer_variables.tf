@@ -74,7 +74,7 @@ variable "kani_observer_image_tag" {
 
 locals {
   kani_observer_presets = {
-    kani_observer = "64"
+    kani_observer = "128"
   }
 }
 
