@@ -28,6 +28,10 @@ variable "argo_cd_git_ssh_private_key" {
   sensitive   = true
 }
 
+locals {
+  argo_cd_git_ssh_private_key_decoded = base64decode(var.argo_cd_git_ssh_private_key)
+}
+
 // =========================
 // JWT salt variables
 // =========================

@@ -4,15 +4,15 @@
 // These are encrypted payloads (e.g., produced by a KMS workflow) that are later
 // mounted into workloads via Kubernetes Secrets.
 
-variable "encrypted_aes" {
+variable "encrypted_aes_key" {
   type        = string
   description = "Encrypted AES key"
   sensitive = true
 }
 
-variable "encrypted_jwt_secret" {
+variable "encrypted_jwt_secret_key" {
   type        = string
-  description = "Encrypted JWT secret"
+  description = "Encrypted JWT secret key"
   sensitive = true
 }
 

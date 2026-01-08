@@ -1,11 +1,11 @@
 // =========================
-// Kani CLI Google APIs Backup CronJob
+// Kani CLI DB Backup CronJob
 // =========================
-// Creates a scheduled Kubernetes CronJob to backup Google APIs data.
-// This cron job runs hourly and executes the "kani googleapis backup" command.
-resource "kubernetes_cron_job_v1" "googleapis_backup" {
+// Creates a scheduled Kubernetes CronJob to backup database data.
+// This cron job runs hourly and executes the "kani db-backup" command.
+resource "kubernetes_cron_job_v1" "db_backup" {
   metadata {
-    name      = "googleapis-backup"
+    name      = "db-backup"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
@@ -17,7 +17,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
     job_template {
       metadata {
         labels = {
-          app = "googleapis-backup"
+          app = "db-backup"
         }
       }
 
@@ -28,7 +28,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
         template {
           metadata {
             labels = {
-              app = "googleapis-backup"
+              app = "db-backup"
             }
           }
 
@@ -45,13 +45,13 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
             }
 
             container {
-              name  = "googleapis-backup"
+              name  = "db-backup"
               image = "${var.kani_cli_image_repository}:${var.kani_cli_image_tag}"
 
               // Always pull latest image for backup jobs
               image_pull_policy = "Always"
-              // Execute Google APIs backup command
-              command = ["kani", "googleapis", "backup"]
+              // Execute database backup command
+              command = ["kani", "db-backup"]
 
               // =========================
               // Environment variables
@@ -105,13 +105,13 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
                 read_only  = true
               }
               volume_mount {
-                name       = "encrypted-aes"
-                mount_path = var.kani_encrypted_aes_mount_path
+                name       = "encrypted-aes-key"
+                mount_path = var.kani_encrypted_aes_key_mount_path
                 read_only  = true
               }
               volume_mount {
-                name       = "encrypted-jwt-secret"
-                mount_path = var.kani_encrypted_jwt_secret_mount_path
+                name       = "encrypted-jwt-secret-key"
+                mount_path = var.kani_encrypted_jwt_secret_key_mount_path
                 read_only  = true
               }
               volume_mount {
@@ -124,52 +124,57 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
                 mount_path = var.kani_app_mount_path
                 read_only  = true
               }
+              volume_mount {
+                name       = "data"
+                mount_path = "/data"
+                read_only  = false
+              }
             }
 
             // =========================
             // Volumes
             // =========================
-            // Define secret volumes and empty directory for Google Drive operations
+            // Define secret volumes and empty directory for database operations
             volume {
               name = "gcp-cloud-kms-crypto-operator-sa"
               secret {
-                secret_name = "gcp-cloud-kms-crypto-operator-sa"
+                secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator.metadata[0].name
               }
             }
             volume {
               name = "gcp-crypto-key-ed-sa"
               secret {
-                secret_name = "gcp-crypto-key-ed-sa"
+                secret_name = kubernetes_secret.gcp_crypto_key_ed.metadata[0].name
               }
             }
             volume {
               name = "gcp-google-drive-ud-sa"
               secret {
-                secret_name = "gcp-google-drive-ud-sa"
+                secret_name = kubernetes_secret.gcp_google_drive_ud.metadata[0].name
               }
             }
             volume {
-              name = "encrypted-jwt-secret"
+              name = "encrypted-jwt-secret-key"
               secret {
-                secret_name = "encrypted-jwt-secret"
+                secret_name = kubernetes_secret.encrypted_jwt_secret_key.metadata[0].name
               }
             }
             volume {
-              name = "encrypted-aes"
+              name = "encrypted-aes-key"
               secret {
-                secret_name = "encrypted-aes"
+                secret_name = kubernetes_secret.encrypted_aes_key.metadata[0].name
               }
             }
             volume {
               name = "rpcs"
               secret {
-                secret_name = "rpcs"
+                secret_name = local.external_secrets_instances.rpcs.target_secret_name
               }
             }
             volume {
               name = "app"
               secret {
-                secret_name = "app"
+                secret_name = local.external_secrets_instances.app.target_secret_name
               }
             }
             volume {
@@ -185,6 +190,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
   // Ensure the Kani namespace and CLI Helm release exist before creating the cron job
   depends_on = [
     kubernetes_namespace.kani,
+    helm_release.kani_cli,
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
     helm_release.argo_cd,
@@ -197,7 +203,7 @@ resource "kubernetes_cron_job_v1" "googleapis_backup" {
     kubernetes_secret.gcp_cloud_kms_crypto_operator,
     kubernetes_secret.gcp_crypto_key_ed,
     kubernetes_secret.gcp_google_drive_ud,
-    kubernetes_secret.encrypted_aes,
-    kubernetes_secret.encrypted_jwt_secret,
+    kubernetes_secret.encrypted_aes_key,
+    kubernetes_secret.encrypted_jwt_secret_key,
   ]
 }

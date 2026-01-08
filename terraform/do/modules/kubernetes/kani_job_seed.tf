@@ -49,7 +49,7 @@ data "kubernetes_config_map" "cli" {
 // This job runs the "kani seed" command using the kani-cli image.
 resource "kubernetes_job_v1" "seed" {
   metadata {
-    name      = "seed"
+    name      = "db-seed"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
@@ -60,7 +60,7 @@ resource "kubernetes_job_v1" "seed" {
     template {
       metadata {
         labels = {
-          app = "seed"
+          app = "db-seed"
         }
       }
 
@@ -77,14 +77,14 @@ resource "kubernetes_job_v1" "seed" {
         }
 
         container {
-          name  = "seed"
+          name  = "db-seed"
           image = "${var.kani_cli_image_repository}:${var.kani_cli_image_tag}"
 
           // Always pull latest image for one-off seed jobs
           image_pull_policy = "Always"
 
           // Execute seed command
-          command = ["kani", "seed"]
+          command = ["kani", "db", "seed"]
 
           // =========================
           // Environment variables
@@ -139,13 +139,13 @@ resource "kubernetes_job_v1" "seed" {
             read_only = true
           }
           volume_mount {
-            name = "encrypted-aes"
-            mount_path = var.kani_encrypted_aes_mount_path
+            name = "encrypted-aes-key"
+            mount_path = var.kani_encrypted_aes_key_mount_path
             read_only = true
           }
           volume_mount {
-            name = "encrypted-jwt-secret"
-            mount_path = var.kani_encrypted_jwt_secret_mount_path
+            name = "encrypted-jwt-secret-key"
+            mount_path = var.kani_encrypted_jwt_secret_key_mount_path
             read_only = true
           }
           volume_mount {
@@ -158,6 +158,11 @@ resource "kubernetes_job_v1" "seed" {
             mount_path = var.kani_app_mount_path
             read_only = true
           }
+          volume_mount {
+            name = "data"
+            mount_path = var.kani_data_mount_path
+            read_only = false
+          }
         }
 
         // =========================
@@ -167,47 +172,47 @@ resource "kubernetes_job_v1" "seed" {
         volume {
           name = "gcp-cloud-kms-crypto-operator-sa"
           secret {
-            secret_name = "gcp-cloud-kms-crypto-operator-sa"
+            secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator.metadata[0].name
           }
         }
         volume {
           name = "gcp-crypto-key-ed-sa"
           secret {
-            secret_name = "gcp-crypto-key-ed-sa"
+            secret_name = kubernetes_secret.gcp_crypto_key_ed.metadata[0].name
           }
         }
         volume {
           name = "gcp-google-drive-ud-sa"
           secret {
-            secret_name = "gcp-google-drive-ud-sa"
+            secret_name = kubernetes_secret.gcp_google_drive_ud.metadata[0].name
           }
         }
         volume {
-          name = "encrypted-aes"
+          name = "encrypted-aes-key"
           secret {
-            secret_name = "encrypted-aes"
+            secret_name = kubernetes_secret.encrypted_aes_key.metadata[0].name
           }
         }
         volume {
-          name = "encrypted-jwt-secret"
+          name = "encrypted-jwt-secret-key"
           secret {
-            secret_name = "encrypted-jwt-secret"
+            secret_name = kubernetes_secret.encrypted_jwt_secret_key.metadata[0].name
           }
         }
         volume {
           name = "rpcs"
           secret {
-            secret_name = "rpcs"
+            secret_name = local.external_secrets_instances.rpcs.target_secret_name
           }
         }
         volume {
           name = "app"
           secret {
-            secret_name = "app"
+            secret_name = local.external_secrets_instances.app.target_secret_name
           }
         }
         volume {
-          name = "dir-google-drive"
+          name = "data"
           empty_dir {}
         }
       }
@@ -217,6 +222,7 @@ resource "kubernetes_job_v1" "seed" {
   // Ensure the Kani namespace and CLI Helm release exist before creating the job
   depends_on = [
     kubernetes_namespace.kani,
+    helm_release.kani_cli,
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
     helm_release.argo_cd,
@@ -229,7 +235,7 @@ resource "kubernetes_job_v1" "seed" {
     kubernetes_secret.gcp_cloud_kms_crypto_operator,
     kubernetes_secret.gcp_crypto_key_ed,
     kubernetes_secret.gcp_google_drive_ud,
-    kubernetes_secret.encrypted_aes,
-    kubernetes_secret.encrypted_jwt_secret,
+    kubernetes_secret.encrypted_aes_key,
+    kubernetes_secret.encrypted_jwt_secret_key,
   ]
 }

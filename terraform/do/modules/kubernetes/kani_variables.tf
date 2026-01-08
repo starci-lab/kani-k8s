@@ -37,16 +37,16 @@ variable "kani_gcp_google_drive_ud_sa_mount_path" {
   default     = "/etc/terraform/gcp-google-drive-ud-sa"
 }
 
-variable "kani_encrypted_aes_mount_path" {
+variable "kani_encrypted_aes_key_mount_path" {
   type        = string
   description = "Mount path for AES encryption key"
-  default     = "/etc/terraform/encrypted-aes"
+  default     = "/etc/terraform/encrypted-aes-key"
 }
 
-variable "kani_encrypted_jwt_secret_mount_path" {
+variable "kani_encrypted_jwt_secret_key_mount_path" {
   type        = string
   description = "Mount path for JWT secret"
-  default     = "/etc/terraform/encrypted-jwt-secret"
+  default     = "/etc/terraform/encrypted-jwt-secret-key"
 }
 
 variable "kani_rpcs_mount_path" {
@@ -83,6 +83,11 @@ variable "kani_startup_probe_path" {
   default     = "/api/terminus/startup"
 }
 
+variable "kani_data_mount_path" {
+  type        = string
+  description = "Mount path for data"
+  default     = "/data"
+}
 
 // =========================
 // Primary MongoDB configuration

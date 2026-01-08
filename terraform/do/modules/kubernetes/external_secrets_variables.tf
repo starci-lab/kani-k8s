@@ -87,6 +87,16 @@ variable "cert_controller_limit_memory" {
   default     = null
 }
 
+variable "app_secret_version" {
+  type        = number
+  description = "App secret version"
+}
+
+variable "rpcs_secret_version" {
+  type        = number
+  description = "RPCs secret version"
+}
+
 locals {
   external_secrets_presets = {
     external_secrets = "16"

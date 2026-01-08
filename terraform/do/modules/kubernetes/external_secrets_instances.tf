@@ -22,14 +22,14 @@ locals {
       target_secret_name = "app"
       target_secret_key  = "data"
       gcp_secret_name    = "app"
-      version            = 1
+      version            = var.app_secret_version
     }
     rpcs = {
       name               = "rpcs"
       target_secret_name = "rpcs"
       target_secret_key  = "data"
       gcp_secret_name    = "rpcs"
-      version            = 4
+      version            = var.rpcs_secret_version
     }
   }
 }
@@ -75,4 +75,3 @@ spec:
         version: "${tostring(each.value.version)}"
 YAML
 }
-

@@ -69,16 +69,16 @@ resource "kubernetes_secret" "gcp_google_drive_ud" {
 
 // ======================================================
 // Secret: Encrypted AES Key
-// Stores the encrypted AES key used by Kani Coordinator
+// Stores the encrypted AES key used by Kani Coordinator and other services
 // ======================================================
-resource "kubernetes_secret" "encrypted_aes" {
+resource "kubernetes_secret" "encrypted_aes_key" {
   metadata {
-    name      = "encrypted-aes"
+    name      = "encrypted-aes-key"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
-    data = var.encrypted_aes
+    data = var.encrypted_aes_key
   }
 
   type = "Opaque"
@@ -86,16 +86,16 @@ resource "kubernetes_secret" "encrypted_aes" {
 
 // ======================================================
 // Secret: Encrypted JWT Secret
-// Stores the encrypted JWT secret used by Kani Coordinator
+// Stores the encrypted JWT secret key used by Kani Coordinator and other services
 // ======================================================
-resource "kubernetes_secret" "encrypted_jwt_secret" {
+resource "kubernetes_secret" "encrypted_jwt_secret_key" {
   metadata {
-    name      = "encrypted-jwt-secret"
+    name      = "encrypted-jwt-secret-key"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
   data = {
-    data = var.encrypted_jwt_secret
+    data = var.encrypted_jwt_secret_key
   }
 
   type = "Opaque"

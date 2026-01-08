@@ -84,13 +84,13 @@ resource "helm_release" "kani_coordinator" {
       // =========================
       // Terraform variables
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
-      gcp_crypto_key_ed_sa_mount_path = var.kani_gcp_crypto_key_ed_sa_mount_path
-      gcp_google_drive_ud_sa_mount_path = var.kani_gcp_google_drive_ud_sa_mount_path
-      encrypted_aes_mount_path                    = var.kani_encrypted_aes_mount_path
-      encrypted_jwt_secret_mount_path             = var.kani_encrypted_jwt_secret_mount_path
+      gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
+      gcp_google_drive_ud_sa_mount_path           = var.kani_gcp_google_drive_ud_sa_mount_path
+      encrypted_aes_key_mount_path                = var.kani_encrypted_aes_key_mount_path
+      encrypted_jwt_secret_key_mount_path         = var.kani_encrypted_jwt_secret_key_mount_path
       // Configuration secrets
-      rpcs_mount_path                   = var.kani_rpcs_mount_path
-      app_mount_path                        = var.kani_app_mount_path
+      rpcs_mount_path = var.kani_rpcs_mount_path
+      app_mount_path  = var.kani_app_mount_path
       // =========================
       // JWT and AES configuration
       // =========================
@@ -116,6 +116,16 @@ resource "helm_release" "kani_coordinator" {
       liveness_probe_path  = var.kani_liveness_probe_path
       readiness_probe_path = var.kani_readiness_probe_path
       startup_probe_path   = var.kani_startup_probe_path
+      // =========================
+      // Secret names
+      // =========================
+      gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator.metadata[0].name
+      gcp_crypto_key_ed_sa_secret_name             = kubernetes_secret.gcp_crypto_key_ed.metadata[0].name
+      gcp_google_drive_ud_sa_secret_name           = kubernetes_secret.gcp_google_drive_ud.metadata[0].name
+      encrypted_aes_key_secret_name                = kubernetes_secret.encrypted_aes_key.metadata[0].name
+      encrypted_jwt_secret_key_secret_name         = kubernetes_secret.encrypted_jwt_secret_key.metadata[0].name
+      app_secret_name                              = local.external_secrets_instances.app.target_secret_name
+      rpcs_secret_name                             = local.external_secrets_instances.rpcs.target_secret_name
     })
   ]
 
@@ -134,7 +144,7 @@ resource "helm_release" "kani_coordinator" {
     kubernetes_secret.gcp_cloud_kms_crypto_operator,
     kubernetes_secret.gcp_crypto_key_ed,
     kubernetes_secret.gcp_google_drive_ud,
-    kubernetes_secret.encrypted_aes,
-    kubernetes_secret.encrypted_jwt_secret,
+    kubernetes_secret.encrypted_aes_key,
+    kubernetes_secret.encrypted_jwt_secret_key,
   ]
 }

@@ -66,13 +66,13 @@ envVarsCM:
   # These paths point to mounted Kubernetes Secrets
   # Application reads secrets from files instead of env vars
   # ------------------------
-  GCP_CRYPTO_KEY_ED_SA_MOUNT_PATH: "${gcp_crypto_key_ed_sa_mount_path}/data"
-  GCP_CLOUD_KMS_CRYPTO_OPERATOR_SA_MOUNT_PATH: "${gcp_cloud_kms_crypto_operator_sa_mount_path}/data"
-  GCP_GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
-  ENCRYPTED_AES_MOUNT_PATH: "${encrypted_aes_mount_path}/data"
-  ENCRYPTED_JWT_SECRET_MOUNT_PATH: "${encrypted_jwt_secret_mount_path}/data"
-  RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
-  APP_MOUNT_PATH: "${app_mount_path}/data"
+  TERRAFORM_GCP_CRYPTO_KEY_ED_SA_MOUNT_PATH: "${gcp_crypto_key_ed_sa_mount_path}/data"
+  TERRAFORM_GCP_CLOUD_KMS_CRYPTO_OPERATOR_SA_MOUNT_PATH: "${gcp_cloud_kms_crypto_operator_sa_mount_path}/data"
+  TERRAFORM_GCP_GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
+  TERRAFORM_ENCRYPTED_AES_KEY_MOUNT_PATH: "${encrypted_aes_key_mount_path}/data"
+  TERRAFORM_ENCRYPTED_JWT_SECRET_KEY_MOUNT_PATH: "${encrypted_jwt_secret_key_mount_path}/data"
+  CONFIG_RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
+  CONFIG_APP_MOUNT_PATH: "${app_mount_path}/data"
 
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
@@ -145,26 +145,26 @@ extraVolumes:
   # Terraform variables
   - name: gcp-cloud-kms-crypto-operator-sa
     secret:
-      secretName: gcp-cloud-kms-crypto-operator-sa
+      secretName: ${gcp_cloud_kms_crypto_operator_sa_secret_name}
   - name: gcp-crypto-key-ed-sa
     secret:
-      secretName: gcp-crypto-key-ed-sa
+      secretName: ${gcp_crypto_key_ed_sa_secret_name}
   - name: gcp-google-drive-ud-sa
     secret:
-      secretName: gcp-google-drive-ud-sa
-  - name: encrypted-aes
+      secretName: ${gcp_google_drive_ud_sa_secret_name}
+  - name: encrypted-aes-key
     secret:
-      secretName: encrypted-aes
-  - name: encrypted-jwt-secret
+      secretName: ${encrypted_aes_key_secret_name}
+  - name: encrypted-jwt-secret-key
     secret:
-      secretName: encrypted-jwt-secret
+      secretName: ${encrypted_jwt_secret_key_secret_name}
   # Configuration secrets
   - name: app
     secret:
-      secretName: app
+      secretName: ${app_secret_name}
   - name: rpcs
     secret:
-      secretName: rpcs
+      secretName: ${rpcs_secret_name}
 
 # =========================================================
 # VOLUME MOUNTS INSIDE CONTAINER
@@ -180,11 +180,11 @@ extraVolumeMounts:
   - name: gcp-crypto-key-ed-sa
     mountPath: "${gcp_crypto_key_ed_sa_mount_path}"
     readOnly: true
-  - name: encrypted-aes
-    mountPath: "${encrypted_aes_mount_path}"
+  - name: encrypted-aes-key
+    mountPath: "${encrypted_aes_key_mount_path}"
     readOnly: true
-  - name: encrypted-jwt-secret
-    mountPath: "${encrypted_jwt_secret_mount_path}"
+  - name: encrypted-jwt-secret-key
+    mountPath: "${encrypted_jwt_secret_key_mount_path}"
     readOnly: true
   # Configuration secrets
   - name: app

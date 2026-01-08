@@ -2,16 +2,28 @@
 // Encrypted secret inputs (mounted / decrypted by workloads)
 // =========================
 
-variable "encrypted_aes" {
+variable "encrypted_aes_key" {
   type        = string
   description = "Encrypted AES key"
   sensitive = true
 }
 
-variable "encrypted_jwt_secret" {
+variable "encrypted_jwt_secret_key" {
   type        = string
   description = "Encrypted JWT secret"
   sensitive = true
+}
+
+variable "app_secret_version" {
+  type        = number
+  description = "App secret version"
+  default     = 2
+}
+
+variable "rpcs_secret_version" {
+  type        = number
+  description = "RPCs secret version"
+  default     = 4
 }
 
 // =========================

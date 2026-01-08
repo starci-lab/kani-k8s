@@ -74,7 +74,7 @@ module "kubernetes" {
   // Prometheus basic authentication password
   prometheus_basic_auth_password = var.prometheus_basic_auth_password
   // Argo CD Git repository URL
-  argo_cd_git_ssh_private_key = var.argo_cd_git_ssh_private_key
+  argo_cd_git_ssh_private_key = local.argo_cd_git_ssh_private_key_decoded
   // JWT salt
   kani_jwt_salt = var.jwt_salt
   // AES CBC salt
@@ -94,9 +94,9 @@ module "kubernetes" {
   // GCP project ID
   gcp_project_id = var.gcp_project_id
   // Encrypted AES key
-  encrypted_aes = var.encrypted_aes
+  encrypted_aes_key = var.encrypted_aes_key
   // Encrypted JWT secret
-  encrypted_jwt_secret = var.encrypted_jwt_secret
+  encrypted_jwt_secret_key = var.encrypted_jwt_secret_key
   // GCP secret accessor service account
   gcp_secret_accessor_sa = local.gcp_secret_accessor_sa_decoded
   // GCP crypto key encryptor/decryptor service account
@@ -105,4 +105,8 @@ module "kubernetes" {
   gcp_cloud_kms_crypto_operator_sa = local.gcp_cloud_kms_crypto_operator_sa_decoded
   // GCP Google Drive UD service account
   gcp_google_drive_ud_sa = local.gcp_google_drive_ud_sa_decoded
+  // App secret version
+  app_secret_version = var.app_secret_version
+  // RPCs secret version
+  rpcs_secret_version = var.rpcs_secret_version
 }

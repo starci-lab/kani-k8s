@@ -85,8 +85,8 @@ spec:
         secretRef:
           secretAccessKeySecretRef:
             name: ${kubernetes_secret.gcp_secret_accessor.metadata[0].name}
-            key: secret-access-credentials
-            namespace: ${kubernetes_namespace.external_secrets.metadata[0].name}
+            key: data
+            namespace: ${kubernetes_namespace.kani.metadata[0].name}
       projectID: "${var.gcp_project_id}"
       secretVersionSelectionPolicy: LatestOrFetch
 status:

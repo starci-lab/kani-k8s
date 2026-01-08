@@ -45,3 +45,6 @@ terraform.rc
 
 # Ignore all json files in terraform/do/env directory
 terraform/do/secrets/*
+
+# Ignore all helm charts
+.helm
