@@ -67,6 +67,9 @@ envVarsCM:
   TERRAFORM_GCP_GOOGLE_DRIVE_UD_SA_MOUNT_PATH: "${gcp_google_drive_ud_sa_mount_path}/data"
   TERRAFORM_ENCRYPTED_AES_KEY_MOUNT_PATH: "${encrypted_aes_key_mount_path}/data"
   TERRAFORM_ENCRYPTED_JWT_SECRET_KEY_MOUNT_PATH: "${encrypted_jwt_secret_key_mount_path}/data"
+  TERRAFORM_PRIVY_APP_SECRET_KEY_MOUNT_PATH: "${privy_app_secret_key_mount_path}/data"
+  TERRAFORM_PRIVY_SIGNER_PRIVATE_KEY_MOUNT_PATH: "${privy_signer_private_key_mount_path}/data"
+  TERRAFORM_COIN_MARKET_CAP_API_KEY_MOUNT_PATH: "${coin_market_cap_api_key_mount_path}/data"
   CONFIG_RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
   CONFIG_APP_MOUNT_PATH: "${app_mount_path}/data"
 # =========================================================
@@ -153,6 +156,15 @@ extraVolumes:
   - name: encrypted-jwt-secret-key
     secret:
       secretName: ${encrypted_jwt_secret_key_secret_name}
+  - name: privy-app-secret-key
+    secret:
+      secretName: ${privy_app_secret_key_secret_name}
+  - name: privy-signer-private-key
+    secret:
+      secretName: ${privy_signer_private_key_secret_name}
+  - name: coin-market-cap-api-key
+    secret:
+      secretName: ${coin_market_cap_api_key_secret_name}
   # Configuration secrets
   - name: app
     secret:
@@ -180,6 +192,15 @@ extraVolumeMounts:
     readOnly: true
   - name: encrypted-jwt-secret-key
     mountPath: "${encrypted_jwt_secret_key_mount_path}"
+    readOnly: true
+  - name: privy-app-secret-key
+    mountPath: "${privy_app_secret_key_mount_path}"
+    readOnly: true
+  - name: privy-signer-private-key
+    mountPath: "${privy_signer_private_key_mount_path}"
+    readOnly: true
+  - name: coin-market-cap-api-key
+    mountPath: "${coin_market_cap_api_key_mount_path}"
     readOnly: true
   # Configuration secrets
   - name: app

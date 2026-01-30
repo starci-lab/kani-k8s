@@ -86,6 +86,9 @@ resource "helm_release" "kani_executor" {
       gcp_google_drive_ud_sa_mount_path           = var.kani_gcp_google_drive_ud_sa_mount_path
       encrypted_aes_key_mount_path                = var.kani_encrypted_aes_key_mount_path
       encrypted_jwt_secret_key_mount_path         = var.kani_encrypted_jwt_secret_key_mount_path
+      privy_app_secret_key_mount_path             = var.kani_privy_app_secret_key_mount_path
+      privy_signer_private_key_mount_path         = var.kani_privy_signer_private_key_mount_path
+      coin_market_cap_api_key_mount_path          = var.kani_coin_market_cap_api_key_mount_path
       // Configuration secrets
       rpcs_mount_path = var.kani_rpcs_mount_path
       app_mount_path  = var.kani_app_mount_path
@@ -123,6 +126,9 @@ resource "helm_release" "kani_executor" {
       encrypted_jwt_secret_key_secret_name         = kubernetes_secret.encrypted_jwt_secret_key.metadata[0].name
       app_secret_name                              = local.external_secrets_instances.app.target_secret_name
       rpcs_secret_name                             = local.external_secrets_instances.rpcs.target_secret_name
+      privy_app_secret_key_secret_name             = kubernetes_secret.privy_app_secret_key.metadata[0].name
+      privy_signer_private_key_secret_name         = kubernetes_secret.privy_signer_private_key.metadata[0].name
+      coin_market_cap_api_key_secret_name          = kubernetes_secret.coin_market_cap_api_key.metadata[0].name
     })
   ]
 

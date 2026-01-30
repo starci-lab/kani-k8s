@@ -45,3 +45,21 @@ variable "gcp_google_drive_ud_sa" {
   description = "GCP Google Drive UD service account"
   sensitive = true
 }
+
+variable "privy_app_secret_key" {
+  type        = string
+  description = "Privy app secret key"
+  sensitive = true
+}
+
+variable "privy_signer_private_key" {
+  type        = string
+  description = "Privy signer private key"
+  sensitive = true
+}
+
+variable "coin_market_cap_api_key" {
+  type        = string
+  description = "Coin Market Cap API key"
+  sensitive = true
+}

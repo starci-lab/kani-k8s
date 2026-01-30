@@ -60,6 +60,24 @@ variable "kani_app_mount_path" {
   description = "Mount path for app"
   default     = "/etc/config/app"
 }
+
+variable "kani_privy_app_secret_key_mount_path" {
+  type        = string
+  description = "Mount path for Privy app secret key"
+  default     = "/etc/terraform/privy-app-secret-key"
+}
+
+variable "kani_privy_signer_private_key_mount_path" {
+  type        = string
+  description = "Mount path for Privy signer private key"
+  default     = "/etc/terraform/privy-signer-private-key"
+}
+
+variable "kani_coin_market_cap_api_key_mount_path" {
+  type        = string
+  description = "Mount path for Coin Market Cap API key"
+  default     = "/etc/terraform/coin-market-cap-api-key"
+}
 // =========================
 // Probes configuration
 // =========================

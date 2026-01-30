@@ -100,3 +100,54 @@ resource "kubernetes_secret" "encrypted_jwt_secret_key" {
 
   type = "Opaque"
 }
+
+// ======================================================
+// Secret: Privy App Secret Key
+// Stores the Privy app secret key used by Kani Coordinator and other services
+// ======================================================
+resource "kubernetes_secret" "privy_app_secret_key" {
+  metadata {
+    name      = "privy-app-secret-key"
+    namespace = kubernetes_namespace.kani.metadata[0].name
+  }
+
+  data = {
+    data = var.privy_app_secret_key
+  }
+
+  type = "Opaque"
+} 
+
+// ======================================================
+// Secret: Privy Signer Private Key
+// Stores the Privy signer private key used by Kani Coordinator and other services
+// ======================================================
+resource "kubernetes_secret" "privy_signer_private_key" {
+  metadata {
+    name      = "privy-signer-private-key"
+    namespace = kubernetes_namespace.kani.metadata[0].name
+  }
+
+  data = {
+    data = var.privy_signer_private_key
+  }
+
+  type = "Opaque"
+}
+
+// ======================================================
+// Secret: Coin Market Cap API Key
+// Stores the Coin Market Cap API key used by Kani Coordinator and other services
+// ======================================================
+resource "kubernetes_secret" "coin_market_cap_api_key" {
+  metadata {
+    name      = "coin-market-cap-api-key"
+    namespace = kubernetes_namespace.kani.metadata[0].name
+  }
+
+  data = {
+    data = var.coin_market_cap_api_key
+  }
+  
+  type = "Opaque"
+}

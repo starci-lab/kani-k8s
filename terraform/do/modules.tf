@@ -110,4 +110,10 @@ module "kubernetes" {
   app_secret_version = var.app_secret_version
   // RPCs secret version
   rpcs_secret_version = var.rpcs_secret_version
+  // Privy app secret key
+  privy_app_secret_key = var.privy_app_secret_key
+  // Privy signer private key
+  privy_signer_private_key = var.privy_signer_private_key
+  // Coin Market Cap API key
+  coin_market_cap_api_key = var.coin_market_cap_api_key
 }
