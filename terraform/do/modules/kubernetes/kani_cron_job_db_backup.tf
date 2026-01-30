@@ -115,6 +115,21 @@ resource "kubernetes_cron_job_v1" "db_backup" {
                 read_only  = true
               }
               volume_mount {
+                name       = "privy-app-secret-key"
+                mount_path = var.kani_privy_app_secret_key_mount_path
+                read_only  = true
+              }
+              volume_mount {
+                name       = "privy-signer-private-key"
+                mount_path = var.kani_privy_signer_private_key_mount_path
+                read_only  = true
+              }
+              volume_mount {
+                name       = "coin-market-cap-api-key"
+                mount_path = var.kani_coin_market_cap_api_key_mount_path
+                read_only  = true
+              }
+              volume_mount {
                 name       = "rpcs"
                 mount_path = var.kani_rpcs_mount_path
                 read_only  = true
@@ -163,6 +178,24 @@ resource "kubernetes_cron_job_v1" "db_backup" {
               name = "encrypted-aes-key"
               secret {
                 secret_name = kubernetes_secret.encrypted_aes_key.metadata[0].name
+              }
+            }
+            volume {
+              name = "privy-app-secret-key"
+              secret {
+                secret_name = kubernetes_secret.privy_app_secret_key.metadata[0].name
+              }
+            }
+            volume {
+              name = "privy-signer-private-key"
+              secret {
+                secret_name = kubernetes_secret.privy_signer_private_key.metadata[0].name
+              }
+            }
+            volume {
+              name = "coin-market-cap-api-key"
+              secret {
+                secret_name = kubernetes_secret.coin_market_cap_api_key.metadata[0].name
               }
             }
             volume {
