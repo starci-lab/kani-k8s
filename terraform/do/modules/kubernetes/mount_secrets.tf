@@ -2,9 +2,9 @@
 // Secret: GCP Secret Accessor Service Account
 // Used by External Secrets to access GCP Secret Manager
 // ======================================================
-resource "kubernetes_secret" "gcp_secret_accessor" {
+resource "kubernetes_secret" "gcp_secret_accessor_sa" {
   metadata {
-    name      = "gcp-secret-accessor"
+    name      = "gcp-secret-accessor-sa"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
@@ -20,9 +20,9 @@ resource "kubernetes_secret" "gcp_secret_accessor" {
 // Secret: GCP Crypto Key Encrypt/Decrypt Service Account
 // Used by Kani Coordinator for encryption/decryption
 // ======================================================
-resource "kubernetes_secret" "gcp_crypto_key_ed" {
+resource "kubernetes_secret" "gcp_crypto_key_ed_sa" {
   metadata {
-    name      = "gcp-crypto-key-ed"
+    name      = "gcp-crypto-key-ed-sa"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
@@ -37,9 +37,9 @@ resource "kubernetes_secret" "gcp_crypto_key_ed" {
 // Secret: GCP Cloud KMS Crypto Operator Service Account
 // Used for Cloud KMS crypto operations
 // ======================================================
-resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator" {
+resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator_sa" {
   metadata {
-    name      = "gcp-cloud-kms-crypto-operator"
+    name      = "gcp-cloud-kms-crypto-operator-sa"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 
@@ -54,9 +54,9 @@ resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator" {
 // Secret: GCP Google Drive UD Service Account
 // Used by Kani Coordinator for Google Drive operations
 // ======================================================
-resource "kubernetes_secret" "gcp_google_drive_ud" {
+resource "kubernetes_secret" "gcp_google_drive_ud_sa" {
   metadata {
-    name      = "gcp-google-drive-ud"
+    name      = "gcp-google-drive-ud-sa"
     namespace = kubernetes_namespace.kani.metadata[0].name
   }
 

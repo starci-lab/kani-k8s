@@ -128,9 +128,9 @@ resource "helm_release" "kani_interface" {
       // =========================
       // Secret names
       // =========================
-      gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator.metadata[0].name
-      gcp_crypto_key_ed_sa_secret_name = kubernetes_secret.gcp_crypto_key_ed.metadata[0].name
-      gcp_google_drive_ud_sa_secret_name = kubernetes_secret.gcp_google_drive_ud.metadata[0].name
+      gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
+      gcp_crypto_key_ed_sa_secret_name = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name
+      gcp_google_drive_ud_sa_secret_name = kubernetes_secret.gcp_google_drive_ud_sa.metadata[0].name
       encrypted_aes_key_secret_name = kubernetes_secret.encrypted_aes_key.metadata[0].name
       encrypted_jwt_secret_key_secret_name = kubernetes_secret.encrypted_jwt_secret_key.metadata[0].name
       app_secret_name = local.external_secrets_instances.app.target_secret_name
@@ -153,9 +153,9 @@ resource "helm_release" "kani_interface" {
     helm_release.mongodb_sharded,
     helm_release.prometheus,
     helm_release.redis_cluster,
-    kubernetes_secret.gcp_cloud_kms_crypto_operator,
-    kubernetes_secret.gcp_crypto_key_ed,
-    kubernetes_secret.gcp_google_drive_ud,
+    kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
+    kubernetes_secret.gcp_crypto_key_ed_sa,
+    kubernetes_secret.gcp_google_drive_ud_sa,
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
   ]

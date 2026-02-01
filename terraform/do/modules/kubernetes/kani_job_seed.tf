@@ -193,19 +193,19 @@ resource "kubernetes_job_v1" "seed" {
         volume {
           name = "gcp-cloud-kms-crypto-operator-sa"
           secret {
-            secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator.metadata[0].name
+            secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
           }
         }
         volume {
           name = "gcp-crypto-key-ed-sa"
           secret {
-            secret_name = kubernetes_secret.gcp_crypto_key_ed.metadata[0].name
+            secret_name = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name
           }
         }
         volume {
           name = "gcp-google-drive-ud-sa"
           secret {
-            secret_name = kubernetes_secret.gcp_google_drive_ud.metadata[0].name
+            secret_name = kubernetes_secret.gcp_google_drive_ud_sa.metadata[0].name
           }
         }
         volume {
@@ -271,9 +271,9 @@ resource "kubernetes_job_v1" "seed" {
     helm_release.mongodb_sharded,
     helm_release.prometheus,
     helm_release.redis_cluster,
-    kubernetes_secret.gcp_cloud_kms_crypto_operator,
-    kubernetes_secret.gcp_crypto_key_ed,
-    kubernetes_secret.gcp_google_drive_ud,
+    kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
+    kubernetes_secret.gcp_crypto_key_ed_sa,
+    kubernetes_secret.gcp_google_drive_ud_sa,
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
   ]

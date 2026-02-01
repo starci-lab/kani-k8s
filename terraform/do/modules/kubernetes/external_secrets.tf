@@ -84,7 +84,7 @@ spec:
       auth:
         secretRef:
           secretAccessKeySecretRef:
-            name: ${kubernetes_secret.gcp_secret_accessor.metadata[0].name}
+            name: ${kubernetes_secret.gcp_secret_accessor_sa.metadata[0].name}
             key: data
             namespace: ${kubernetes_namespace.kani.metadata[0].name}
       projectID: "${var.gcp_project_id}"
