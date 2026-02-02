@@ -57,13 +57,6 @@ resource "helm_release" "kani_executor" {
       redis_cache_password    = var.redis_password
       redis_cache_use_cluster = true
       // =========================
-      // Redis Adapter configuration
-      // =========================
-      redis_adapter_host        = local.redis_cluster_service.host
-      redis_adapter_port        = local.redis_cluster_service.port
-      redis_adapter_password    = var.redis_password
-      redis_adapter_use_cluster = true
-      // =========================
       // Redis BullMQ configuration
       // =========================
       redis_bullmq_host        = local.redis_cluster_service.host
@@ -77,6 +70,14 @@ resource "helm_release" "kani_executor" {
       redis_throttler_port        = local.redis_cluster_service.port
       redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
+      // =========================
+      // Redis Lock Authority configuration
+      // =========================
+      redis_lock_authority_host        = local.redis_cluster_service.host
+      redis_lock_authority_port        = local.redis_cluster_service.port
+      redis_lock_authority_password    = var.redis_password
+      redis_lock_authority_use_cluster = true
+      // =========================
       // =========================
       // Secret mount paths
       // =========================

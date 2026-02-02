@@ -36,13 +36,6 @@ envVarsCM:
   REDIS_CACHE_USE_CLUSTER: "${redis_cache_use_cluster}"  # true if Redis Cluster mode is enabled
 
   # ------------------------
-  # REDIS – ADAPTER
-  # ------------------------
-  REDIS_ADAPTER_HOST: "${redis_adapter_host}"
-  REDIS_ADAPTER_PORT: "${redis_adapter_port}"
-  REDIS_ADAPTER_USE_CLUSTER: "${redis_adapter_use_cluster}"
-
-  # ------------------------
   # REDIS – BULLMQ (BACKGROUND JOBS)
   # ------------------------
   REDIS_BULLMQ_HOST: "${redis_bullmq_host}"
@@ -55,6 +48,13 @@ envVarsCM:
   REDIS_THROTTLER_HOST: "${redis_throttler_host}"
   REDIS_THROTTLER_PORT: "${redis_throttler_port}"
   REDIS_THROTTLER_USE_CLUSTER: "${redis_throttler_use_cluster}"
+
+  # ------------------------
+  # REDIS – LOCK AUTHORITY
+  # ------------------------
+  REDIS_LOCK_AUTHORITY_HOST: "${redis_lock_authority_host}"
+  REDIS_LOCK_AUTHORITY_PORT: "${redis_lock_authority_port}"
+  REDIS_LOCK_AUTHORITY_USE_CLUSTER: "${redis_lock_authority_use_cluster}"
 
   # ------------------------
   # FILE-BASED SECRETS (MOUNT PATHS)
@@ -81,9 +81,9 @@ envVarsSecret:
   KAFKA_SASL_PASSWORD: "${kafka_sasl_password}"
 
   REDIS_CACHE_PASSWORD: "${redis_cache_password}"
-  REDIS_ADAPTER_PASSWORD: "${redis_adapter_password}"
   REDIS_BULLMQ_PASSWORD: "${redis_bullmq_password}"
   REDIS_THROTTLER_PASSWORD: "${redis_throttler_password}"
+  REDIS_LOCK_AUTHORITY_PASSWORD: "${redis_lock_authority_password}"
 
   # Cryptography & security secrets
   JWT_SALT: "${jwt_salt}"
