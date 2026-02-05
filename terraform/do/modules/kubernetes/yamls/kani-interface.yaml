@@ -36,7 +36,7 @@ envVarsCM:
   REDIS_CACHE_HOST: "${redis_cache_host}"
   REDIS_CACHE_PORT: "${redis_cache_port}"
   REDIS_CACHE_USE_CLUSTER: "${redis_cache_use_cluster}"  # true if Redis Cluster mode is enabled
-
+  CACHE_DEBUG_ENABLED: "${cache_debug_enabled}"
   # ------------------------
   # REDIS – ADAPTER
   # ------------------------

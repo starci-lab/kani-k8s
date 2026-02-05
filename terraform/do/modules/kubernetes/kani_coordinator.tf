@@ -58,6 +58,7 @@ resource "helm_release" "kani_coordinator" {
       redis_cache_port        = local.redis_cluster_service.port
       redis_cache_password    = var.redis_password
       redis_cache_use_cluster = true
+      cache_debug_enabled     = false
       // =========================
       // Redis Adapter configuration
       // =========================
