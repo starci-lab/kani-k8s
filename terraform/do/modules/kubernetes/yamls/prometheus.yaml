@@ -6,7 +6,6 @@
 ## Operator (image + resources)
 ## =========================
 operator:
-  replicaCount: ${operator_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus-operator
