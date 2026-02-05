@@ -44,6 +44,7 @@ resource "helm_release" "kafka" {
       controller_limit_memory         = local.kafka.controller.limit_memory
       controller_persistence_size     = var.kafka_controller_persistence_size
       controller_log_persistence_size = var.kafka_controller_log_persistence_size
+      controller_replica_count        = 1
 
       // =========================
       // Kafka broker resources

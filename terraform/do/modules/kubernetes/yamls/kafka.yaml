@@ -29,6 +29,7 @@ defaultInitContainers:
 ## Controller Resources
 ## =========================
 controller:
+  replicaCount: ${controller_replica_count}
   resources: 
     requests:
       cpu: ${controller_request_cpu}
