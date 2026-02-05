@@ -1,14 +1,4 @@
 // =========================
-// Kani CLI Job Seed local identifiers
-// =========================
-// Defines shared names for ConfigMap and Secret created by kani-cli Helm chart.
-locals {
-  // Shared name for ConfigMap & Secret created by kani-cli Helm chart
-  // Contains all runtime environment variables (DB, Kafka, etc.)
-  kani_cli_service_env_vars_name = "kani-cli-service-env-vars"
-}
-
-// =========================
 // Kani CLI Restore Job
 // =========================
 // Creates a one-time Kubernetes Job to restore the database from a backup.
