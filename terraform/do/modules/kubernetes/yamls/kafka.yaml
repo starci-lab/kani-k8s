@@ -65,3 +65,14 @@ broker:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   persistence:
     size: ${broker_persistence_size}
+
+## =========================
+## Listeners
+## =========================
+listeners:
+  client:
+    protocol: "SASL_PLAINTEXT"  # Protocol for client communication
+  controller:
+    protocol: "SASL_PLAINTEXT"  # Protocol for controller communication
+  interbroker:
+    protocol: "SASL_PLAINTEXT"  # Protocol for inter-broker communication
