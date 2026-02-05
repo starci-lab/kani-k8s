@@ -1394,7 +1394,6 @@ broker:
   ## @param broker.nodeSelector Node labels for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-broker:
   nodeSelector: 
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   ## @param broker.tolerations Tolerations for pod assignment
