@@ -13,7 +13,7 @@ image:
 ## Controller Resources
 ## =========================
 controller:
-  replicas: ${controller_replica_count}
+  replicaCount: ${controller_replica_count}
   resources:
     requests:
       cpu: ${controller_request_cpu}
