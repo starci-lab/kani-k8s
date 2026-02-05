@@ -18,8 +18,21 @@ auth:
 master:
   resources:
     requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
+      cpu: ${master_request_cpu}
+      memory: ${master_request_memory}
     limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+      cpu: ${master_limit_cpu}
+      memory: ${master_limit_memory}
+
+## =========================
+## Replica (replicaCount + resources from TF)
+## =========================
+replica:
+  replicaCount: ${replica_replica_count}
+  resources:
+    requests:
+      cpu: ${replica_request_cpu}
+      memory: ${replica_request_memory}
+    limits:
+      cpu: ${replica_limit_cpu}
+      memory: ${replica_limit_memory}

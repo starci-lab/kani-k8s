@@ -241,6 +241,12 @@ variable "argo_cd_redis_limit_memory" {
   default     = null
 }
 
+variable "argo_cd_redis_replica_count" {
+  type        = number
+  description = "Number of Redis replica pods (0 = master only)"
+  default     = 0
+}
+
 locals {
   argocd_presets = {
     server         = "32"
