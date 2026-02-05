@@ -6,7 +6,7 @@
 ## Operator (image + resources)
 ## =========================
 operator:
-  enabled: false
+  enabled: true
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus-operator
