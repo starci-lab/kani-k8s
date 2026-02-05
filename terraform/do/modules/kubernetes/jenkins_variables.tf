@@ -15,6 +15,12 @@ variable "jenkins_password" {
   sensitive   = true
 }
 
+variable "jenkins_replica_count" {
+  type        = number
+  description = "Number of Jenkins controller replicas"
+  default     = 1
+}
+
 // =========================
 // Jenkins resource variables
 // =========================

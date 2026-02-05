@@ -14,6 +14,12 @@ variable "grafana_password" {
   sensitive   = true
 }
 
+variable "grafana_replica_count" {
+  type        = number
+  description = "Number of Grafana server replicas"
+  default     = 1
+}
+
 // =========================
 // Grafana resource variables
 // =========================

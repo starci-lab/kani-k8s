@@ -43,6 +43,10 @@ resource "helm_release" "portainer" {
   values = [
     templatefile("${path.module}/yamls/portainer.yaml", {
       // =========================
+      // Replica count
+      // =========================
+      replica_count = var.portainer_replica_count
+      // =========================
       // Portainer server resources
       // =========================
       request_cpu    = local.portainer.portainer.request_cpu

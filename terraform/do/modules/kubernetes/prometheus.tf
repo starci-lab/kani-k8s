@@ -105,6 +105,14 @@ resource "helm_release" "prometheus" {
       thanos_ruler_limit_memory   = local.prometheus.thanos_ruler.limit_memory
 
       // =========================
+      // Replica counts
+      // =========================
+      prometheus_replica_count          = var.prometheus_replica_count
+      alertmanager_replica_count        = var.alertmanager_replica_count
+      blackbox_exporter_replica_count   = var.blackbox_exporter_replica_count
+      thanos_ruler_replica_count        = var.thanos_ruler_replica_count
+
+      // =========================
       // Node scheduling
       // =========================
       // Ensures Prometheus pods are scheduled onto the primary node pool

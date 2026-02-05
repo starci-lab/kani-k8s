@@ -26,6 +26,7 @@ controller:
 ## ApplicationSet Resources
 ## =========================
 applicationSet:
+  replicaCount: ${application_set_replica_count}
   resources:
     requests:
       cpu: ${application_set_request_cpu}
@@ -50,6 +51,7 @@ notifications:
 ## Server Resources
 ## =========================
 server:
+  replicaCount: ${server_replica_count}
   resources:
     requests:
       cpu: ${server_request_cpu}
@@ -62,6 +64,7 @@ server:
 ## Repo Server Resources
 ## =========================
 repoServer:
+  replicaCount: ${repo_server_replica_count}
   resources:
     requests:
       cpu: ${repo_server_request_cpu}

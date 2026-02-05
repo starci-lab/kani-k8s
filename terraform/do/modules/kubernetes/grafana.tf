@@ -46,7 +46,10 @@ resource "helm_release" "grafana" {
       // =========================
       grafana_user     = var.grafana_user
       grafana_password = var.grafana_password
-
+      // =========================
+      // Replica count
+      // =========================
+      replica_count = var.grafana_replica_count
       // =========================
       // Grafana server resources
       // =========================

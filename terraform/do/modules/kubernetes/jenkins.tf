@@ -46,7 +46,10 @@ resource "helm_release" "jenkins" {
       // =========================
       jenkins_user     = var.jenkins_user
       jenkins_password = var.jenkins_password
-
+      // =========================
+      // Replica count
+      // =========================
+      replica_count = var.jenkins_replica_count
       // =========================
       // Jenkins resources
       // =========================

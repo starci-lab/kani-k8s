@@ -1,9 +1,9 @@
-# Prometheus Configuration - Variables Only
-# This file contains only the sections with variables from prometheus.yaml
+# Prometheus Configuration - Variables Only (minimal, replica count = 1)
 # All variables are injected via Terraform templatefile() in prometheus.tf
+# Defaults ref: _prometheus.yaml
 
 ## =========================
-## Operator Resources
+## Operator (image + resources)
 ## =========================
 operator:
   image:
@@ -16,13 +16,14 @@ operator:
     limits:
       cpu: ${operator_limit_cpu}
       memory: ${operator_limit_memory}
-  nodeSelector: 
+  nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
 ## =========================
-## Prometheus Resources
+## Prometheus (replicaCount from TF, image, resources, storage)
 ## =========================
 prometheus:
+  replicaCount: ${prometheus_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus
@@ -34,7 +35,7 @@ prometheus:
       limits:
         cpu: ${prometheus_limit_cpu}
         memory: ${prometheus_limit_memory}
-    nodeSelector: 
+    nodeSelector:
       "doks.digitalocean.com/node-pool": ${node_pool_label}
     storageSpec:
       volumeClaimTemplate:
@@ -52,9 +53,10 @@ prometheus:
           memory: ${thanos_limit_memory}
 
 ## =========================
-## Alertmanager Resources
+## Alertmanager (replicaCount from TF, image, resources, storage)
 ## =========================
 alertmanager:
+  replicaCount: ${alertmanager_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/alertmanager
@@ -66,7 +68,7 @@ alertmanager:
       limits:
         cpu: ${alertmanager_limit_cpu}
         memory: ${alertmanager_limit_memory}
-    nodeSelector: 
+    nodeSelector:
       "doks.digitalocean.com/node-pool": ${node_pool_label}
     storage:
       volumeClaimTemplate:
@@ -76,9 +78,10 @@ alertmanager:
               storage: ${alertmanager_persistence_size}
 
 ## =========================
-## Blackbox Exporter Resources
+## Blackbox Exporter (replicaCount from TF, image, resources)
 ## =========================
 blackboxExporter:
+  replicaCount: ${blackbox_exporter_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/blackbox-exporter
@@ -89,13 +92,14 @@ blackboxExporter:
     limits:
       cpu: ${blackbox_exporter_limit_cpu}
       memory: ${blackbox_exporter_limit_memory}
-  nodeSelector: 
+  nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
 ## =========================
-## Thanos Ruler Resources
+## Thanos Ruler (replicaCount from TF, image, storage resources)
 ## =========================
 thanosRuler:
+  replicaCount: ${thanos_ruler_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/thanos
@@ -106,5 +110,14 @@ thanosRuler:
     limits:
       cpu: ${thanos_ruler_limit_cpu}
       memory: ${thanos_ruler_limit_memory}
-  nodeSelector: 
+  nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
+
+## =========================
+## Exporters (disabled for minimal footprint)
+## =========================
+exporters:
+  node-exporter:
+    enabled: false
+  kube-state-metrics:
+    enabled: false

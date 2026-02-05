@@ -79,6 +79,9 @@ resource "helm_release" "argo_cd" {
 
       // Application controller
       controller_replica_count  = var.argo_cd_controller_replica_count
+      application_set_replica_count = var.argo_cd_application_set_replica_count
+      server_replica_count      = var.argo_cd_server_replica_count
+      repo_server_replica_count = var.argo_cd_repo_server_replica_count
       controller_request_cpu    = local.argocd.controller.request_cpu
       controller_request_memory = local.argocd.controller.request_memory
       controller_limit_cpu      = local.argocd.controller.limit_cpu

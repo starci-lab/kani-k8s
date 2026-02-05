@@ -2,6 +2,8 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in jenkins.tf
 
+replicaCount: ${replica_count}
+
 image:
   registry: docker.io
   repository: bitnamilegacy/jenkins

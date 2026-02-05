@@ -9,6 +9,24 @@ variable "argo_cd_controller_replica_count" {
   default     = 1
 }
 
+variable "argo_cd_application_set_replica_count" {
+  type        = number
+  description = "Number of replicas for the Argo CD ApplicationSet controller"
+  default     = 1
+}
+
+variable "argo_cd_server_replica_count" {
+  type        = number
+  description = "Number of replicas for the Argo CD server"
+  default     = 1
+}
+
+variable "argo_cd_repo_server_replica_count" {
+  type        = number
+  description = "Number of replicas for the Argo CD repo server"
+  default     = 1
+}
+
 variable "argo_cd_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the Argo CD application controller"

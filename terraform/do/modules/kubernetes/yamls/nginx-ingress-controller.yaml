@@ -31,6 +31,7 @@ nodeSelector:
 ## Default Backend Resources
 ## =========================
 defaultBackend:
+  replicaCount: ${default_backend_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/nginx

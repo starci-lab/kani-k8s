@@ -1,7 +1,25 @@
+variable "external_secrets_operator_replica_count" {
+  type        = number
+  description = "Number of External Secrets operator replicas"
+  default     = 1
+}
+
+variable "external_secrets_webhook_replica_count" {
+  type        = number
+  description = "Number of External Secrets webhook replicas"
+  default     = 1
+}
+
+variable "external_secrets_cert_controller_replica_count" {
+  type        = number
+  description = "Number of External Secrets cert controller replicas"
+  default     = 1
+}
+
 // =========================
 // External Secrets resource variables
 // =========================
-// Controls resource allocation for Grafana server.
+// Controls resource allocation for External Secrets.
 
 variable "external_secrets_request_cpu" {
   type        = string

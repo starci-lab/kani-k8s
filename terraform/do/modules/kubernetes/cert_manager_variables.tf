@@ -10,6 +10,24 @@ variable "cert_manager_install_crds" {
   default     = true
 }
 
+variable "cert_manager_controller_replica_count" {
+  type        = number
+  description = "Number of cert-manager controller replicas"
+  default     = 1
+}
+
+variable "cert_manager_webhook_replica_count" {
+  type        = number
+  description = "Number of cert-manager webhook replicas"
+  default     = 1
+}
+
+variable "cert_manager_cainjector_replica_count" {
+  type        = number
+  description = "Number of cert-manager CA injector replicas"
+  default     = 1
+}
+
 variable "cert_manager_cert_manager_request_cpu" {
   type        = string
   description = "CPU resource request for the cert-manager core component"

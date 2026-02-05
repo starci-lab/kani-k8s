@@ -1,4 +1,33 @@
 // =========================
+// Prometheus replica count variables
+// =========================
+// Number of replicas for each component (default 1).
+
+variable "prometheus_replica_count" {
+  type        = number
+  description = "Number of Prometheus server replicas"
+  default     = 1
+}
+
+variable "alertmanager_replica_count" {
+  type        = number
+  description = "Number of Alertmanager replicas"
+  default     = 1
+}
+
+variable "blackbox_exporter_replica_count" {
+  type        = number
+  description = "Number of Blackbox Exporter replicas"
+  default     = 1
+}
+
+variable "thanos_ruler_replica_count" {
+  type        = number
+  description = "Number of Thanos Ruler replicas"
+  default     = 1
+}
+
+// =========================
 // Prometheus Operator resource variables
 // =========================
 // Controls resource allocation for the Prometheus Operator.

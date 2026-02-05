@@ -11,6 +11,7 @@ admin:
   password: "${grafana_password}"
 
 grafana:
+  replicaCount: ${replica_count}
   datasources:
     secretDefinition:
       apiVersion: 1

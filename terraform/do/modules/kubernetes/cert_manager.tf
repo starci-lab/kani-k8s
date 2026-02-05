@@ -29,6 +29,12 @@ resource "helm_release" "cert_manager" {
   values = [
     templatefile("${path.module}/yamls/cert-manager.yaml", {
       // =========================
+      // Replica counts
+      // =========================
+      controller_replica_count = var.cert_manager_controller_replica_count
+      webhook_replica_count    = var.cert_manager_webhook_replica_count
+      cainjector_replica_count = var.cert_manager_cainjector_replica_count
+      // =========================
       // cert-manager core component resources
       // =========================
       install_crds                = var.cert_manager_install_crds

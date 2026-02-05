@@ -10,6 +10,12 @@ variable "nginx_ingress_controller_replica_count" {
   default     = 1
 }
 
+variable "nginx_ingress_controller_default_backend_replica_count" {
+  type        = number
+  description = "Number of replicas for the NGINX Ingress default backend"
+  default     = 1
+}
+
 variable "nginx_ingress_controller_request_cpu" {
   type        = string
   description = "CPU resource request for the NGINX Ingress Controller"

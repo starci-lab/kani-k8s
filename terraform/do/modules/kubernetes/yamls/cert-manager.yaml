@@ -16,6 +16,7 @@ global:
 ## Controller (image + resources)
 ## =========================
 controller:
+  replicaCount: ${controller_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/cert-manager
@@ -36,6 +37,7 @@ controller:
 ## Webhook (image + resources)
 ## =========================
 webhook:
+  replicaCount: ${webhook_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/cert-manager-webhook
@@ -51,6 +53,7 @@ webhook:
 ## CA Injector (image + resources)
 ## =========================
 cainjector:
+  replicaCount: ${cainjector_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/cainjector

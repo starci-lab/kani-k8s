@@ -25,6 +25,12 @@ resource "helm_release" "external_secrets" {
    values = [
     templatefile("${path.module}/yamls/external-secrets.yaml", {
       // =========================
+      // Replica counts
+      // =========================
+      operator_replica_count        = var.external_secrets_operator_replica_count
+      webhook_replica_count         = var.external_secrets_webhook_replica_count
+      cert_controller_replica_count = var.external_secrets_cert_controller_replica_count
+      // =========================
       // External Secrets resources
       // =========================
       request_cpu = local.external_secrets.external_secrets.request_cpu

@@ -1,3 +1,9 @@
+variable "portainer_replica_count" {
+  type        = number
+  description = "Number of Portainer replicas"
+  default     = 1
+}
+
 // =========================
 // Portainer resource variables
 // =========================

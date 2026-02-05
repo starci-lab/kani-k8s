@@ -2,6 +2,8 @@
 # This file contains only the sections with variables from portainer.yaml
 # All variables are injected via Terraform templatefile() in portainer.tf
 
+replicaCount: ${replica_count}
+
 ## =========================
 ## Node Scheduling
 ## =========================

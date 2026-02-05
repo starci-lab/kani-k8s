@@ -47,7 +47,8 @@ resource "helm_release" "nginx_ingress_controller" {
       // =========================
       // Controller resources
       // =========================
-      replica_count = var.nginx_ingress_controller_replica_count
+      replica_count                       = var.nginx_ingress_controller_replica_count
+      default_backend_replica_count       = var.nginx_ingress_controller_default_backend_replica_count
       request_cpu    = local.nginx_ingress_controller.controller.request_cpu
       request_memory = local.nginx_ingress_controller.controller.request_memory
       limit_cpu      = local.nginx_ingress_controller.controller.limit_cpu
