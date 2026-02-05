@@ -250,13 +250,13 @@ variable "argo_cd_redis_replica_count" {
 variable "argo_cd_redis_master_persistence_size" {
   type        = string
   description = "Persistent volume size for Redis master data"
-  default     = "8Gi"
+  default     = "2Gi"
 }
 
 variable "argo_cd_redis_replica_persistence_size" {
   type        = string
   description = "Persistent volume size for Redis replica data"
-  default     = "8Gi"
+  default     = "2Gi"
 }
 
 locals {
