@@ -2,6 +2,13 @@
 # This file contains only the sections with variables from redis.yaml
 # All variables are injected via Terraform templatefile() in argo_cd.tf
 
+## @param architecture Redis(R) architecture. Allowed values: `standalone` or `replication`
+##
+architecture: standalone
+
+## =========================
+## Image
+## =========================
 image:
   registry: docker.io
   repository: bitnami/redis
@@ -10,6 +17,15 @@ image:
 ## Authentication
 ## =========================
 auth:
+  ## @param auth.enabled Enable password authentication
+  ##
+  enabled: true
+  ## @param auth.sentinel Enable authentication on sentinels too
+  ##
+  sentinel: true
+  ## @param auth.password Redis(R) password
+  ## Defaults to a random 10-character alphanumeric string if not set
+  ##
   password: ${password}
 
 ## =========================

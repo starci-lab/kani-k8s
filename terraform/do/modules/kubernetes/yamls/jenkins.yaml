@@ -2,18 +2,33 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in jenkins.tf
 
+## =========================
+## Replica count
+## =========================
 replicaCount: ${replica_count}
 
+## =========================
+## Image (Bitnami legacy registry)
+## =========================
 image:
   registry: docker.io
   repository: bitnamilegacy/jenkins
 
+## =========================
+## Authentication
+## =========================
 jenkinsUser: ${jenkins_user}
 jenkinsPassword: ${jenkins_password}
 
+## =========================
+## Init scripts (ConfigMap / Secret)
+## =========================
 initScriptsCM: ${init_hook_scripts_cm}
 initScriptsSecret: ${init_hook_scripts_secret}
 
+## =========================
+## Controller resources
+## =========================
 controller:
   resources:
     requests:
@@ -23,6 +38,9 @@ controller:
       cpu: ${limit_cpu}
       memory: ${limit_memory}
 
+## =========================
+## Volume permissions init container resources
+## =========================
 defaultInitContainers:
   volumePermissions:
     resources:
