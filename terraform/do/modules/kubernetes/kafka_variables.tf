@@ -66,6 +66,12 @@ variable "kafka_broker_replica_count" {
   default     = 1
 }
 
+variable "kafka_broker_persistence_size" {
+  type        = string
+  description = "Persistent volume size for Kafka broker data"
+  default     = "8Gi"
+}
+
 variable "kafka_ui_request_cpu" {
   type        = string
   description = "CPU resource request for Kafka UI"

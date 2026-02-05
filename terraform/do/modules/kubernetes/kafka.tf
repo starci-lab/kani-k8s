@@ -54,6 +54,7 @@ resource "helm_release" "kafka" {
       broker_request_memory = local.kafka.broker.request_memory
       broker_limit_cpu      = local.kafka.broker.limit_cpu
       broker_limit_memory   = local.kafka.broker.limit_memory
+      broker_persistence_size = var.kafka_broker_persistence_size
 
       // =========================
       // Node scheduling

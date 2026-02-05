@@ -63,3 +63,5 @@ broker:
       memory: ${broker_limit_memory}
   nodeSelector: 
     "doks.digitalocean.com/node-pool": ${node_pool_label}
+  persistence:
+    size: ${broker_persistence_size}
