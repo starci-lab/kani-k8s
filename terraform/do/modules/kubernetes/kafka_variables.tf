@@ -60,6 +60,12 @@ variable "kafka_controller_log_persistence_size" {
   default     = "4Gi"
 }
 
+variable "kafka_broker_replica_count" {
+  type        = number
+  description = "Number of Kafka broker-only nodes"
+  default     = 1
+}
+
 variable "kafka_ui_request_cpu" {
   type        = string
   description = "CPU resource request for Kafka UI"
@@ -158,7 +164,7 @@ variable "volume_permissions_limit_memory" {
 locals {
   kafka_presets = {
     controller        = "192"
-    broker            = "128"
+    broker            = "192"
     volume_permissions = "16"
     kafka_ui          = "64"
   }
@@ -188,19 +194,19 @@ locals {
     broker = {
       request_cpu = coalesce(
         var.kafka_broker_request_cpu,
-        try(var.resources_config[local.kafka_presets.broker].requests.cpu, "128m")
+        try(var.resources_config[local.kafka_presets.broker].requests.cpu, "192m")
       )
       request_memory = coalesce(
         var.kafka_broker_request_memory,
-        try(var.resources_config[local.kafka_presets.broker].requests.memory, "256Mi")
+        try(var.resources_config[local.kafka_presets.broker].requests.memory, "384Mi")
       )
       limit_cpu = coalesce(
         var.kafka_broker_limit_cpu,
-        try(var.resources_config[local.kafka_presets.broker].limits.cpu, "512m")
+        try(var.resources_config[local.kafka_presets.broker].limits.cpu, "768m")
       )
       limit_memory = coalesce(
         var.kafka_broker_limit_memory,
-        try(var.resources_config[local.kafka_presets.broker].limits.memory, "1024Mi")
+        try(var.resources_config[local.kafka_presets.broker].limits.memory, "1536Mi")
       )
     }
 

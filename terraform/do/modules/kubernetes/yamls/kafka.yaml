@@ -33,6 +33,7 @@ defaultInitContainers:
 ## Controller Resources
 ## =========================
 controller:
+  controllerOnly: true
   replicaCount: ${controller_replica_count}
   resources: 
     requests:
@@ -52,6 +53,7 @@ controller:
 ## Broker Resources
 ## =========================
 broker:
+  replicaCount: ${broker_replica_count}
   resources:
     requests:
       cpu: ${broker_request_cpu}

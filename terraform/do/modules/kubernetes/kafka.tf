@@ -47,8 +47,9 @@ resource "helm_release" "kafka" {
       controller_replica_count        = 1
 
       // =========================
-      // Kafka broker resources
+      // Kafka broker (replica count + resources)
       // =========================
+      broker_replica_count  = var.kafka_broker_replica_count
       broker_request_cpu    = local.kafka.broker.request_cpu
       broker_request_memory = local.kafka.broker.request_memory
       broker_limit_cpu      = local.kafka.broker.limit_cpu
