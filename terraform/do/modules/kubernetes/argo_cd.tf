@@ -34,16 +34,18 @@ resource "helm_release" "argo_cd_redis" {
   // Render Redis Helm values from a template file
   values = [
     templatefile("${path.module}/yamls/redis.yaml", {
-      password               = var.argo_cd_redis_password
-      replica_replica_count  = var.argo_cd_redis_replica_count
-      master_request_cpu     = local.argocd.redis.request_cpu
-      master_request_memory  = local.argocd.redis.request_memory
-      master_limit_cpu      = local.argocd.redis.limit_cpu
-      master_limit_memory   = local.argocd.redis.limit_memory
-      replica_request_cpu    = local.argocd.redis.request_cpu
-      replica_request_memory = local.argocd.redis.request_memory
-      replica_limit_cpu      = local.argocd.redis.limit_cpu
-      replica_limit_memory   = local.argocd.redis.limit_memory
+      password                = var.argo_cd_redis_password
+      replica_replica_count   = var.argo_cd_redis_replica_count
+      master_request_cpu      = local.argocd.redis.request_cpu
+      master_request_memory   = local.argocd.redis.request_memory
+      master_limit_cpu        = local.argocd.redis.limit_cpu
+      master_limit_memory     = local.argocd.redis.limit_memory
+      master_persistence_size = var.argo_cd_redis_master_persistence_size
+      replica_request_cpu     = local.argocd.redis.request_cpu
+      replica_request_memory  = local.argocd.redis.request_memory
+      replica_limit_cpu       = local.argocd.redis.limit_cpu
+      replica_limit_memory    = local.argocd.redis.limit_memory
+      replica_persistence_size = var.argo_cd_redis_replica_persistence_size
     })
   ]
 

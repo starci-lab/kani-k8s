@@ -6,6 +6,7 @@
 ## Operator (image + resources)
 ## =========================
 operator:
+  enabled: false
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus-operator
@@ -81,6 +82,7 @@ alertmanager:
 ## Blackbox Exporter (replicaCount from TF, image, resources)
 ## =========================
 blackboxExporter:
+  enabled: false
   replicaCount: ${blackbox_exporter_replica_count}
   image:
     registry: docker.io

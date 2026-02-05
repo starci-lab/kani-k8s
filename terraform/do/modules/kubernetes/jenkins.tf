@@ -67,6 +67,10 @@ resource "helm_release" "jenkins" {
       volume_permissions_limit_memory   = local.jenkins.volume_permissions.limit_memory
 
       // =========================
+      // Persistence
+      // =========================
+      persistence_size = var.jenkins_persistence_size
+      // =========================
       // Jenkins init groovy scripts
       // =========================
       init_hook_scripts_cm = kubernetes_config_map.jenkins_init_groovy_cm.metadata[0].name

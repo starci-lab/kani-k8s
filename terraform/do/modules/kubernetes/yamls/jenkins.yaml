@@ -32,3 +32,9 @@ defaultInitContainers:
       limits:
         cpu: ${volume_permissions_limit_cpu}
         memory: ${volume_permissions_limit_memory}
+
+## =========================
+## Persistence
+## =========================
+persistence:
+  size: ${persistence_size}

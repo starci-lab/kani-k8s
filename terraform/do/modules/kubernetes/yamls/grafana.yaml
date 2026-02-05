@@ -2,14 +2,29 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in grafana.tf
 
+## =========================
+## Image (Bitnami legacy registry)
+## =========================
 image:
   registry: docker.io
   repository: bitnamilegacy/grafana
 
+## =========================
+## Persistence
+## =========================
+persistence:
+  size: ${persistence_size}
+
+## =========================
+## Admin credentials
+## =========================
 admin:
   user: "${grafana_user}"
   password: "${grafana_password}"
 
+## =========================
+## Grafana (replicaCount, datasources, nodeSelector, resources)
+## =========================
 grafana:
   replicaCount: ${replica_count}
   datasources:
@@ -35,5 +50,3 @@ grafana:
     limits:
       cpu: ${limit_cpu}
       memory: ${limit_memory}
-  persistence:
-    size: ${persistence_size}

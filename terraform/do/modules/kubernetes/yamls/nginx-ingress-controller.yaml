@@ -28,6 +28,17 @@ nodeSelector:
   "doks.digitalocean.com/node-pool": ${node_pool_label}
 
 ## =========================
+## Service
+## =========================
+service:
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: "1"
+    service.beta.kubernetes.io/do-loadbalancer-type: "REGIONAL_NETWORK"
+    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-type: "cookies"
+    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-name: "cookie"
+    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-ttl: "300"
+
+## =========================
 ## Default Backend Resources
 ## =========================
 defaultBackend:

@@ -21,6 +21,12 @@ variable "jenkins_replica_count" {
   default     = 1
 }
 
+variable "jenkins_persistence_size" {
+  type        = string
+  description = "Persistent volume size for Jenkins home data"
+  default     = "8Gi"
+}
+
 // =========================
 // Jenkins resource variables
 // =========================

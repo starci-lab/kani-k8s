@@ -23,6 +23,8 @@ master:
     limits:
       cpu: ${master_limit_cpu}
       memory: ${master_limit_memory}
+  persistence:
+    size: ${master_persistence_size}
 
 ## =========================
 ## Replica (replicaCount + resources from TF)
@@ -36,3 +38,5 @@ replica:
     limits:
       cpu: ${replica_limit_cpu}
       memory: ${replica_limit_memory}
+  persistence:
+    size: ${replica_persistence_size}
