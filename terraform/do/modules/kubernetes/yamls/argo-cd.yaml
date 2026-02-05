@@ -85,6 +85,13 @@ configs:
 ## =========================
 ## Redis (external)
 ## =========================
-redis:
+externalRedis:
+  enabled: true
   host: ${redis_host}
   password: ${redis_password}
+
+redis:
+  enabled: false
+
+redisWait:
+  enabled: false
