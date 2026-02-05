@@ -4,7 +4,7 @@
 
 image:
   registry: docker.io
-  repository: bitnamilegacy/redis
+  repository: bitnami/redis
 
 ## =========================
 ## Authentication
