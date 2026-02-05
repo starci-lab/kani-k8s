@@ -2,6 +2,10 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in grafana.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/grafana
+
 admin:
   user: "${grafana_user}"
   password: "${grafana_password}"

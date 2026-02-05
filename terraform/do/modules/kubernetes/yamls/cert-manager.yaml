@@ -4,12 +4,26 @@
 
 installCRDs: ${install_crds}
 
+## =========================
+## Global
+## =========================
 global:
   commonLabels: {}
   imageRegistry: ""
   imagePullSecrets: []
 
+## =========================
+## Controller (image + resources)
+## =========================
 controller:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/cert-manager
+  acmesolver:
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/acmesolver
+  ## Controller container resources
   resources:
     requests:
       cpu: ${controller_request_cpu}
@@ -18,7 +32,13 @@ controller:
       cpu: ${controller_limit_cpu}
       memory: ${controller_limit_memory}
 
+## =========================
+## Webhook (image + resources)
+## =========================
 webhook:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/cert-manager-webhook
   resources:
     requests:
       cpu: ${webhook_request_cpu}
@@ -27,7 +47,13 @@ webhook:
       cpu: ${webhook_limit_cpu}
       memory: ${webhook_limit_memory}
 
+## =========================
+## CA Injector (image + resources)
+## =========================
 cainjector:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/cainjector
   resources:
     requests:
       cpu: ${cainjector_request_cpu}

@@ -6,6 +6,9 @@
 ## Operator Resources
 ## =========================
 operator:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/prometheus-operator
   resources:
     requests:
       cpu: ${operator_request_cpu}
@@ -20,6 +23,9 @@ operator:
 ## Prometheus Resources
 ## =========================
 prometheus:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/prometheus
   prometheusSpec:
     resources:
       requests:
@@ -49,6 +55,9 @@ prometheus:
 ## Alertmanager Resources
 ## =========================
 alertmanager:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/alertmanager
   alertmanagerSpec:
     resources:
       requests:
@@ -70,6 +79,9 @@ alertmanager:
 ## Blackbox Exporter Resources
 ## =========================
 blackboxExporter:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/blackbox-exporter
   resources:
     requests:
       cpu: ${blackbox_exporter_request_cpu}
@@ -84,6 +96,9 @@ blackboxExporter:
 ## Thanos Ruler Resources
 ## =========================
 thanosRuler:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/thanos
   storage:
     requests:
       cpu: ${thanos_ruler_request_cpu}

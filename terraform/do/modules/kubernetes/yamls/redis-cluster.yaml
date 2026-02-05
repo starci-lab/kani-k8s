@@ -2,6 +2,10 @@
 # This file contains only the sections with variables from redis-cluster.yaml
 # All variables are injected via Terraform templatefile() in redis_cluster.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/redis-cluster
+
 ## =========================
 ## Global Configuration
 ## =========================

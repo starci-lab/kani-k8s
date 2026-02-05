@@ -2,6 +2,10 @@
 # This file contains only the sections with variables from mongodb-sharded.yaml
 # All variables are injected via Terraform templatefile() in mongodb_sharded.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/mongodb-sharded
+
 ## =========================
 ## Authentication
 ## =========================

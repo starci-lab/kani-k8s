@@ -2,6 +2,10 @@
 # This file contains only the sections with variables from kafka.yaml
 # All variables are injected via Terraform templatefile() in kafka.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/kafka
+
 ## =========================
 ## SASL Authentication
 ## =========================
@@ -57,24 +61,3 @@ broker:
       memory: ${broker_limit_memory}
   nodeSelector: 
     "doks.digitalocean.com/node-pool": ${node_pool_label}
-
-## =========================
-## Variable Mapping (from kafka.tf)
-## =========================
-# sasl_user                          -> var.kafka_sasl_user
-# sasl_password                      -> var.kafka_sasl_password
-# volume_permissions_request_cpu     -> local.kafka.volume_permissions.request_cpu
-# volume_permissions_request_memory  -> local.kafka.volume_permissions.request_memory
-# volume_permissions_limit_cpu       -> local.kafka.volume_permissions.limit_cpu
-# volume_permissions_limit_memory    -> local.kafka.volume_permissions.limit_memory
-# controller_request_cpu             -> local.kafka.controller.request_cpu
-# controller_request_memory          -> local.kafka.controller.request_memory
-# controller_limit_cpu               -> local.kafka.controller.limit_cpu
-# controller_limit_memory            -> local.kafka.controller.limit_memory
-# controller_persistence_size        -> var.kafka_controller_persistence_size
-# controller_log_persistence_size    -> var.kafka_controller_log_persistence_size
-# broker_request_cpu                 -> local.kafka.broker.request_cpu
-# broker_request_memory              -> local.kafka.broker.request_memory
-# broker_limit_cpu                   -> local.kafka.broker.limit_cpu
-# broker_limit_memory                -> local.kafka.broker.limit_memory
-# node_pool_label                    -> var.kubernetes_primary_node_pool_name

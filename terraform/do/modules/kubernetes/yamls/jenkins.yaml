@@ -2,6 +2,10 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in jenkins.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/jenkins
+
 jenkinsUser: ${jenkins_user}
 jenkinsPassword: ${jenkins_password}
 

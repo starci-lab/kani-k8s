@@ -2,6 +2,16 @@
 # This file contains only the sections with variables
 # All variables are injected via Terraform templatefile() in argo_cd.tf
 
+## =========================
+## Image (Bitnami legacy registry)
+## =========================
+image:
+  registry: docker.io
+  repository: bitnamilegacy/argo-cd
+
+## =========================
+## Controller Resources
+## =========================
 controller:
   replicas: ${controller_replica_count}
   resources:
@@ -12,6 +22,9 @@ controller:
       cpu: ${controller_limit_cpu}
       memory: ${controller_limit_memory}
 
+## =========================
+## ApplicationSet Resources
+## =========================
 applicationSet:
   resources:
     requests:
@@ -21,6 +34,9 @@ applicationSet:
       cpu: ${application_set_limit_cpu}
       memory: ${application_set_limit_memory}
 
+## =========================
+## Notifications Resources
+## =========================
 notifications:
   resources:
     requests:
@@ -30,6 +46,9 @@ notifications:
       cpu: ${notifications_limit_cpu}
       memory: ${notifications_limit_memory}
 
+## =========================
+## Server Resources
+## =========================
 server:
   resources:
     requests:
@@ -39,6 +58,9 @@ server:
       cpu: ${server_limit_cpu}
       memory: ${server_limit_memory}
 
+## =========================
+## Repo Server Resources
+## =========================
 repoServer:
   resources:
     requests:
@@ -48,12 +70,18 @@ repoServer:
       cpu: ${repo_server_limit_cpu}
       memory: ${repo_server_limit_memory}
 
+## =========================
+## Config (insecure + admin password)
+## =========================
 configs:
   params:
     server.insecure: true
   secret:
     argocdServerAdminPassword: ${admin_password}
 
+## =========================
+## Redis (external)
+## =========================
 redis:
   host: ${redis_host}
   password: ${redis_password}

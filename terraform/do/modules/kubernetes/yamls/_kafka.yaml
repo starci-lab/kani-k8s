@@ -2024,7 +2024,7 @@ metrics:
     ##
     image:
       registry: docker.io
-      repository: bitnami/jmx-exporter
+      repository: bitnamilegacy/jmx-exporter
       tag: 1.4.0-debian-12-r0
       digest: ""
       ## Specify a imagePullPolicy

@@ -2,6 +2,10 @@
 # This file contains only the sections with variables from redis.yaml
 # All variables are injected via Terraform templatefile() in argo_cd.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/redis
+
 ## =========================
 ## Authentication
 ## =========================

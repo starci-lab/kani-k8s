@@ -2,6 +2,9 @@
 # This file contains only the sections with variables from nginx-ingress-controller.yaml
 # All variables are injected via Terraform templatefile() in nginx_ingress_controller.tf
 
+image:
+  registry: docker.io
+  repository: bitnamilegacy/nginx-ingress-controller
 ## =========================
 ## Replica Count
 ## =========================
@@ -28,6 +31,9 @@ nodeSelector:
 ## Default Backend Resources
 ## =========================
 defaultBackend:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/nginx
   resources:
     requests:
       cpu: ${default_backend_request_cpu}
