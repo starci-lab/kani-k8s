@@ -138,6 +138,8 @@ resource "helm_release" "kani_executor" {
     kubernetes_namespace.kani,
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
+    kubernetes_job_v1.restore,
+    kubernetes_job_v1.seed,
     helm_release.argo_cd,
     helm_release.grafana,
     helm_release.jenkins,

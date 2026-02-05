@@ -136,6 +136,8 @@ resource "helm_release" "kani_observer" {
     kubernetes_namespace.kani,
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
+    kubernetes_job_v1.restore,
+    kubernetes_job_v1.seed,
     kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
     kubernetes_secret.gcp_crypto_key_ed_sa,
     kubernetes_secret.gcp_google_drive_ud_sa,

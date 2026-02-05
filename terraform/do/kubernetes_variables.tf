@@ -17,7 +17,7 @@ variable "kubernetes_region" {
 variable "kubernetes_version" {
   type        = string
   description = "Kubernetes version used for the cluster (must be supported by DigitalOcean)"
-  default     = "1.34.1-do.2"
+  default     = "1.34.1-do.3"
 }
 
 // =========================
