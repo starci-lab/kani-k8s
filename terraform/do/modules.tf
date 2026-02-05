@@ -116,4 +116,6 @@ module "kubernetes" {
   privy_signer_private_key = var.privy_signer_private_key
   // Coin Market Cap API key
   coin_market_cap_api_key = var.coin_market_cap_api_key
+  // Kani DB Restore Job Backup ID
+  kani_db_restore_job_backup_id = var.kani_db_restore_job_backup_id
 }
