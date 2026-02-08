@@ -13,14 +13,14 @@ variable "kubernetes_name" {
 variable "kubernetes_region" {
   type        = string
   description = "DigitalOcean region where the Kubernetes cluster will be provisioned"
-  default     = "sgp1"
+  default     = "sfo2"
 }
 
 // Kubernetes version used for the cluster (must be supported by DigitalOcean)
 variable "kubernetes_version" {
   type        = string
   description = "Kubernetes version used for the cluster (must be supported by DigitalOcean)"
-  default     = "1.34.1-do.3"
+  default     = "1.33.6-do.3"
 }
 
 // =========================
@@ -38,12 +38,12 @@ variable "kubernetes_primary_node_pool_name" {
 variable "kubernetes_primary_node_pool_size" {
   type        = string
   description = "Droplet size (instance type) used for nodes in the primary node pool"
-  default     = "s-4vcpu-8gb"
+  default     = "s-2vcpu-4gb"
 }
 
 // Number of worker nodes provisioned in the primary node pool
 variable "kubernetes_primary_node_pool_node_count" {
   type        = number
   description = "Number of worker nodes provisioned in the primary node pool"
-  default     = 1
+  default     = 2
 }

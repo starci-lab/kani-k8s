@@ -222,21 +222,9 @@ resource "kubernetes_cron_job_v1" "db_backup" {
 
   // Ensure the Kani namespace and CLI Helm release exist before creating the cron job
   depends_on = [
+    # Kubernetes namespace
     kubernetes_namespace.kani,
+    # Helm releases
     helm_release.kani_cli,
-    kubectl_manifest.external_secret["app"],
-    kubectl_manifest.external_secret["rpcs"],
-    # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
-    # helm_release.jenkins,
-    helm_release.kafka,
-    helm_release.mongodb_sharded,
-    helm_release.prometheus,
-    helm_release.redis_cluster,
-    kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
-    kubernetes_secret.gcp_crypto_key_ed_sa,
-    kubernetes_secret.gcp_google_drive_ud_sa,
-    kubernetes_secret.encrypted_aes_key,
-    kubernetes_secret.encrypted_jwt_secret_key,
   ]
 }

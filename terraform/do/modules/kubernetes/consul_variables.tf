@@ -19,7 +19,7 @@ variable "consul_replica_count" {
 variable "consul_persistence_size" {
   type        = string
   description = "Persistent volume size for Consul data"
-  default     = "2Gi"
+  default     = "4Gi"
 }
 
 // =========================

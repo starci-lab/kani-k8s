@@ -120,22 +120,26 @@ resource "helm_release" "kani_observer" {
 
   // Ensure the Kani namespace exists before installing the chart
   depends_on = [
+    # Kubernetes namespace
     kubernetes_namespace.kani,
+    # External Secrets
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
-    kubernetes_job_v1.restore,
-    kubernetes_job_v1.seed,
+    # Kubernetes secrets
     kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
     kubernetes_secret.gcp_crypto_key_ed_sa,
     kubernetes_secret.gcp_google_drive_ud_sa,
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
+    # Kubernetes jobs
+    kubernetes_job_v1.restore,
+    kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.prometheus,
+    helm_release.kube_prometheus,
     helm_release.redis_cluster,
     helm_release.consul,
     helm_release.loki,

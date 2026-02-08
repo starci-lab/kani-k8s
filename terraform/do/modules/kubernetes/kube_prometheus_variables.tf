@@ -268,6 +268,43 @@ variable "kube_prometheus_thanos_ruler_limit_memory" {
 }
 
 // =========================
+// Consul metrics scrape (additionalScrapeConfigs)
+// =========================
+// Two jobs: consul-exporter (sidecar 9107) and consul (HTTP API 8500).
+// Requires Consul Helm chart with metrics.enabled = true for exporter.
+
+variable "kube_prometheus_consul_scrape_enabled" {
+  type        = bool
+  description = "Enable Prometheus additionalScrapeConfigs for Consul (exporter + API)"
+  default     = true
+}
+
+
+variable "kube_prometheus_consul_exporter_metrics_path" {
+  type        = string
+  description = "Consul exporter metrics path"
+  default     = "/metrics"
+}
+
+variable "kube_prometheus_consul_exporter_scrape_interval" {
+  type        = string
+  description = "Consul exporter scrape interval"
+  default     = "30s"
+}
+
+variable "kube_prometheus_consul_metrics_path" {
+  type        = string
+  description = "Consul metrics path"
+  default     = "/api/metrics"
+}
+
+variable "kube_prometheus_consul_scrape_interval" {
+  type        = string
+  description = "Consul API scrape interval"
+  default     = "10s"
+}
+
+// =========================
 // kube-prometheus Basic Auth variables
 // =========================
 // Controls basic authentication for kube-prometheus ingress.

@@ -17,7 +17,8 @@ resource "kubernetes_namespace" "redis_cluster" {
 // Fetches the Service created by the Redis Cluster Helm chart.
 data "kubernetes_service" "redis_cluster" {
   metadata {
-    name      = local.redis_cluster.name
+    name      = local.redis_cluster.services.service.name
     namespace = kubernetes_namespace.redis_cluster.metadata[0].name
   }
+  depends_on = [helm_release.redis_cluster]
 }

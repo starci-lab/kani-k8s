@@ -18,7 +18,8 @@ resource "kubernetes_namespace" "mongodb_sharded" {
 // Used to build the MongoDB Sharded service address for clients.
 data "kubernetes_service" "mongodb_sharded" {
   metadata {
-    name      = "mongodb-sharded"
+    name      = local.mongodb_sharded.services.service.name
     namespace = kubernetes_namespace.mongodb_sharded.metadata[0].name
   }
+  depends_on = [helm_release.mongodb_sharded]
 }

@@ -7,7 +7,6 @@ data "kubernetes_service" "loki_gateway" {
     name      = local.loki.services.gateway_service.name
     namespace = kubernetes_namespace.loki.metadata[0].name
   }
-
   depends_on = [helm_release.loki]
 }
 

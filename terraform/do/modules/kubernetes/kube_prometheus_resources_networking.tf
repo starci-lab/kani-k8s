@@ -3,12 +3,12 @@
 // =========================
 // Fetches the Service created by the kube-prometheus Helm chart.
 // This is used to dynamically retrieve service ports for Ingress configuration.
-data "kubernetes_service" "prometheus_server" {
+data "kubernetes_service" "kube_prometheus_server" {
   metadata {
-    name      = local.prometheus.services.server_service.name
+    name      = local.kube_prometheus.services.server_service.name
     namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
-  depends_on = [helm_release.prometheus]
+  depends_on = [helm_release.kube_prometheus]
 }
 
 // =========================
@@ -16,12 +16,12 @@ data "kubernetes_service" "prometheus_server" {
 // =========================
 // Fetches the Service created by the kube-prometheus Helm chart.
 // This is used to dynamically retrieve service ports for Ingress configuration.
-data "kubernetes_service" "prometheus_alertmanager_server" {
+data "kubernetes_service" "kube_prometheus_alertmanager_server" {
   metadata {
-    name      = local.prometheus.services.alertmanager_server_service.name
+    name      = local.kube_prometheus.services.alertmanager_server_service.name
     namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
-  depends_on = [helm_release.prometheus]
+  depends_on = [helm_release.kube_prometheus]
 }
 
 // =========================
@@ -72,9 +72,9 @@ resource "kubernetes_ingress_v1" "prometheus" {
           backend {
             service {
               // Dynamically resolved kube-prometheus service + port
-              name = data.kubernetes_service.prometheus_server.metadata[0].name
+              name = data.kubernetes_service.kube_prometheus_server.metadata[0].name
               port {
-                number = local.prometheus_outputs.server_service.port
+                number = local.kube_prometheus_outputs.server_service.port
               }
             }
           }
@@ -91,7 +91,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
   depends_on = [
     kubectl_manifest.cluster_issuer_letsencrypt_prod,
     cloudflare_record.prometheus,
-    helm_release.prometheus,
+    helm_release.kube_prometheus,
     kubernetes_secret.prometheus_basic_auth
   ]
 }
@@ -144,9 +144,9 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
           backend {
             service {
               // Dynamically resolved kube-prometheus service + port
-              name = data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name
+              name = data.kubernetes_service.kube_prometheus_alertmanager_server.metadata[0].name
               port {
-                number = local.prometheus_outputs.alertmanager_server_service.port
+                number = local.kube_prometheus_outputs.alertmanager_server_service.port
               }
             }
           }
@@ -163,7 +163,7 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
   depends_on = [
     kubectl_manifest.cluster_issuer_letsencrypt_prod,
     cloudflare_record.prometheus_alertmanager,
-    helm_release.prometheus,
+    helm_release.kube_prometheus,
     kubernetes_secret.prometheus_alertmanager_basic_auth
   ]
 }

@@ -23,7 +23,7 @@ locals {
 // Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
 // Also includes naming conventions.
 locals {
-  prometheus = {
+  kube_prometheus = {
     operator = {
       request_cpu = coalesce(
         var.kube_prometheus_operator_request_cpu,
@@ -153,25 +153,25 @@ locals {
 // Service port resolution and computed service information.
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
-  prometheus_outputs = {
+  kube_prometheus_outputs = {
     server_service = {
-      host = "${data.kubernetes_service.prometheus_server.metadata[0].name}.${kubernetes_namespace.kube_prometheus.metadata[0].name}.svc.cluster.local"
+      host = "${data.kubernetes_service.kube_prometheus_server.metadata[0].name}.${kubernetes_namespace.kube_prometheus.metadata[0].name}.svc.cluster.local"
       port = try(
         one([
-          for p in data.kubernetes_service.prometheus_server.spec[0].port :
-          p.port if p.port == local.prometheus.services.server_service.port
+          for p in data.kubernetes_service.kube_prometheus_server.spec[0].port :
+          p.port if p.port == local.kube_prometheus.services.server_service.port
         ]),
-        data.kubernetes_service.prometheus_server.spec[0].port[0].port
+        data.kubernetes_service.kube_prometheus_server.spec[0].port[0].port
       )
     }
     alertmanager_server_service = {
-      host = "${data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name}.${kubernetes_namespace.kube_prometheus.metadata[0].name}.svc.cluster.local"
+      host = "${data.kubernetes_service.kube_prometheus_alertmanager_server.metadata[0].name}.${kubernetes_namespace.kube_prometheus.metadata[0].name}.svc.cluster.local"
       port = try(
         one([
-          for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
-          p.port if p.port == local.prometheus.services.alertmanager_server_service.port
+          for p in data.kubernetes_service.kube_prometheus_alertmanager_server.spec[0].port :
+          p.port if p.port == local.kube_prometheus.services.alertmanager_server_service.port
         ]),
-        data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
+        data.kubernetes_service.kube_prometheus_alertmanager_server.spec[0].port[0].port
       )
     }
   }

@@ -17,7 +17,8 @@ resource "kubernetes_namespace" "kafka" {
 // Used to build the Kafka bootstrap address for UI and clients.
 data "kubernetes_service" "kafka" {
   metadata {
-    name      = "kafka"
+    name      = local.kafka.services.service.name
     namespace = kubernetes_namespace.kafka.metadata[0].name
   }
+  depends_on = [helm_release.kafka]
 }

@@ -54,7 +54,7 @@ volumePermissions:
 ## Gossip encryption (optional)
 ## =========================
 ## Base64-encoded gossip key; leave empty to disable encryption.
-gossipKey: ${gossip_key}
+## gossipKey: ${gossip_key}
 
 ## =========================
 ## Consul exporter
@@ -71,3 +71,16 @@ metrics:
     limits:
       cpu: ${exporter_limit_cpu}
       memory: ${exporter_limit_memory}
+
+## =========================
+## Network Policies
+## =========================
+networkPolicy:
+  extraIngress:
+  - from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kube-prometheus
+    ports:
+      - port: 9107
+        protocol: TCP
