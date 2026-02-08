@@ -4,7 +4,7 @@
 // Deploys Redis Cluster using the Bitnami Helm chart.
 // This release is conditionally deployed via enable_redis_cluster.
 resource "helm_release" "redis_cluster" {
-  name      = local.redis.name
+  name      = local.redis_cluster.name
   namespace = kubernetes_namespace.redis_cluster.metadata[0].name
 
   // Bitnami Redis Cluster chart from Docker Hub OCI registry
@@ -18,10 +18,10 @@ resource "helm_release" "redis_cluster" {
       nodes    = var.redis_nodes
       replicas = var.redis_replicas
       // Resources per node
-      request_cpu    = local.redis.redis.request_cpu
-      request_memory = local.redis.redis.request_memory
-      limit_cpu      = local.redis.redis.limit_cpu
-      limit_memory   = local.redis.redis.limit_memory
+      request_cpu    = local.redis_cluster.redis.request_cpu
+      request_memory = local.redis_cluster.redis.request_memory
+      limit_cpu      = local.redis_cluster.redis.limit_cpu
+      limit_memory   = local.redis_cluster.redis.limit_memory
       // Persistence
       persistence_size = var.redis_persistence_size
       // Node scheduling

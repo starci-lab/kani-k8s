@@ -7,26 +7,26 @@
 // Also includes naming conventions and service configuration.
 
 locals {
-  redis = {
+  redis_cluster = {
     presets = {
       redis = "64"
     }
     redis = {
       request_cpu = coalesce(
         var.redis_request_cpu,
-        try(var.resources_config[local.redis.presets.redis].requests.cpu, "96m")
+        try(var.resources_config[local.redis_cluster.presets.redis].requests.cpu, "96m")
       )
       request_memory = coalesce(
         var.redis_request_memory,
-        try(var.resources_config[local.redis.presets.redis].requests.memory, "192Mi")
+        try(var.resources_config[local.redis_cluster.presets.redis].requests.memory, "192Mi")
       )
       limit_cpu = coalesce(
         var.redis_limit_cpu,
-        try(var.resources_config[local.redis.presets.redis].limits.cpu, "192m")
+        try(var.resources_config[local.redis_cluster.presets.redis].limits.cpu, "192m")
       )
       limit_memory = coalesce(
         var.redis_limit_memory,
-        try(var.resources_config[local.redis.presets.redis].limits.memory, "384Mi")
+        try(var.resources_config[local.redis_cluster.presets.redis].limits.memory, "384Mi")
       )
     }
     name = "redis-cluster"

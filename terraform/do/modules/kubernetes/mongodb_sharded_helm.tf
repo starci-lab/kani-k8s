@@ -25,23 +25,23 @@ resource "helm_release" "mongodb_sharded" {
       // Config Server configuration
       configsvr_replica_count      = var.mongodb_configsvr_replica_count
       configsvr_persistence_size   = var.mongodb_configsvr_persistence_size
-      configsvr_request_cpu        = local.mongodb.configsvr.request_cpu
-      configsvr_request_memory     = local.mongodb.configsvr.request_memory
-      configsvr_limit_cpu          = local.mongodb.configsvr.limit_cpu
-      configsvr_limit_memory       = local.mongodb.configsvr.limit_memory
+      configsvr_request_cpu        = local.mongodb_sharded.configsvr.request_cpu
+      configsvr_request_memory     = local.mongodb_sharded.configsvr.request_memory
+      configsvr_limit_cpu          = local.mongodb_sharded.configsvr.limit_cpu
+      configsvr_limit_memory       = local.mongodb_sharded.configsvr.limit_memory
       // Shard Server configuration
       shardsvr_replica_count       = var.mongodb_shardsvr_replica_count
       shardsvr_persistence_size    = var.mongodb_shardsvr_persistence_size
-      shardsvr_request_cpu         = local.mongodb.shardsvr.request_cpu
-      shardsvr_request_memory      = local.mongodb.shardsvr.request_memory
-      shardsvr_limit_cpu           = local.mongodb.shardsvr.limit_cpu
-      shardsvr_limit_memory        = local.mongodb.shardsvr.limit_memory
+      shardsvr_request_cpu         = local.mongodb_sharded.shardsvr.request_cpu
+      shardsvr_request_memory      = local.mongodb_sharded.shardsvr.request_memory
+      shardsvr_limit_cpu           = local.mongodb_sharded.shardsvr.limit_cpu
+      shardsvr_limit_memory        = local.mongodb_sharded.shardsvr.limit_memory
       // Mongos Router configuration
       mongos_replica_count         = var.mongodb_mongos_replica_count
-      mongos_request_cpu           = local.mongodb.mongos.request_cpu
-      mongos_request_memory        = local.mongodb.mongos.request_memory
-      mongos_limit_cpu             = local.mongodb.mongos.limit_cpu
-      mongos_limit_memory          = local.mongodb.mongos.limit_memory
+      mongos_request_cpu           = local.mongodb_sharded.mongos.request_cpu
+      mongos_request_memory        = local.mongodb_sharded.mongos.request_memory
+      mongos_limit_cpu             = local.mongodb_sharded.mongos.limit_cpu
+      mongos_limit_memory          = local.mongodb_sharded.mongos.limit_memory
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
     })

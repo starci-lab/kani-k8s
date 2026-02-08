@@ -22,8 +22,8 @@ resource "helm_release" "kani_observer" {
       // =========================
       // Primary MongoDB configuration
       // =========================
-      primary_mongodb_host     = local.mongodb_sharded_service.host
-      primary_mongodb_port     = local.mongodb_sharded_service.port
+      primary_mongodb_host     = local.mongodb_sharded.service.host
+      primary_mongodb_port     = local.mongodb_sharded.service.port
       primary_mongodb_database = var.kani_primary_mongodb_database
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
@@ -38,30 +38,30 @@ resource "helm_release" "kani_observer" {
       // =========================
       // Redis Cache configuration
       // =========================
-      redis_cache_host        = local.redis_cluster_service.host
-      redis_cache_port        = local.redis_cluster_service.port
+      redis_cache_host        = local.redis_cluster.service.host
+      redis_cache_port        = local.redis_cluster.service.port
       redis_cache_password    = var.redis_password
       redis_cache_use_cluster = true
       cache_debug_enabled     = false
       // =========================
       // Redis Adapter configuration
       // =========================
-      redis_adapter_host        = local.redis_cluster_service.host
-      redis_adapter_port        = local.redis_cluster_service.port
+      redis_adapter_host        = local.redis_cluster.service.host
+      redis_adapter_port        = local.redis_cluster.service.port
       redis_adapter_password    = var.redis_password
       redis_adapter_use_cluster = true
       // =========================
       // Redis BullMQ configuration
       // =========================
-      redis_bullmq_host        = local.redis_cluster_service.host
-      redis_bullmq_port        = local.redis_cluster_service.port
+      redis_bullmq_host        = local.redis_cluster.service.host
+      redis_bullmq_port        = local.redis_cluster.service.port
       redis_bullmq_use_cluster = true
       redis_bullmq_password    = var.redis_password
       // =========================
       // Redis Throttler configuration
       // =========================
-      redis_throttler_host        = local.redis_cluster_service.host
-      redis_throttler_port        = local.redis_cluster_service.port
+      redis_throttler_host        = local.redis_cluster.service.host
+      redis_throttler_port        = local.redis_cluster.service.port
       redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
       // =========================

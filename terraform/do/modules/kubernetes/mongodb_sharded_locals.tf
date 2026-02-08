@@ -7,7 +7,7 @@
 // Also includes service configuration.
 
 locals {
-  mongodb = {
+  mongodb_sharded = {
     presets = {
       configsvr = "64"
       shardsvr  = "192"
@@ -16,55 +16,55 @@ locals {
     configsvr = {
       request_cpu = coalesce(
         var.mongodb_configsvr_request_cpu,
-        try(var.resources_config[local.mongodb.presets.configsvr].requests.cpu, "96m")
+        try(var.resources_config[local.mongodb_sharded.presets.configsvr].requests.cpu, "96m")
       )
       request_memory = coalesce(
         var.mongodb_configsvr_request_memory,
-        try(var.resources_config[local.mongodb.presets.configsvr].requests.memory, "192Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.configsvr].requests.memory, "192Mi")
       )
       limit_cpu = coalesce(
         var.mongodb_configsvr_limit_cpu,
-        try(var.resources_config[local.mongodb.presets.configsvr].limits.cpu, "256m")
+        try(var.resources_config[local.mongodb_sharded.presets.configsvr].limits.cpu, "256m")
       )
       limit_memory = coalesce(
         var.mongodb_configsvr_limit_memory,
-        try(var.resources_config[local.mongodb.presets.configsvr].limits.memory, "512Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.configsvr].limits.memory, "512Mi")
       )
     }
     shardsvr = {
       request_cpu = coalesce(
         var.mongodb_shardsvr_request_cpu,
-        try(var.resources_config[local.mongodb.presets.shardsvr].requests.cpu, "192m")
+        try(var.resources_config[local.mongodb_sharded.presets.shardsvr].requests.cpu, "192m")
       )
       request_memory = coalesce(
         var.mongodb_shardsvr_request_memory,
-        try(var.resources_config[local.mongodb.presets.shardsvr].requests.memory, "384Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.shardsvr].requests.memory, "384Mi")
       )
       limit_cpu = coalesce(
         var.mongodb_shardsvr_limit_cpu,
-        try(var.resources_config[local.mongodb.presets.shardsvr].limits.cpu, "768m")
+        try(var.resources_config[local.mongodb_sharded.presets.shardsvr].limits.cpu, "768m")
       )
       limit_memory = coalesce(
         var.mongodb_shardsvr_limit_memory,
-        try(var.resources_config[local.mongodb.presets.shardsvr].limits.memory, "1536Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.shardsvr].limits.memory, "1536Mi")
       )
     }
     mongos = {
       request_cpu = coalesce(
         var.mongodb_request_cpu,
-        try(var.resources_config[local.mongodb.presets.mongos].requests.cpu, "96m")
+        try(var.resources_config[local.mongodb_sharded.presets.mongos].requests.cpu, "96m")
       )
       request_memory = coalesce(
         var.mongodb_request_memory,
-        try(var.resources_config[local.mongodb.presets.mongos].requests.memory, "192Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.mongos].requests.memory, "192Mi")
       )
       limit_cpu = coalesce(
         var.mongodb_limit_cpu,
-        try(var.resources_config[local.mongodb.presets.mongos].limits.cpu, "384m")
+        try(var.resources_config[local.mongodb_sharded.presets.mongos].limits.cpu, "384m")
       )
       limit_memory = coalesce(
         var.mongodb_limit_memory,
-        try(var.resources_config[local.mongodb.presets.mongos].limits.memory, "768Mi")
+        try(var.resources_config[local.mongodb_sharded.presets.mongos].limits.memory, "768Mi")
       )
     }
     service = {
