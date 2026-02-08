@@ -18,7 +18,7 @@ variable "jenkins_password" {
 variable "jenkins_replica_count" {
   type        = number
   description = "Number of Jenkins controller replicas"
-  default     = 1
+  default     = 0
 }
 
 variable "jenkins_persistence_size" {

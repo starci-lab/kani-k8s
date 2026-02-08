@@ -33,7 +33,7 @@ resource "kubernetes_job_v1" "restore" {
         // =========================
         // Node scheduling
         // =========================
-        // Ensures seed job pods are scheduled onto the primary node pool
+        // Ensures restore job pods are scheduled onto the primary node pool
         node_selector = {
           "doks.digitalocean.com/node-pool" = var.kubernetes_primary_node_pool_name
         }

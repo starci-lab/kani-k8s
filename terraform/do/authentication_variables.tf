@@ -43,6 +43,7 @@ variable "redis_password" {
 // =========================
 // Argo CD authentication variables
 // =========================
+
 variable "argo_cd_admin_password" {
   type        = string
   description = "Administrative password for Argo CD; must be provided securely (e.g., via tfvars, environment variables, or a secrets manager)"

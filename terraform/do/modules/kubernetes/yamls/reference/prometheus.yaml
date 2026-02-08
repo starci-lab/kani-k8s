@@ -78,7 +78,7 @@ operator:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/prometheus-operator
+    repository: bitnami/prometheus-operator
     tag: 0.85.0-debian-12-r0
     digest: ""
     ## Specify a imagePullPolicy
@@ -401,13 +401,7 @@ operator:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources:
-    requests:
-      cpu: ${operator_request_cpu}
-      memory: ${operator_request_memory}
-    limits:
-      cpu: ${operator_limit_cpu}
-      memory: ${operator_limit_memory}
+  resources: {}
   ## @param operator.podAffinityPreset Pod affinity preset
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
   ##
@@ -443,8 +437,7 @@ operator:
   ## @param operator.nodeSelector Prometheus Operator Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param operator.tolerations Prometheus Operator Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -645,7 +638,7 @@ prometheus:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/prometheus
+    repository: bitnami/prometheus
     tag: 3.5.0-debian-12-r3
     digest: ""
     pullPolicy: IfNotPresent
@@ -1027,13 +1020,7 @@ prometheus:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources:
-    requests:
-      cpu: ${prometheus_request_cpu}
-      memory: ${prometheus_request_memory}
-    limits:
-      cpu: ${prometheus_limit_cpu}
-      memory: ${prometheus_limit_memory}
+  resources: {}
   ## @param prometheus.podAffinityPreset Prometheus Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
   ##
@@ -1069,8 +1056,7 @@ prometheus:
   ## @param prometheus.nodeSelector Prometheus Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param prometheus.topologySpreadConstraints Prometheus Topology Spread Constraints for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
   ## The value is evaluated as a template
@@ -1323,7 +1309,7 @@ prometheus:
       - ReadWriteOnce
     ## @param prometheus.persistence.size Persistent Volume Size
     ##
-    size: ${prometheus_persistence_size}
+    size: 8Gi
     ## @param prometheus.persistence.annotations Persistent Volume Claim annotations
     ##
     annotations: {}
@@ -1454,7 +1440,7 @@ prometheus:
     ##
     image:
       registry: docker.io
-      repository: bitnamilegacy/thanos
+      repository: bitnami/thanos
       tag: 0.39.2-debian-12-r2
       digest: ""
       ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
@@ -1562,13 +1548,7 @@ prometheus:
     ##     cpu: 3
     ##     memory: 1024Mi
     ##
-    resources:
-      requests:
-        cpu: ${thanos_request_cpu}
-        memory: ${thanos_request_memory}
-      limits:
-        cpu: ${thanos_limit_cpu}
-        memory: ${thanos_limit_memory}
+    resources: {}
     ## Configure extra options for liveness probe
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
     ## @param prometheus.thanos.livenessProbe.enabled Turn on and off liveness probe
@@ -1918,7 +1898,7 @@ alertmanager:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/alertmanager
+    repository: bitnami/alertmanager
     tag: 0.28.1-debian-12-r15
     digest: ""
     pullPolicy: IfNotPresent
@@ -2286,13 +2266,7 @@ alertmanager:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources:
-    requests:
-      cpu: ${alertmanager_request_cpu}
-      memory: ${alertmanager_request_memory}
-    limits:
-      cpu: ${alertmanager_limit_cpu}
-      memory: ${alertmanager_limit_memory}
+  resources: {}
   ## @param alertmanager.podAffinityPreset Alertmanager Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
   ##
@@ -2328,8 +2302,7 @@ alertmanager:
   ## @param alertmanager.nodeSelector Alertmanager Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param alertmanager.tolerations Alertmanager Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -2450,7 +2423,7 @@ alertmanager:
       - ReadWriteOnce
     ## @param alertmanager.persistence.size Persistent Volume Size
     ##
-    size: ${alertmanager_persistence_size}
+    size: 8Gi
     ## @param alertmanager.persistence.annotations Persistent Volume Claim annotations
     ##
     annotations: {}
@@ -2511,11 +2484,11 @@ exporters:
   node-exporter:
     ## @param exporters.node-exporter.enabled Enable node-exporter
     ##
-    enabled: false
+    enabled: true
   kube-state-metrics:
     ## @param exporters.kube-state-metrics.enabled Enable kube-state-metrics
     ##
-    enabled: false
+    enabled: true
 ## @param node-exporter [object] Node Exporter deployment configuration
 ##
 node-exporter:
@@ -2604,7 +2577,7 @@ blackboxExporter:
   ##
   enabled: true
   ## Bitnami Alertmanager image version
-  ## ref: https://hub.docker.com/r/bitnamilegacy/prometheus-operator/tags/
+  ## ref: https://hub.docker.com/r/bitnami/prometheus-operator/tags/
   ## @param blackboxExporter.image.registry [default: REGISTRY_NAME] Blackbox Exporter image registry
   ## @param blackboxExporter.image.repository [default: REPOSITORY_NAME/blackbox-exporter] Blackbox Exporter image repository
   ## @param blackboxExporter.image.pullPolicy Blackbox Exporter image pull policy
@@ -2614,7 +2587,7 @@ blackboxExporter:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/blackbox-exporter
+    repository: bitnami/blackbox-exporter
     tag: 0.27.0-debian-12-r4
     digest: ""
     pullPolicy: IfNotPresent
@@ -2781,13 +2754,7 @@ blackboxExporter:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${blackbox_exporter_request_cpu}
-      memory: ${blackbox_exporter_request_memory}
-    limits:
-      cpu: ${blackbox_exporter_limit_cpu}
-      memory: ${blackbox_exporter_limit_memory}
+  resources: {}
   ## Configure Pods Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param blackboxExporter.podSecurityContext.enabled Enabled Blackbox Exporter pods' Security Context
@@ -2879,8 +2846,7 @@ blackboxExporter:
   ## @param blackboxExporter.nodeSelector Node labels for Blackbox Exporter pods assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param blackboxExporter.tolerations Tolerations for Blackbox Exporter pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -3406,7 +3372,7 @@ thanosRuler:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/thanos
+    repository: bitnami/thanos
     tag: 0.39.2-debian-12-r2
     digest: ""
     pullPolicy: IfNotPresent
@@ -3437,13 +3403,7 @@ thanosRuler:
   labels: {}
   ## @param thanosRuler.storage Storage spec to specify how storage shall be used.
   ## ref: https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.StorageSpec
-  storage:
-    requests:
-      cpu: ${thanos_ruler_request_cpu}
-      memory: ${thanos_ruler_request_memory}
-    limits:
-      cpu: ${thanos_ruler_limit_cpu}
-      memory: ${thanos_ruler_limit_memory}
+  storage: {}
   ## @param thanosRuler.volumes Additional volumes on the output StatefulSet definition
   ## Volumes specified will be appended to other volumes that are generated as a result of thanosRuler.storage configuration
   ##
@@ -3840,8 +3800,7 @@ thanosRuler:
   ## @param thanosRuler.nodeSelector Node labels for Thanos Ruler pods assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}"
+  nodeSelector: {}
   ## Create a servicemonitor for Thanos ruler
   ##
   serviceMonitor:

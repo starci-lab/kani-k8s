@@ -114,7 +114,7 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/redis
+  repository: bitnami/redis
   tag: 8.2.1-debian-12-r0
   digest: ""
   ## Specify a imagePullPolicy
@@ -138,7 +138,7 @@ image:
 
 ## @param architecture Redis(R) architecture. Allowed values: `standalone` or `replication`
 ##
-architecture: standalone
+architecture: replication
 ## Redis(R) Authentication parameters
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
 ##
@@ -152,7 +152,7 @@ auth:
   ## @param auth.password Redis(R) password
   ## Defaults to a random 10-character alphanumeric string if not set
   ##
-  password: ${password}
+  password: ""
   ## @param auth.existingSecret The name of an existing secret with Redis(R) credentials
   ## NOTE: When it's set, the previous `auth.password` parameter is ignored
   ##
@@ -326,13 +326,7 @@ master:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
   ## Configure Pods Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param master.podSecurityContext.enabled Enabled Redis(R) master pods' Security Context
@@ -689,7 +683,7 @@ replica:
   kind: StatefulSet
   ## @param replica.replicaCount Number of Redis(R) replicas to deploy
   ##
-  replicaCount: 0
+  replicaCount: 3
   ## @param replica.revisionHistoryLimit The number of old history to retain to allow rollback
   ## NOTE: Explicitly setting this field to 0, will result in cleaning up all the history, breaking ability to rollback
   revisionHistoryLimit: 10
@@ -1192,7 +1186,7 @@ sentinel:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/redis-sentinel
+    repository: bitnami/redis-sentinel
     tag: 8.2.1-debian-12-r0
     digest: ""
     ## Specify a imagePullPolicy
@@ -1791,7 +1785,7 @@ metrics:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/redis-exporter
+    repository: bitnami/redis-exporter
     tag: 1.76.0-debian-12-r0
     digest: ""
     pullPolicy: IfNotPresent
@@ -2169,7 +2163,7 @@ volumePermissions:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r51
     digest: ""
     pullPolicy: IfNotPresent
@@ -2233,7 +2227,7 @@ kubectl:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/kubectl
+    repository: bitnami/kubectl
     tag: 1.33.4-debian-12-r0
     digest: ""
     ## Specify a imagePullPolicy
@@ -2302,7 +2296,7 @@ sysctl:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r51
     digest: ""
     pullPolicy: IfNotPresent

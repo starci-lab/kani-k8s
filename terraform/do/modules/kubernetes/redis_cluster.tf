@@ -58,9 +58,8 @@ resource "helm_release" "redis_cluster" {
 }
 
 // =========================
-// Redis Cluster Service
+// Redis Cluster Service (data)
 // =========================
-// Retrieves the Redis Cluster service name.
 data "kubernetes_service" "redis_cluster" {
   metadata {
     name = "redis-cluster"
@@ -69,9 +68,8 @@ data "kubernetes_service" "redis_cluster" {
 }
 
 // =========================
-// Redis Cluster Host
+// Redis Cluster host/port locals
 // =========================
-// Constructs the Redis Cluster host name.
 locals {
   redis_cluster_service = {
     host = "${data.kubernetes_service.redis_cluster.metadata[0].name}.${kubernetes_namespace.redis_cluster.metadata[0].name}.svc.cluster.local"

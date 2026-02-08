@@ -21,8 +21,9 @@ resource "helm_release" "external_secrets" {
   name       = "external-secrets"
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
-  namespace  = kubernetes_namespace.external_secrets.metadata[0].name   
-   values = [
+  namespace = kubernetes_namespace.external_secrets.metadata[0].name
+
+  values = [
     templatefile("${path.module}/yamls/external-secrets.yaml", {
       // =========================
       // Replica counts
@@ -55,25 +56,17 @@ resource "helm_release" "external_secrets" {
   ]
 }
 
+// =========================
+// GCP ClusterSecretStore
+// =========================
+// Allows External Secrets Operator to pull secrets from Google Cloud Secret Manager.
+// Authentication uses a Kubernetes Secret containing the GCP Service Account key.
 locals {
   gcp_cluster_secret_store = {
     name = "gcp-secret-store"
   }
 }
-// =========================
-// GCP Secret Store
-// =========================
-// Creates a secret store for the GCP service account used by External Secrets.
-// ======================================================
-// ======================================================
-// External Secrets - GCP SecretStore
-// ======================================================
-// Creates a SecretStore resource that allows External Secrets Operator
-// to authenticate with Google Cloud Secret Manager.
-//
-// Authentication is performed using a Kubernetes Secret that contains
-// a GCP Service Account key (secret-accessor.json).
-// ======================================================
+
 resource "kubectl_manifest" "gcp_cluster_secret_store" {
   // Ensure External Secrets Operator is installed before creating SecretStore
   depends_on = [

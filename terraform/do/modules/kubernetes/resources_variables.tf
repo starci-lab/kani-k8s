@@ -1,6 +1,10 @@
+// =========================
+// Resource presets (pod requests/limits by size key)
+// =========================
+// Used by components via coalesce(var.x, try(var.resources_config[preset_key].requests.cpu, "fallback")).
+
 variable "resources_config" {
-  description = "Pod resource configurations for different sizes"
-  type = map(object({
+  type        = map(object({
     requests = object({
       cpu               = string
       memory            = string
@@ -12,7 +16,8 @@ variable "resources_config" {
       ephemeral_storage = string
     })
   }))
-  default = {
+  description = "Pod resource configurations for different sizes (keyed by preset name e.g. 16, 32, 64)"
+  default     = {
     "16" = {
       requests = {
         cpu               = "16m"
@@ -56,7 +61,7 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "1024m" 
+        cpu               = "1024m"
         memory            = "2048Mi"
         ephemeral_storage = "2Gi"
       }

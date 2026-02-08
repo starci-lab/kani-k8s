@@ -80,7 +80,7 @@ variable "nginx_ingress_controller_default_backend_limit_memory" {
 
 locals {
   nginx_ingress_controller_presets = {
-    controller     = "32"
+    controller      = "32"
     default_backend = "16"
   }
 }

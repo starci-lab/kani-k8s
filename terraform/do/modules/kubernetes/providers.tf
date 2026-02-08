@@ -1,14 +1,10 @@
-
 // =========================
 // Kubernetes provider
 // =========================
-// Used to interact directly with the Kubernetes API server
-// of the DigitalOcean Kubernetes (DOKS) cluster for managing
-// native Kubernetes resources (Namespaces, Secrets, ConfigMaps, etc.).
+// Connects to the DOKS cluster to manage native resources (Namespaces, Secrets, ConfigMaps, etc.).
 provider "kubernetes" {
   host  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
   token = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token
-
   cluster_ca_certificate = base64decode(
     digitalocean_kubernetes_cluster.kubernetes.kube_config[0].cluster_ca_certificate
   )
@@ -21,8 +17,8 @@ provider "kubernetes" {
 // This provider reuses the same Kubernetes cluster credentials as above
 // to install and configure Helm releases.
 provider "helm" {
-  repository_config_path = "${path.module}/.helm/repositories.yaml" 
-  repository_cache       = "${path.module}/.helm"
+  repository_config_path = "${path.module}/.helm/repositories.yaml"
+  repository_cache        = "${path.module}/.helm"
   kubernetes {
     host  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
     token = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token
@@ -42,11 +38,11 @@ provider "helm" {
 // to apply raw Kubernetes manifests.
 provider "kubectl" {
   host                   = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].host
+  token                  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token
   cluster_ca_certificate = base64decode(
     digitalocean_kubernetes_cluster.kubernetes.kube_config[0].cluster_ca_certificate
-    )  # Decodes the certificate authority from the cluster data
-  token                  = digitalocean_kubernetes_cluster.kubernetes.kube_config[0].token  # Authentication token for Kubernetes API access
-  load_config_file       = false
+  )
+  load_config_file = false
 }
 
 // =========================

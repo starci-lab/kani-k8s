@@ -110,10 +110,10 @@ resource "kubernetes_ingress_v1" "portainer" {
     namespace = kubernetes_namespace.portainer.metadata[0].name
 
     annotations = {
-      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
-      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
-      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
-      "acme.cert-manager.io/http01-edit-in-place"      = "true"
+      "cert-manager.io/cluster-issuer"                  = var.cert_manager_cluster_issuer_name
+      "nginx.ingress.kubernetes.io/ssl-redirect"        = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect"  = "true"
+      "acme.cert-manager.io/http01-edit-in-place"       = "true"
     }
   }
 

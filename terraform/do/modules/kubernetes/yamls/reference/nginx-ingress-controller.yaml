@@ -70,7 +70,7 @@ clusterDomain: cluster.local
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/nginx-ingress-controller
+  repository: bitnami/nginx-ingress-controller
   tag: 1.13.1-debian-12-r1
   digest: ""
   ## Specify a imagePullPolicy
@@ -94,8 +94,8 @@ image:
 ## @param containerPorts.stream Nginx Ingress Controller stream port
 ##
 containerPorts:
-  http: 80
-  https: 443
+  http: 8080
+  https: 8443
   defaultServer: 8181
   metrics: 10254
   profiler: 10245
@@ -157,7 +157,7 @@ ingressClassResource:
 publishService:
   ## @param publishService.enabled Set the endpoint records on the Ingress objects to reflect those on the service
   ##
-  enabled: true
+  enabled: false
   ## @param publishService.pathOverride Allows overriding of the publish service to bind to
   ## Must be <namespace>/<service_name>
   ##
@@ -255,7 +255,7 @@ daemonset:
     https: 443
 ## @param replicaCount Desired number of Controller pods
 ##
-replicaCount: ${replica_count}
+replicaCount: 1
 ## @param updateStrategy Strategy to use to update Pods
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 ##
@@ -292,7 +292,7 @@ podSecurityContext:
 ##
 containerSecurityContext:
   enabled: true
-  allowPrivilegeEscalation: true
+  allowPrivilegeEscalation: false
   seLinuxOptions: {}
   runAsUser: 1001
   runAsGroup: 1001
@@ -326,13 +326,7 @@ resourcesPreset: "nano"
 ##     cpu: 3
 ##     memory: 1024Mi
 ##
-resources:
-  requests:
-    cpu: ${request_cpu}
-    memory: ${request_memory}
-  limits:
-    cpu: ${limit_cpu}
-    memory: ${limit_memory}
+resources: {}
 ## Controller containers' liveness probe. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
 ## @param livenessProbe.enabled Enable livenessProbe
@@ -462,8 +456,7 @@ affinity: {}
 ## @param nodeSelector Node labels for pod assignment. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
 ##
-nodeSelector: 
-  "doks.digitalocean.com/node-pool": ${node_pool_label}
+nodeSelector: {}
 ## @param tolerations Tolerations for pod assignment. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
@@ -544,7 +537,7 @@ defaultBackend:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/nginx
+    repository: bitnami/nginx
     tag: 1.29.1-debian-12-r0
     digest: ""
     ## Specify a imagePullPolicy
@@ -637,13 +630,7 @@ defaultBackend:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${default_backend_request_cpu}
-      memory: ${default_backend_request_memory}
-    limits:
-      cpu: ${default_backend_limit_cpu}
-      memory: ${default_backend_limit_memory}
+  resources: {}
   ## Default backend containers' liveness probe. Evaluated as a template.
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
   ## @param defaultBackend.livenessProbe.enabled Enable livenessProbe
@@ -810,8 +797,7 @@ defaultBackend:
   ## @param defaultBackend.nodeSelector Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param defaultBackend.tolerations Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -927,12 +913,7 @@ service:
   ## This can be used to set the LoadBalancer service type to internal only.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
   ##
-  annotations:
-    service.beta.kubernetes.io/do-loadbalancer-size-unit: "1"
-    service.beta.kubernetes.io/do-loadbalancer-type: "REGIONAL_NETWORK"
-    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-type: "cookies"
-    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-name: "cookie"
-    service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-ttl: "300"
+  annotations: {}
   ## @param service.labels Labels for controller service
   ##
   labels: {}
@@ -972,7 +953,7 @@ service:
   ## Enable client source IP preservation
   ## Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
   ##
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: ""
   ## @param service.healthCheckNodePort Set this to the managed health-check port the kube-proxy will expose. If blank, a random port in the `NodePort` range will be assigned
   ##
   healthCheckNodePort: 0

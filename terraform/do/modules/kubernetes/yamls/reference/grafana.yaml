@@ -76,7 +76,7 @@ usePasswordFiles: true
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/grafana
+  repository: bitnami/grafana
   tag: 12.1.1-debian-12-r1
   digest: ""
   ## Specify a imagePullPolicy
@@ -95,10 +95,10 @@ image:
 admin:
   ## @param admin.user Grafana admin username
   ##
-  user: "${grafana_user}"
+  user: "admin"
   ## @param admin.password Admin password. If a password is not provided a random password will be generated
   ##
-  password: "${grafana_password}"
+  password: ""
   ## @param admin.existingSecret Name of the existing secret containing admin password
   ##
   existingSecret: ""
@@ -287,49 +287,7 @@ datasources:
   ##     access: proxy
   ##     isDefault: true
   ##
-  secretDefinition:
-    apiVersion: 1  # API version for the datasource configuration
-    datasources:
-      # Configuration for the Prometheus data source
-      - name: Prometheus
-        type: prometheus  # Type of the data source
-        access: proxy  # Access mode (proxy means the Grafana pod will access the data source directly)
-        orgId: 1  # Organization ID in Grafana (default organization)
-        url: ${prometheus_url}  # URL for Prometheus instance
-        version: 1  # Version of the data source configuration
-        editable: true  # Allow users to edit the data source configuration
-        isDefault: true  # Set this as the default data source
-        basicAuth: true
-        basicAuthUser: ${prometheus_basic_auth_user}
-        secureJsonData:
-          basicAuthPassword: ${prometheus_basic_auth_password}
-        jsonData:
-          httpMethod: POST        # HTTP method (POST or GET)
-          keepCookies: []         # Cookies to keep
-          timeInterval: "5s"     # Time interval between queries
-          queryTimeout: "30s"    # Timeout for each query
-          tlsSkipVerify: false    # Skip TLS certificate verification (if any)
-
-      # Configuration for the Alertmanager data source
-      - name: Alertmanager
-        uid: alertmanager  # Unique identifier for Alertmanager
-        type: alertmanager  # Type of the data source
-        access: proxy  # Access mode (proxy means the Grafana pod will access the data source directly)
-        orgId: 1  # Organization ID in Grafana
-        url: ${prometheus_alertmanager_url}  # URL for Alertmanager instance
-        version: 1  # Version of the data source configuration
-        editable: true  # Allow users to edit the data source configuration
-        basicAuth: true
-        basicAuthUser: ${prometheus_alertmanager_basic_auth_user}
-        secureJsonData:
-          basicAuthPassword: ${prometheus_alertmanager_basic_auth_password}
-        jsonData:
-          implementation: prometheus  # Implementation type (Prometheus)
-          httpMethod: POST        # HTTP method (POST or GET)
-          keepCookies: []         # Cookies to keep
-          timeInterval: "5s"     # Time interval between queries
-          queryTimeout: "30s"     # Timeout for each query
-          tlsSkipVerify: false    # Skip TLS certificate verification (if any)
+  secretDefinition: {}
 ## Create notifiers from a configMap
 ## The notifiersName must contain the files
 ## @param notifiers.configMapName Name of a ConfigMap containing Grafana notifiers configuration
@@ -434,8 +392,7 @@ grafana:
   ## @param grafana.nodeSelector Node labels for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param grafana.tolerations Tolerations for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -507,13 +464,7 @@ grafana:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: 
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
   ## Grafana containers' liveness probe
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
   ## @param grafana.livenessProbe.enabled Enable livenessProbe
@@ -689,7 +640,7 @@ persistence:
   existingClaim: ""
   accessMode: ReadWriteOnce
   accessModes: []
-  size: ${persistence_size}
+  size: 10Gi
 ## @section RBAC parameters
 
 ## @param serviceAccount.create Specifies whether a ServiceAccount should be created
@@ -932,7 +883,7 @@ ingress:
 metrics:
   ## @param metrics.enabled Enable the export of Prometheus metrics
   ##
-  enabled: true
+  enabled: false
   ## Prometheus Operator ServiceMonitor configuration
   ## @param metrics.service.annotations [object] Annotations for Prometheus metrics service
   ##
@@ -1032,7 +983,7 @@ volumePermissions:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r50
     digest: ""
     pullPolicy: IfNotPresent

@@ -1,7 +1,6 @@
-// Argo CD controller variables
 // =========================
-// Controls the Argo CD application controller responsible for
-// reconciling desired and live application states.
+// Argo CD controller (replica count + resources)
+// =========================
 
 variable "argo_cd_controller_replica_count" {
   type        = number

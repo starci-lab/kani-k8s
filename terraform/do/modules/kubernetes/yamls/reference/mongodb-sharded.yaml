@@ -1,4 +1,3 @@
-
 # Copyright Broadcom, Inc. All Rights Reserved.
 # SPDX-License-Identifier: APACHE-2.0
 
@@ -92,7 +91,7 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/mongodb-sharded
+  repository: bitnami/mongodb-sharded
   tag: 8.0.13-debian-12-r0
   digest: ""
   ## Specify a imagePullPolicy
@@ -119,14 +118,14 @@ auth:
   enabled: true
   ## @param auth.rootUser MongoDB(&reg;) root user
   ##
-  rootUser: ${username}
+  rootUser: root
   ## @param auth.rootPassword MongoDB(&reg;) root password
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/mongodb#setting-the-root-user-and-password-on-first-run
   ##
-  rootPassword: ${password}
+  rootPassword: ""
   ## @param auth.replicaSetKey Key used for authentication in the replicaset
   ##
-  replicaSetKey: ${replica_set_key}
+  replicaSetKey: ""
   ## @param auth.existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-password`, `mongodb-root-password`, `mongodb-replica-set-key`)
   ## NOTE: When it's set the previous parameters are ignored.
   ##
@@ -137,7 +136,7 @@ auth:
 ## @param shards Number of shards to be created
 ## ref: https://docs.mongodb.com/manual/core/sharded-cluster-shards/
 ##
-shards: ${shards}
+shards: 2
 ## Properties for all of the pods in the cluster (shards, config servers and mongos)
 ##
 common:
@@ -259,7 +258,7 @@ volumePermissions:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r51
     digest: ""
     pullPolicy: IfNotPresent
@@ -277,21 +276,15 @@ volumePermissions:
   resourcesPreset: "nano"
   ## @param volumePermissions.resources Set container requests and limits for different resources like CPU or memory (essential for production workloads)
   ## Example:
-  # resources:
-  #   requests:
-  #     cpu: 2
-  #     memory: 512Mi
-  #   limits:
-  #     cpu: 3
-  #     memory: 1024Mi
+  ## resources:
+  ##   requests:
+  ##     cpu: 2
+  ##     memory: 512Mi
+  ##   limits:
+  ##     cpu: 3
+  ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${configsvr_request_cpu}
-      memory: ${configsvr_request_memory}
-    limits:
-      cpu: ${configsvr_limit_cpu}
-      memory: ${configsvr_limit_memory}
+  resources: {}
 ## Kubernetes service type
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
 ##
@@ -424,7 +417,7 @@ networkPolicy:
 configsvr:
   ## @param configsvr.replicaCount Number of nodes in the replica set (the first node will be primary)
   ##
-  replicaCount: ${configsvr_replica_count}
+  replicaCount: 1
   ## @param configsvr.resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if configsvr.resources is set (configsvr.resources is recommended for production).
   ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
   ##
@@ -440,13 +433,7 @@ configsvr:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources: 
-    requests:
-      cpu: ${configsvr_request_cpu}
-      memory: ${configsvr_request_memory}
-    limits:
-      cpu: ${configsvr_limit_cpu}
-      memory: ${configsvr_limit_memory}
+  resources: {}
   ## @param configsvr.automountServiceAccountToken Mount Service Account token in pod
   ##
   automountServiceAccountToken: false
@@ -503,8 +490,7 @@ configsvr:
   ## @param configsvr.nodeSelector Config Server Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector:
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param configsvr.tolerations Config Server Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -617,7 +603,7 @@ configsvr:
       - ReadWriteOnce
     ## @param configsvr.persistence.size PersistentVolumeClaim size
     ##
-    size: ${configsvr_persistence_size}
+    size: 8Gi
     ## @param configsvr.persistence.annotations Persistent Volume annotations
     ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
     ##
@@ -792,7 +778,7 @@ configsvr:
 mongos:
   ## @param mongos.replicaCount Number of replicas
   ##
-  replicaCount: ${mongos_replica_count}
+  replicaCount: 1
   ## @param mongos.resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if mongos.resources is set (mongos.resources is recommended for production).
   ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
   ##
@@ -808,13 +794,7 @@ mongos:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources: 
-    requests:
-      cpu: ${mongos_request_cpu}
-      memory: ${mongos_request_memory}
-    limits:
-      cpu: ${mongos_limit_cpu}
-      memory: ${mongos_limit_memory}
+  resources: {}
   ## @param mongos.automountServiceAccountToken Mount Service Account token in pod
   ##
   automountServiceAccountToken: false
@@ -871,8 +851,7 @@ mongos:
   ## @param mongos.nodeSelector Mongos Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector:
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param mongos.tolerations Mongos Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -1156,7 +1135,7 @@ shardsvr:
   dataNode:
     ## @param shardsvr.dataNode.replicaCount Number of nodes in each shard replica set (the first node will be primary)
     ##
-    replicaCount: ${shardsvr_replica_count}
+    replicaCount: 1
     ## @param shardsvr.dataNode.resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if shardsvr.dataNode.resources is set (shardsvr.dataNode.resources is recommended for production).
     ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
     ##
@@ -1172,13 +1151,7 @@ shardsvr:
     ##     memory: 1024Mi
     ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
     ##
-    resources: 
-      requests:
-        cpu: ${shardsvr_request_cpu}
-        memory: ${shardsvr_request_memory}
-      limits:
-        cpu: ${shardsvr_limit_cpu}
-        memory: ${shardsvr_limit_memory}
+    resources: {}
     ## @param shardsvr.dataNode.mongodbExtraFlags MongoDB&reg; additional command line flags
     ## Can be used to specify command line flags, for example:
     ## mongodbExtraFlags:
@@ -1235,8 +1208,7 @@ shardsvr:
     ## You can set dataNodeLoopId (or any other parameter) by setting the below code block under this 'nodeSelector' section:
     ## nodeSelector: { shardId: "{{ .dataNodeLoopId }}" }
     ##
-    nodeSelector:
-      "doks.digitalocean.com/node-pool": ${node_pool_label}
+    nodeSelector: {}
     ## @param shardsvr.dataNode.tolerations Data nodes Tolerations for pod assignment
     ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
     ## You can set dataNodeLoopId (or any other parameter) by setting the below code block under this 'nodeSelector' section:
@@ -1493,7 +1465,7 @@ shardsvr:
       - ReadWriteOnce
     ## @param shardsvr.persistence.size PersistentVolumeClaim size
     ##
-    size: ${shardsvr_persistence_size}
+    size: 8Gi
     ## @param shardsvr.persistence.annotations Additional volume annotations
     ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
     ##
@@ -1610,8 +1582,7 @@ shardsvr:
     ## @param shardsvr.arbiter.nodeSelector Arbiter's Node labels for pod assignment
     ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
     ##
-    nodeSelector:
-      "doks.digitalocean.com/node-pool": ${node_pool_label}
+    nodeSelector: {}
     ## @param shardsvr.arbiter.tolerations Arbiter's Tolerations for pod assignment
     ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
     ##
@@ -1826,7 +1797,7 @@ metrics:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/mongodb-exporter
+    repository: bitnami/mongodb-exporter
     tag: 0.47.0-debian-12-r1
     digest: ""
     pullPolicy: Always

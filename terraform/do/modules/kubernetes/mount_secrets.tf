@@ -1,7 +1,6 @@
-// ======================================================
-// Secret: GCP Secret Accessor Service Account
-// Used by External Secrets to access GCP Secret Manager
-// ======================================================
+// =========================
+// GCP Secret Accessor Service Account (External Secrets)
+// =========================
 resource "kubernetes_secret" "gcp_secret_accessor_sa" {
   metadata {
     name      = "gcp-secret-accessor-sa"
@@ -16,10 +15,9 @@ resource "kubernetes_secret" "gcp_secret_accessor_sa" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: GCP Crypto Key Encrypt/Decrypt Service Account
-// Used by Kani Coordinator for encryption/decryption
-// ======================================================
+// =========================
+// GCP Crypto Key Encrypt/Decrypt SA (Kani Coordinator)
+// =========================
 resource "kubernetes_secret" "gcp_crypto_key_ed_sa" {
   metadata {
     name      = "gcp-crypto-key-ed-sa"
@@ -33,10 +31,9 @@ resource "kubernetes_secret" "gcp_crypto_key_ed_sa" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: GCP Cloud KMS Crypto Operator Service Account
-// Used for Cloud KMS crypto operations
-// ======================================================
+// =========================
+// GCP Cloud KMS Crypto Operator SA
+// =========================
 resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator_sa" {
   metadata {
     name      = "gcp-cloud-kms-crypto-operator-sa"
@@ -50,10 +47,9 @@ resource "kubernetes_secret" "gcp_cloud_kms_crypto_operator_sa" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: GCP Google Drive UD Service Account
-// Used by Kani Coordinator for Google Drive operations
-// ======================================================
+// =========================
+// GCP Google Drive UD SA (Kani Coordinator)
+// =========================
 resource "kubernetes_secret" "gcp_google_drive_ud_sa" {
   metadata {
     name      = "gcp-google-drive-ud-sa"
@@ -67,10 +63,9 @@ resource "kubernetes_secret" "gcp_google_drive_ud_sa" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: Encrypted AES Key
-// Stores the encrypted AES key used by Kani Coordinator and other services
-// ======================================================
+// =========================
+// Encrypted AES Key
+// =========================
 resource "kubernetes_secret" "encrypted_aes_key" {
   metadata {
     name      = "encrypted-aes-key"
@@ -84,10 +79,9 @@ resource "kubernetes_secret" "encrypted_aes_key" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: Encrypted JWT Secret
-// Stores the encrypted JWT secret key used by Kani Coordinator and other services
-// ======================================================
+// =========================
+// Encrypted JWT Secret Key
+// =========================
 resource "kubernetes_secret" "encrypted_jwt_secret_key" {
   metadata {
     name      = "encrypted-jwt-secret-key"
@@ -101,10 +95,9 @@ resource "kubernetes_secret" "encrypted_jwt_secret_key" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: Privy App Secret Key
-// Stores the Privy app secret key used by Kani Coordinator and other services
-// ======================================================
+// =========================
+// Privy App Secret Key
+// =========================
 resource "kubernetes_secret" "privy_app_secret_key" {
   metadata {
     name      = "privy-app-secret-key"
@@ -116,12 +109,11 @@ resource "kubernetes_secret" "privy_app_secret_key" {
   }
 
   type = "Opaque"
-} 
+}
 
-// ======================================================
-// Secret: Privy Signer Private Key
-// Stores the Privy signer private key used by Kani Coordinator and other services
-// ======================================================
+// =========================
+// Privy Signer Private Key
+// =========================
 resource "kubernetes_secret" "privy_signer_private_key" {
   metadata {
     name      = "privy-signer-private-key"
@@ -135,10 +127,9 @@ resource "kubernetes_secret" "privy_signer_private_key" {
   type = "Opaque"
 }
 
-// ======================================================
-// Secret: Coin Market Cap API Key
-// Stores the Coin Market Cap API key used by Kani Coordinator and other services
-// ======================================================
+// =========================
+// Coin Market Cap API Key
+// =========================
 resource "kubernetes_secret" "coin_market_cap_api_key" {
   metadata {
     name      = "coin-market-cap-api-key"
@@ -148,6 +139,5 @@ resource "kubernetes_secret" "coin_market_cap_api_key" {
   data = {
     data = var.coin_market_cap_api_key
   }
-  
   type = "Opaque"
 }

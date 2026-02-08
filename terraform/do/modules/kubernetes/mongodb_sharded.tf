@@ -92,9 +92,8 @@ resource "helm_release" "mongodb_sharded" {
 }
 
 // =========================
-// MongoDB Sharded Service
+// MongoDB Sharded Service (data)
 // =========================
-// Retrieves the MongoDB Sharded service name.
 data "kubernetes_service" "mongodb_sharded" {
   metadata {
     name = "mongodb-sharded"

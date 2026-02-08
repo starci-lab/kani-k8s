@@ -16,6 +16,16 @@ variable "kafka_sasl_password" {
 }
 
 // =========================
+// Kafka controller only variables
+// =========================
+// Controls whether to run the controller as a standalone controller or controller+broker.
+variable "kafka_controller_only" {
+  type        = bool
+  description = "Whether to run the controller as a standalone controller or controller+broker"
+  default     = false
+}
+
+// =========================
 // Kafka controller variables
 // =========================
 // Controls resource allocation and persistence for Kafka controllers.
@@ -63,7 +73,7 @@ variable "kafka_controller_log_persistence_size" {
 variable "kafka_broker_replica_count" {
   type        = number
   description = "Number of Kafka broker-only nodes"
-  default     = 1
+  default     = 0
 }
 
 variable "kafka_broker_persistence_size" {

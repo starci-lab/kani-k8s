@@ -45,6 +45,7 @@ resource "helm_release" "kafka" {
       controller_persistence_size     = var.kafka_controller_persistence_size
       controller_log_persistence_size = var.kafka_controller_log_persistence_size
       controller_replica_count        = 1
+      controller_only                 = var.kafka_controller_only
 
       // =========================
       // Kafka broker (replica count + resources)
@@ -79,9 +80,9 @@ resource "helm_release" "kafka" {
 }
 
 // =========================
-// Kafka Service
+// Kafka Service (data)
 // =========================
-// Retrieves the Kafka service name.
+// Used to build the Kafka bootstrap address for UI and clients.
 data "kubernetes_service" "kafka" {
   metadata {
     name = "kafka"
@@ -90,9 +91,8 @@ data "kubernetes_service" "kafka" {
 }
 
 // =========================
-// Kafka Host
+// Kafka and Kafka UI host/port locals
 // =========================
-// Constructs the Kafka host name.
 locals {
   kafka_service = {
     host = "${data.kubernetes_service.kafka.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
@@ -104,16 +104,12 @@ locals {
   }
 }
 
-# Kafka UI Deployment
-#
-# This deployment runs Kafka UI (Provectus),
-# a web-based tool for monitoring and managing
-# Kafka clusters (topics, consumers, brokers, etc.)
-#
-# Kafka cluster itself is deployed separately via Helm
+// =========================
+// Kafka UI Deployment
+// =========================
+// Runs Kafka UI (Provectus) for monitoring and managing the Kafka cluster.
+// The cluster is deployed separately via Helm above.
 resource "kubernetes_deployment" "kafka_ui" {
-
-  # Metadata: name, namespace, labels
   metadata {
     name      = "kafka-ui"
     namespace = kubernetes_namespace.kafka.metadata[0].name
@@ -123,91 +119,53 @@ resource "kubernetes_deployment" "kafka_ui" {
     }
   }
 
-  # Ensure Kafka (installed via Helm) is ready
-  # before deploying Kafka UI
   depends_on = [
     helm_release.kafka
   ]
 
-  # Deployment specification
   spec {
-
-    # Number of Kafka UI replicas
     replicas = 1
-
-    # Selector: must match pod template labels
     selector {
       match_labels = {
         app = "kafka-ui"
       }
     }
-
-    # Pod template
     template {
-
-      # Pod labels
       metadata {
         labels = {
           app = "kafka-ui"
         }
       }
-
-      # Pod specification
       spec {
-
-        # Schedule Kafka UI pod on a specific
-        # Kubernetes node pool (DigitalOcean)
         node_selector = {
           "doks.digitalocean.com/node-pool" = var.kubernetes_primary_node_pool_name
         }
-
-        # Kafka UI container definition
         container {
           name  = "kafka-ui"
           image = "provectuslabs/kafka-ui:latest"
-
-          # Expose Kafka UI web port
           port {
             container_port = local.kafka_ui_service.port
           }
-
-          # Kafka UI configuration
-          # (Kafka cluster connection)
-
-          # Logical name of Kafka cluster
           env {
             name  = "KAFKA_CLUSTERS_0_NAME"
             value = "kafka"
           }
-
-          # Kafka bootstrap servers
-          # Usually points to Kafka Service inside the cluster
           env {
             name  = "KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS"
             value = "${local.kafka_service.host}:${local.kafka_service.port}"
           }
-
-          # Security protocol used by Kafka
           env {
             name  = "KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL"
             value = "SASL_PLAINTEXT"
           }
-
-          # SASL mechanism for authentication
           env {
             name  = "KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM"
             value = "SCRAM-SHA-256"
           }
-
-          # SASL JAAS configuration
-          # Uses Kafka username and password
           env {
             name  = "KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG"
             value = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"${var.kafka_sasl_user}\" password=\"${var.kafka_sasl_password}\";"
           }
-
-          # Resource requests & limits
-          # (important for scheduling & stability)
           resources {
             requests = {
               cpu    = local.kafka.kafka_ui.request_cpu
@@ -225,7 +183,9 @@ resource "kubernetes_deployment" "kafka_ui" {
   }
 }
 
-// UI Service 
+// =========================
+// Kafka UI Service
+// =========================
 resource "kubernetes_service" "kafka_ui" {
   metadata {
     name = "kafka-ui"
@@ -256,6 +216,7 @@ resource "kubernetes_secret" "kafka_ui_basic_auth" {
   }
   type = "Opaque"
 }
+
 // =========================
 // Kafka UI Ingress
 // =========================
@@ -271,9 +232,9 @@ resource "kubernetes_ingress_v1" "kafka_ui" {
       "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
       "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
       "acme.cert-manager.io/http01-edit-in-place"      = "true"
-      "nginx.ingress.kubernetes.io/auth-type"           = "basic"
+      "nginx.ingress.kubernetes.io/auth-type"          = "basic"
       "nginx.ingress.kubernetes.io/auth-secret"         = kubernetes_secret.kafka_ui_basic_auth.metadata[0].name
-      "nginx.ingress.kubernetes.io/auth-realm"          = "Kafka UI Authentication Required"
+      "nginx.ingress.kubernetes.io/auth-realm"        = "Kafka UI Authentication Required"
     }
   }
 

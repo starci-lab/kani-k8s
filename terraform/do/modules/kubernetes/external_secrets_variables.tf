@@ -1,3 +1,7 @@
+// =========================
+// External Secrets replica count variables
+// =========================
+
 variable "external_secrets_operator_replica_count" {
   type        = number
   description = "Number of External Secrets operator replicas"
@@ -98,7 +102,7 @@ variable "cert_controller_limit_cpu" {
   default     = null
 }
 
-variable "cert_controller_limit_memory" { 
+variable "cert_controller_limit_memory" {
   type        = string
   description = "Memory resource limit for Cert Controller"
   nullable    = true
@@ -117,9 +121,9 @@ variable "rpcs_secret_version" {
 
 locals {
   external_secrets_presets = {
-    external_secrets = "16"
-    webhook = "16"
-    cert_controller = "16"
+    external_secrets  = "16"
+    webhook           = "16"
+    cert_controller   = "16"
   }
 }
 

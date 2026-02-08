@@ -62,7 +62,7 @@ leaderElection:
   namespace: "kube-system"
 ## @param installCRDs Flag to install cert-manager CRDs
 ##
-installCRDs: ${install_crds}
+installCRDs: false
 ## @param replicaCount Number of cert-manager replicas
 ##
 replicaCount: 1
@@ -86,7 +86,7 @@ controller:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/cert-manager
+    repository: bitnami/cert-manager
     tag: 1.18.2-debian-12-r5
     digest: ""
     ## Specify a imagePullPolicy
@@ -116,7 +116,7 @@ controller:
     ##
     image:
       registry: docker.io
-      repository: bitnamilegacy/acmesolver
+      repository: bitnami/acmesolver
       tag: 1.18.2-debian-12-r5
       digest: ""
       ## Specify a imagePullPolicy
@@ -150,13 +150,7 @@ controller:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${controller_request_cpu}
-      memory: ${controller_request_memory}
-    limits:
-      cpu: ${controller_limit_cpu}
-      memory: ${controller_limit_memory}
+  resources: {}
   ## controller pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param controller.podSecurityContext.enabled Enabled Controller pods' Security Context
@@ -503,7 +497,7 @@ webhook:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/cert-manager-webhook
+    repository: bitnami/cert-manager-webhook
     tag: 1.18.2-debian-12-r5
     digest: ""
     ## Specify a imagePullPolicy
@@ -542,13 +536,7 @@ webhook:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: 
-    requests:
-      cpu: ${webhook_request_cpu}
-      memory: ${webhook_request_memory}
-    limits:
-      cpu: ${webhook_limit_cpu}
-      memory: ${webhook_limit_memory}
+  resources: {}
   ## webhook pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param webhook.podSecurityContext.enabled Enabled Webhook pods' Security Context
@@ -881,7 +869,7 @@ cainjector:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/cainjector
+    repository: bitnami/cainjector
     tag: 1.18.2-debian-12-r5
     digest: ""
     ## Specify a imagePullPolicy
@@ -916,13 +904,7 @@ cainjector:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: 
-    requests:
-      cpu: ${cainjector_request_cpu}
-      memory: ${cainjector_request_memory}
-    limits:
-      cpu: ${cainjector_limit_cpu}
-      memory: ${cainjector_limit_memory}
+  resources: {}
   ## cainjector pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param cainjector.podSecurityContext.enabled Enabled CAInjector pods' Security Context

@@ -1,0 +1,54 @@
+## =========================
+## Image (Bitnami Consul - legacy registry)
+## =========================
+image:
+  registry: docker.io
+  repository: bitnamilegacy/consul
+
+## =========================
+## Replica count
+## =========================
+replicaCount: ${replica_count}
+
+## =========================
+## Node scheduling
+## =========================
+nodeSelector:
+  "doks.digitalocean.com/node-pool": ${node_pool_label}
+
+## =========================
+## Consul container resources
+## =========================
+resources:
+  requests:
+    cpu: ${request_cpu}
+    memory: ${request_memory}
+  limits:
+    cpu: ${limit_cpu}
+    memory: ${limit_memory}
+
+## =========================
+## Persistence
+## =========================
+persistence:
+  enabled: true
+  size: ${persistence_size}
+
+## =========================
+## Volume permissions init container
+## =========================
+volumePermissions:
+  enabled: true
+  resources:
+    requests:
+      cpu: ${volume_permissions_request_cpu}
+      memory: ${volume_permissions_request_memory}
+    limits:
+      cpu: ${volume_permissions_limit_cpu}
+      memory: ${volume_permissions_limit_memory}
+
+## =========================
+## Gossip encryption (optional)
+## =========================
+## Base64-encoded gossip key; leave empty to disable encryption.
+gossipKey: ${gossip_key}

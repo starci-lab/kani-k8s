@@ -1,6 +1,7 @@
 // =========================
-// Terraform configuration
+// Terraform configuration (module)
 // =========================
+// Version and provider constraints; actual provider config is in providers.tf.
 terraform {
   required_version = "~> 1.14.2"
   required_providers {

@@ -7,13 +7,13 @@
 variable "encrypted_aes_key" {
   type        = string
   description = "Encrypted AES key"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "encrypted_jwt_secret_key" {
   type        = string
   description = "Encrypted JWT secret key"
-  sensitive = true
+  sensitive   = true
 }
 
 // =========================
@@ -25,41 +25,41 @@ variable "encrypted_jwt_secret_key" {
 variable "gcp_secret_accessor_sa" {
   type        = string
   description = "GCP secret accessor service account"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "gcp_crypto_key_ed_sa" {
   type        = string
   description = "GCP crypto key encryptor/decryptor service account"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "gcp_cloud_kms_crypto_operator_sa" {
   type        = string
   description = "GCP Cloud KMS crypto operator service account"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "gcp_google_drive_ud_sa" {
   type        = string
   description = "GCP Google Drive UD service account"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "privy_app_secret_key" {
   type        = string
   description = "Privy app secret key"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "privy_signer_private_key" {
   type        = string
   description = "Privy signer private key"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "coin_market_cap_api_key" {
   type        = string
   description = "Coin Market Cap API key"
-  sensitive = true
+  sensitive   = true
 }

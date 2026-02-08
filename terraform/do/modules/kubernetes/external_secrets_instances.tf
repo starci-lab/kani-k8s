@@ -1,21 +1,8 @@
-// ======================================================
-// External Secrets Instances Configuration
-// ------------------------------------------------------
-// Defines the ExternalSecret resources that sync secrets
-// from Google Cloud Secret Manager to Kubernetes secrets.
-//
-// Each ExternalSecret automatically fetches secrets from GCP
-// and creates/updates corresponding Kubernetes secrets in
-// the target namespace.
-// ======================================================
-
+// =========================
+// ExternalSecret instances (GCP → Kubernetes)
+// =========================
+// Defines which GCP secrets are synced into the kani namespace.
 locals {
-  // Map of ExternalSecret definitions
-  // Each entry defines:
-  // - name: The ExternalSecret resource name
-  // - target_secret_name: The Kubernetes secret name to create
-  // - target_secret_key: The key name in the Kubernetes secret
-  // - gcp_secret_name: The secret name in Google Cloud Secret Manager
   external_secrets_instances = {
     app = {
       name               = "app"
@@ -34,19 +21,11 @@ locals {
   }
 }
 
-// ======================================================
-// External Secrets Resources
-// ------------------------------------------------------
-// Creates ExternalSecret resources that sync secrets from
-// Google Cloud Secret Manager to Kubernetes secrets.
-//
-// These resources use the ClusterSecretStore for authentication
-// and automatically refresh when the source secret changes.
-// ======================================================
+// =========================
+// ExternalSecret resources
+// =========================
 resource "kubectl_manifest" "external_secret" {
   for_each = local.external_secrets_instances
-
-  // Ensure ClusterSecretStore is ready before creating ExternalSecrets
   depends_on = [
     kubectl_manifest.gcp_cluster_secret_store
   ]

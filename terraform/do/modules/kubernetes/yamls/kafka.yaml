@@ -33,7 +33,7 @@ defaultInitContainers:
 ## Controller Resources
 ## =========================
 controller:
-  controllerOnly: true
+  controllerOnly: ${controller_only}
   replicaCount: ${controller_replica_count}
   resources: 
     requests:

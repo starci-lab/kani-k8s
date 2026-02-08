@@ -97,7 +97,7 @@ serviceBindings:
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/kafka
+  repository: bitnami/kafka
   tag: 4.0.0-debian-12-r10
   digest: ""
   ## Specify a imagePullPolicy
@@ -284,9 +284,8 @@ sasl:
   ##
   client:
     users:
-      - ${sasl_user}
-    passwords: 
-      - ${sasl_password}
+      - user1
+    passwords: ""
   ## @param sasl.existingSecret Name of the existing secret containing credentials for client.users, interbroker.user and controller.user
   ## Create this secret running the command below where SECRET_NAME is the name of the secret you want to create:
   ##       kubectl create secret generic SECRET_NAME --from-literal=client-passwords=CLIENT_PASSWORD1,CLIENT_PASSWORD2 --from-literal=inter-broker-password=INTER_BROKER_PASSWORD --from-literal=inter-broker-client-secret=INTER_BROKER_CLIENT_SECRET --from-literal=controller-password=CONTROLLER_PASSWORD --from-literal=controller-client-secret=CONTROLLER_CLIENT_SECRET
@@ -489,7 +488,7 @@ defaultInitContainers:
     ##
     image:
       registry: docker.io
-      repository: bitnamilegacy/os-shell
+      repository: bitnami/os-shell
       tag: 12-debian-12-r51
       digest: ""
       pullPolicy: IfNotPresent
@@ -539,13 +538,7 @@ defaultInitContainers:
     ##     cpu: 3
     ##     memory: 1024Mi
     ##
-    resources:
-      requests:
-        cpu: ${volume_permissions_request_cpu}
-        memory: ${volume_permissions_request_memory}
-      limits:
-        cpu: ${volume_permissions_limit_cpu}
-        memory: ${volume_permissions_limit_memory}
+    resources: {}
   ## Kafka "prepare-config" init container
   ## Used to prepare the Kafka configuration files for main containers to use them
   ##
@@ -616,7 +609,7 @@ defaultInitContainers:
     ##
     image:
       registry: docker.io
-      repository: bitnamilegacy/kubectl
+      repository: bitnami/kubectl
       tag: 1.33.4-debian-12-r0
       digest: ""
       ## Specify a imagePullPolicy
@@ -681,10 +674,10 @@ defaultInitContainers:
 controller:
   ## @param controller.replicaCount Number of Kafka controller-eligible nodes
   ##
-  replicaCount: 1
+  replicaCount: 3
   ## @param controller.controllerOnly If set to true, controller nodes will be deployed as dedicated controllers, instead of controller+broker processes.
   ##
-  controllerOnly: true
+  controllerOnly: false
   ## @param controller.quorumBootstrapServers Override the Kafka controller quorum bootstrap servers of the Kafka Kraft cluster. If not set, it will be automatically configured to use all controller-eligible nodes.
   ##
   quorumBootstrapServers: ""
@@ -703,9 +696,7 @@ controller:
   config: {}
   ## @param controller.overrideConfiguration Kafka configuration override for Kafka controller-eligible nodes. Values defined here takes precedence over the ones defined at `controller.config`
   ##
-  overrideConfiguration:
-    ## Disable auto creation of topics
-    auto.create.topics.enable: "false"
+  overrideConfiguration: {}
   ## @param controller.existingConfigmap Name of an existing ConfigMap with the Kafka configuration for Kafka controller-eligible nodes
   ##
   existingConfigmap: ""
@@ -815,13 +806,7 @@ controller:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: 
-    requests:
-      cpu: ${controller_request_cpu}
-      memory: ${controller_request_memory}
-    limits:
-      cpu: ${controller_limit_cpu}
-      memory: ${controller_limit_memory}
+  resources: {}
   ## Kafka pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param controller.podSecurityContext.enabled Enable security context for the pods
@@ -927,8 +912,7 @@ controller:
   ## @param controller.nodeSelector Node labels for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param controller.tolerations Tolerations for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -1098,7 +1082,7 @@ controller:
       - ReadWriteOnce
     ## @param controller.persistence.size PVC Storage Request for Kafka data volume
     ##
-    size: ${controller_persistence_size}
+    size: 8Gi
     ## @param controller.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
@@ -1138,7 +1122,7 @@ controller:
       - ReadWriteOnce
     ## @param controller.logPersistence.size PVC Storage Request for Kafka logs volume
     ##
-    size: ${controller_log_persistence_size}
+    size: 8Gi
     ## @param controller.logPersistence.annotations Annotations for the PVC
     ##
     annotations: {}
@@ -1156,7 +1140,7 @@ controller:
 broker:
   ## @param broker.replicaCount Number of Kafka broker-only nodes
   ##
-  replicaCount: 1
+  replicaCount: 0
   ## @param broker.minId Minimal node.id values for broker-only nodes. Do not change after first initialization.
   ## Broker-only id increment their ID starting at this minimal value.
   ## We recommend setting this this value high enough, as IDs under this value will be used by controller-eligible nodes
@@ -1283,13 +1267,7 @@ broker:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${broker_request_cpu}
-      memory: ${broker_request_memory}
-    limits:
-      cpu: ${broker_limit_cpu}
-      memory: ${broker_limit_memory}
+  resources: {}
   ## Kafka pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param broker.podSecurityContext.enabled Enable security context for the pods
@@ -1394,8 +1372,7 @@ broker:
   ## @param broker.nodeSelector Node labels for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param broker.tolerations Tolerations for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -2024,7 +2001,7 @@ metrics:
     ##
     image:
       registry: docker.io
-      repository: bitnamilegacy/jmx-exporter
+      repository: bitnami/jmx-exporter
       tag: 1.4.0-debian-12-r0
       digest: ""
       ## Specify a imagePullPolicy

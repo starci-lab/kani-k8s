@@ -1,3 +1,4 @@
+
 # Copyright Broadcom, Inc. All Rights Reserved.
 # SPDX-License-Identifier: APACHE-2.0
 
@@ -28,7 +29,7 @@ global:
     ## @param global.security.allowInsecureImages Allows skipping image verification
     allowInsecureImages: false
   redis:
-    password: ${password}
+    password: ""
   ## Compatibility adaptations for Kubernetes platforms
   ##
   compatibility:
@@ -88,7 +89,7 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/redis-cluster
+  repository: bitnami/redis-cluster
   tag: 8.2.1-debian-12-r0
   digest: ""
   ## Specify a imagePullPolicy
@@ -261,7 +262,7 @@ usePassword: true
 ## Defaults to a random 10-character alphanumeric string if not set and usePassword is true
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
 ##
-password: ${password}
+password: ""
 ## @param existingSecret Name of existing secret object (for password authentication)
 ##
 existingSecret: ""
@@ -408,7 +409,7 @@ persistence:
     - ReadWriteOnce
   ## @param persistence.size Size of data volume
   ##
-  size: ${persistence_size}
+  size: 8Gi
   ## @param persistence.matchLabels Persistent Volume selectors
   ## https://kubernetes.io/docs/concepts/storage/persistent-volumes/#selector
   ##
@@ -441,7 +442,7 @@ volumePermissions:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r51
     digest: ""
     pullPolicy: IfNotPresent
@@ -480,13 +481,7 @@ volumePermissions:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
 ## @param serviceBindings.enabled Create secret for service binding (Experimental)
 ## Ref: https://servicebinding.io/service-provider/
 ##
@@ -619,13 +614,7 @@ redis:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
   ## @param redis.schedulerName Use an alternate scheduler, e.g. "stork".
   ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
   ##
@@ -728,8 +717,7 @@ redis:
   ## @param redis.nodeSelector Node labels for Redis&reg; pods assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector:
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param redis.tolerations Tolerations for Redis&reg; pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -831,8 +819,7 @@ updateJob:
   ## @param updateJob.nodeSelector Node labels for update job pods assignment
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   ##
-  nodeSelector:
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  nodeSelector: {}
   ## @param updateJob.tolerations Tolerations for update job pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
@@ -860,13 +847,7 @@ updateJob:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources:
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
 ## @section Cluster management parameters
 ##
 
@@ -885,12 +866,12 @@ cluster:
   ##
   ## @param cluster.nodes The number of master nodes should always be >= 3, otherwise cluster creation will fail
   ##
-  nodes: ${nodes}
+  nodes: 6
   ## @param cluster.replicas Number of replicas for every master in the cluster
   ## Parameter to be passed as --cluster-replicas to the redis-cli --cluster create
   ## 1 means that we want a replica for every master created
   ##
-  replicas: ${replicas}
+  replicas: 1
   ## Configuration to access the Redis(R) Cluster from outside the Kubernetes cluster
   ##
   externalAccess:
@@ -966,7 +947,7 @@ metrics:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/redis-exporter
+    repository: bitnami/redis-exporter
     tag: 1.76.0-debian-12-r0
     digest: ""
     pullPolicy: IfNotPresent
@@ -993,13 +974,7 @@ metrics:
   ##     memory: 1024Mi
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ##
-  resources:
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
+  resources: {}
   ## @param metrics.extraArgs Extra arguments for the binary; possible values [here](https://github.com/oliver006/redis_exporter)
   ## extraArgs:
   ##   check-keys: myKey,myOtherKey
@@ -1183,7 +1158,7 @@ sysctlImage:
   ## @param sysctlImage.pullSecrets Specify docker-registry secret names as an array
   ##
   registry: docker.io
-  repository: bitnamilegacy/os-shell
+  repository: bitnami/os-shell
   tag: 12-debian-12-r51
   digest: ""
   pullPolicy: IfNotPresent

@@ -14,6 +14,7 @@ variable "kani_aes_cbc_salt" {
   description = "Salt value for AES CBC encryption"
   sensitive   = true
 }
+
 // =========================
 // Secret mount paths configuration
 // =========================
@@ -78,6 +79,7 @@ variable "kani_coin_market_cap_api_key_mount_path" {
   description = "Mount path for Coin Market Cap API key"
   default     = "/etc/terraform/coin-market-cap-api-key"
 }
+
 // =========================
 // Probes configuration
 // =========================

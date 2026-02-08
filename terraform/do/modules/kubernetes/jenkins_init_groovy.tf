@@ -24,8 +24,8 @@ locals {
   containers = {
     kani_interface = {
       file        = "kani-interface-deployment-rollout-pipeline"
-      name        = "kani-interface-deployment-rollout-pipeline"                                          # Name of the Jenkins pipeline job
-      description = "Rollout the kani interface deployment using Kubernetes" # Job description
+      name        = "kani-interface-deployment-rollout-pipeline"
+      description = "Rollout the kani interface deployment using Kubernetes"
       pipeline_script = templatefile("${path.module}/scripts/jenkins/jenkinsfiles/deployment-rollout.jenkinsfile", {
         deployment_name = "kani-interface-service"
         namespace = "kani"
@@ -35,8 +35,8 @@ locals {
     }
     kani_coordinator = {
       file        = "kani-coordinator-deployment-rollout-pipeline"
-      name        = "kani-coordinator-deployment-rollout-pipeline"                                          # Name of the Jenkins pipeline job
-      description = "Rollout the kani coordinator deployment using Kubernetes" # Job description
+      name        = "kani-coordinator-deployment-rollout-pipeline"
+      description = "Rollout the kani coordinator deployment using Kubernetes"
       pipeline_script = templatefile("${path.module}/scripts/jenkins/jenkinsfiles/deployment-rollout.jenkinsfile", {
         deployment_name = "kani-coordinator-service"
         namespace = "kani"
@@ -46,8 +46,8 @@ locals {
     }
     kani_observer = {
       file        = "kani-observer-deployment-rollout-pipeline"
-      name        = "kani-observer-deployment-rollout-pipeline"                                          # Name of the Jenkins pipeline job
-      description = "Rollout the kani observer deployment using Kubernetes" # Job description
+      name        = "kani-observer-deployment-rollout-pipeline"
+      description = "Rollout the kani observer deployment using Kubernetes"
       pipeline_script = templatefile("${path.module}/scripts/jenkins/jenkinsfiles/deployment-rollout.jenkinsfile", {
         deployment_name = "kani-observer-service"
         namespace = "kani"
@@ -58,9 +58,11 @@ locals {
   }
 }
 
+// =========================
+// Jenkins init Groovy ConfigMap content
+// =========================
 locals {
   jenkins_init_groovy_name = "jenkins-init-groovy"
-  // Create ConfigMap for Jenkins init groovy scripts
   jenkins_init_groovy_cm_1 = {
     "kubernetes-cloud.groovy" = templatefile("${path.module}/scripts/jenkins/groovy/kubernetes-cloud.groovy", {
       node_selector    = "doks.digitalocean.com/node-pool=${var.kubernetes_primary_node_pool_name}"
@@ -83,6 +85,9 @@ locals {
   jenkins_init_groovy_cm = merge(local.jenkins_init_groovy_cm_1, local.jenkins_init_groovy_cm_2)
 }
 
+// =========================
+// Jenkins init Groovy ConfigMap resource
+// =========================
 resource "kubernetes_config_map" "jenkins_init_groovy_cm" {
   metadata {
     name      = local.jenkins_init_groovy_name

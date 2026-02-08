@@ -164,9 +164,9 @@ resource "helm_release" "kani_interface" {
   ]
 }
 
-// -----------------------------------------------------------------------------
-// Read Kani Interface server Service (for Ingress wiring)
-// -----------------------------------------------------------------------------
+// =========================
+// Kani Interface server Service (data)
+// =========================
 data "kubernetes_service" "kani_interface" {
   metadata {
     name      = "kani-interface-service"
@@ -176,7 +176,9 @@ data "kubernetes_service" "kani_interface" {
   depends_on = [helm_release.kani_interface]
 }
 
-// Pick port if present; otherwise use the first declared service port
+// =========================
+// Kani Interface server port (for Ingress)
+// =========================
 locals {
   kani_interface_server_port = coalesce(
     try(
@@ -191,9 +193,9 @@ locals {
   )
 }
 
-// -----------------------------------------------------------------------------
-// Ingress (NGINX + cert-manager TLS)
-// -----------------------------------------------------------------------------
+// =========================
+// Kani Interface Ingress (NGINX + TLS)
+// =========================
 resource "kubernetes_ingress_v1" "kani_interface" {
   metadata {
     name      = "kani-interface"

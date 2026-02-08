@@ -5,7 +5,6 @@
 // - DigitalOcean Kubernetes cluster (DOKS)
 // - Core platform services (MongoDB, Redis, Kafka)
 // - Platform tooling (Argo CD, Ingress, DNS)
-// =========================
 
 module "kubernetes" {
   source = "./modules/kubernetes"

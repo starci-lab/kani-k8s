@@ -92,7 +92,7 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnamilegacy/jenkins
+  repository: bitnami/jenkins
   tag: 2.516.2-debian-12-r0
   digest: ""
   ## Specify a imagePullPolicy
@@ -116,11 +116,11 @@ image:
 
 ## @param jenkinsUser Jenkins username
 ##
-jenkinsUser: ${jenkins_user}
+jenkinsUser: user
 ## @param jenkinsPassword Jenkins user password
 ## Defaults to a random 10-character alphanumeric string if not set
 ##
-jenkinsPassword: ${jenkins_password}
+jenkinsPassword: ""
 ## @param jenkinsHost Jenkins host to create application URLs
 ##
 jenkinsHost: ""
@@ -160,13 +160,7 @@ extraEnvVarsSecret: ""
 ##   - git:4.13.0
 ##   - configuration-as-code:1569.vb_72405b_80249
 ##
-plugins: [
-  "kubernetes",
-  "workflow-job",
-  "workflow-aggregator",
-  "github",
-  "generic-webhook-trigger",
-]
+plugins: []
 ## @param extraPlugins List of plugins to install in addition to those listed in `plugins`
 ##
 extraPlugins: []
@@ -196,10 +190,10 @@ overridePaths: ""
 initScripts: {}
 ## @param initScriptsCM ConfigMap containing the `/docker-entrypoint-initdb.d` scripts. Evaluated as a template.
 ##
-initScriptsCM: ${init_hook_scripts_cm}
+initScriptsCM: ""
 ## @param initScriptsSecret Secret containing `/docker-entrypoint-initdb.d` scripts to be executed at initialization time that contain sensitive data. Evaluated as a template.
 ##
-initScriptsSecret: ${init_hook_scripts_secret}
+initScriptsSecret: ""
 ## @param initHookScripts Dictionary of scripts to be mounted at `$JENKINS_HOME/init.groovy.d`. Evaluated as a template. Allows .sh and .groovy formats.
 ## These init scripts will executed each time Jenkins is .
 ##
@@ -381,7 +375,7 @@ configAsCode:
 agent:
   ## @param agent.enabled Set to true to enable the configuration of Jenkins kubernetes agents
   ##
-  enabled: true
+  enabled: false
   ## Bitnami Jenkins agent image
   ## ref: https://hub.docker.com/r/bitnami/jenkins/tags/
   ## @param agent.image.registry [default: REGISTRY_NAME] Jenkins image registry
@@ -394,7 +388,7 @@ agent:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/jenkins-agent
+    repository: bitnami/jenkins-agent
     tag: 0.3327.0-debian-12-r1
     digest: ""
     ## Specify a imagePullPolicy
@@ -610,13 +604,7 @@ resourcesPreset: "medium"
 ##     cpu: 3
 ##     memory: 1024Mi
 ##
-resources: 
-  requests:
-    cpu: ${request_cpu}
-    memory: ${request_memory}
-  limits:
-    cpu: ${limit_cpu}
-    memory: ${limit_memory}
+resources: {}
 ## Container ports
 ## @param containerPorts.http Jenkins HTTP container port
 ## @param containerPorts.https Jenkins HTTPS container port
@@ -726,7 +714,7 @@ customReadinessProbe: {}
 service:
   ## @param service.type Jenkins service type
   ##
-  type: ClusterIP
+  type: LoadBalancer
   ## @param service.ports.http Jenkins service HTTP port
   ## @param service.ports.https Jenkins service HTTPS port
   ##
@@ -1055,7 +1043,7 @@ volumePermissions:
   ##
   image:
     registry: docker.io
-    repository: bitnamilegacy/os-shell
+    repository: bitnami/os-shell
     tag: 12-debian-12-r51
     digest: ""
     pullPolicy: IfNotPresent
@@ -1083,13 +1071,7 @@ volumePermissions:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: 
-    requests:
-      cpu: ${volume_permissions_request_cpu}
-      memory: ${volume_permissions_request_memory}
-    limits:
-      cpu: ${volume_permissions_limit_cpu}
-      memory: ${volume_permissions_limit_memory}
+  resources: {}
   ## Init container Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   ## @param volumePermissions.securityContext.seLinuxOptions [object,nullable] Set SELinux options in container
