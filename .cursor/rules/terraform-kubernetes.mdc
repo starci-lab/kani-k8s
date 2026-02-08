@@ -14,92 +14,101 @@ Follow these patterns when editing Terraform or Helm values YAML in this repo. A
 
 - **Root**: `terraform/do/` – module calls, root variables. Variables are split by domain: `kubernetes_variables.tf`, `domain_variables.tf`, `authentication_variables.tf`, etc.
 - **Module**: `terraform/do/modules/kubernetes/` – DOKS cluster, Helm releases, DNS, secrets.
-- **Per-component**: One `*_variables.tf` and one or more `*.tf` (e.g. `jenkins.tf`, `jenkins_variables.tf`). Keep variables for a component in its `*_variables.tf`.
-- **YAML**: `terraform/do/modules/kubernetes/yamls/` – Helm values used by `templatefile()`. Names match the chart (e.g. `jenkins.yaml`, `argo-cd.yaml`). Do **not** add `_`-prefixed files here; use `yamls/legacy/` for full/default values reference (e.g. `_jenkins.yaml`).
+- **Global variables**: Use `global_variables_*.tf` pattern for shared variables used across multiple components:
+  - `global_variables_resources.tf` → resource presets configuration
+  - `global_variables_mount.tf` → encrypted secrets and GCP service account variables
+  - `global_variables_kubernetes.tf` → Kubernetes cluster and node pool variables
+  - `global_variables_gcp.tf` → GCP project ID variables
+- **Per-component**:
+  - One `*_variables.tf` → all variables of that component
+  - One or more:
+    - `*_locals.tf` → all locals (computed config)
+    - `*_resources.tf` or `*_resources_*.tf` → pure Terraform resources (namespace, secret, ingress…)
+      - Use `*_resources_*.tf` pattern to split resources by domain (e.g., `jenkins_resources_rbac.tf`, `jenkins_resources_init_groovy.tf`)
+    - `*_helm.tf` → `helm_release`
+- **YAML**: `terraform/do/modules/kubernetes/yamls/` – Helm values used by `templatefile()`.
+  - Names match the chart (e.g. `jenkins.yaml`, `argo-cd.yaml`)
+  - Do **not** add `_`-prefixed files here; use `yamls/legacy/` for full/default values reference (e.g. `_jenkins.yaml`)
 
 ---
 
 ## Comments (English only)
 
 - **Use `//` only** for Terraform comments. Do not use `#` except when commenting out an entire block of code.
-- **Block section**: Use a double-line banner with `//` and `=====`:
-  ```hcl
-  // =========================
-  // Section title (e.g. "Jenkins Helm release")
-  // =========================
-  ```
-- **Inline**: One line above or at end of line with `//`. Explain *what* or *why*, not the obvious.
-  ```hcl
-  // Ensure the Kubernetes cluster exists before creating the namespace
-  depends_on = [digitalocean_kubernetes_cluster.kubernetes]
-  ```
-- **Module inputs**: Group related inputs and add a short `//` comment for non-obvious ones (e.g. "Admin password for Argo CD (bcrypt-hashed)").
+- **Block section**: Use a double-line banner with `//` and `=====` for main resource blocks (variables, locals, resources, helm releases):
 
----
-
-## Naming
-
-- **Variables**: `snake_case`. Prefix by component when in a shared file (e.g. `argo_cd_redis_password`, `jenkins_persistence_size`, `kafka_broker_replica_count`).
-- **Resources**: `resource "type" "short_name"` – e.g. `helm_release.jenkins`, `kubernetes_namespace.jenkins`, `data.kubernetes_service.jenkins_server`.
-- **Locals**: Short names for IDs (e.g. `jenkins_name`, `jenkins_server_service_name`). Use nested objects for computed values (e.g. `local.jenkins.jenkins.request_cpu`).
-- **YAML placeholders**: Same as Terraform keys passed to `templatefile()` – `snake_case` (e.g. `${replica_count}`, `${master_persistence_size}`).
-
----
-
-## Variables and locals
-
-- Prefer `type`, `description`, and `default` (or `nullable = true` + `default = null` for optional overrides).
-- Mark secrets with `sensitive = true`.
-- **Resource presets**: Use a shared `resources_config` map (see `resources_variables.tf`) and `coalesce(var.x, try(var.resources_config[local.presets.key].requests.cpu, "fallback"))` so component vars override preset by key (e.g. "16", "32").
-
----
-
-## Helm values and templatefile
-
-- **Values YAML** (e.g. `jenkins.yaml`, `redis.yaml`): Only the keys that are overridden; all values come from Terraform via `templatefile("${path.module}/yamls/...yaml", { ... })`. Use placeholders `${var_name}` for every value that is not fixed.
-- **Sections in YAML**: Add section comments with `## =========================` and `## Section title` (English). Group related keys (e.g. "Authentication", "Persistence", "Controller resources").
-- **Replica counts / persistence**: Prefer Terraform variables (e.g. `replica_count`, `persistence_size`, `broker_replica_count`) and pass them in the corresponding `templatefile()`; avoid hardcoding in YAML.
-- **Images**: Use `bitnamilegacy/*` for Bitnami-based charts; set `image.registry` and `image.repository` (and component-specific image blocks where needed) in the values YAML, wired from TF if needed.
-
----
-
-## Resource ordering and depends_on
-
-- **Preferred order in a component `.tf` file**: (1) Namespace, (2) Locals (names/IDs), (3) Main resource (e.g. `helm_release`), (4) Data sources that depend on it, (5) Locals that use data (e.g. service host/port), (6) Additional resources (Deployment, Service, Secret, Ingress) in dependency order, (7) `depends_on` where the provider cannot infer it.
-- **Preferred order in a `*_variables.tf` file**: Group variables with section comments (e.g. "Authentication", "Replica count", "Persistence", "Resources", "Init container"). Put replica/persistence/size vars before resource request/limit vars.
-- Set `depends_on` explicitly where the provider cannot infer it (e.g. namespace, or another module resource).
-
----
-
-## Examples
-
-**Variable (in `*_variables.tf`):**
 ```hcl
-variable "jenkins_persistence_size" {
-  type        = string
-  description = "Persistent volume size for Jenkins home data"
-  default     = "8Gi"
+// =========================
+// Argo CD controller (replica count + resources)
+// =========================
+// Argo CD is a declarative GitOps continuous delivery tool for Kubernetes.
+// This section configures the controller component with replica count and resource limits.
+```
+
+- **Variable comments**: Add a single-line comment above each variable explaining its purpose:
+
+```hcl
+// Whether to install cert-manager Custom Resource Definitions (CRDs) during Helm chart installation
+variable "cert_manager_install_crds" {
+  type        = bool
+  description = "Install cert-manager CRDs"
+  default     = true
+}
+
+// Number of replicas for the cert-manager controller pod
+variable "cert_manager_controller_replica_count" {
+  type        = number
+  description = "Number of cert-manager controller replicas"
+  default     = 1
 }
 ```
 
-**Templatefile (in `jenkins.tf`):**
+- **Locals structure**: Use a single `locals` block per component. All computed values for a component should be grouped within a single object named after the component. Include presets, resource values, instances, and other configurations as nested objects:
+
 ```hcl
-values = [
-  templatefile("${path.module}/yamls/jenkins.yaml", {
-    // =========================
-    // Persistence
-    // =========================
-    persistence_size = var.jenkins_persistence_size
-    // ...
-  })
-]
+locals {
+  external_secrets = {
+    presets = {
+      external_secrets  = "16"
+      webhook           = "16"
+      cert_controller   = "16"
+    }
+    external_secrets = {
+      request_cpu = coalesce(
+        var.external_secrets_request_cpu,
+        try(var.resources_config[local.external_secrets.presets.external_secrets].requests.cpu, "100m")
+      )
+      // ... more resource values
+    }
+    webhook = {
+      request_cpu = coalesce(...)
+      // ... more resource values
+    }
+    instances = {
+      app = {
+        name               = "app"
+        target_secret_name = "app"
+        // ... instance configuration
+      }
+    }
+    gcp_cluster_secret_store = {
+      name = "gcp-secret-store"
+    }
+  }
+}
 ```
 
-**YAML section (in `jenkins.yaml`):**
-```yaml
-## =========================
-## Persistence
-## =========================
-persistence:
-  size: ${persistence_size}
+All locals for a component must be consolidated into one `locals` block in the `*_locals.tf` file. Do not create multiple separate `locals` blocks for the same component.
+
+- **Templatefile comments**: Use simple inline comments (`//`) for grouping within `templatefile()` blocks, not full comment blocks:
+
+```hcl
+templatefile("${path.module}/yamls/cert-manager.yaml", {
+  // Installation and replica counts
+  install_crds              = var.cert_manager_install_crds
+  controller_replica_count = var.cert_manager_controller_replica_count
+  
+  // Core component resources
+  cert_manager_request_cpu = local.cert_manager.cert_manager.request_cpu
+})
 ```

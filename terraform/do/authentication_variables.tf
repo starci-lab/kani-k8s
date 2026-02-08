@@ -120,18 +120,18 @@ variable "grafana_password" {
 // Jenkins authentication variables
 // =========================
 
-variable "jenkins_user" {
-  type        = string
-  description = "Jenkins user"
-  sensitive = true
-}
+# variable "jenkins_user" {
+#   type        = string
+#   description = "Jenkins user"
+#   sensitive = true
+# }
 
 // =========================
 // Jenkins authentication variables
 // =========================
 
-variable "jenkins_password" {
-  type        = string
-  description = "Jenkins password"
-  sensitive = true
-}
+# variable "jenkins_password" {
+#   type        = string
+#   description = "Jenkins password"
+#   sensitive = true
+# }

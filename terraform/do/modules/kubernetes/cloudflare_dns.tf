@@ -19,7 +19,7 @@ locals {
   grafana_domain_name                 = "${var.grafana_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
   portainer_domain_name               = "${var.portainer_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
   api_domain_name                     = "${var.api_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
-  jenkins_domain_name                 = "${var.jenkins_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
+  # jenkins_domain_name                 = "${var.jenkins_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
   kafka_ui_domain_name                = "${var.kafka_ui_prefix}.${var.prefix_domain_name != "none" ? "${var.prefix_domain_name}." : ""}${var.domain_name}"
 }
 
@@ -73,12 +73,12 @@ resource "cloudflare_record" "api" {
   zone_id = data.cloudflare_zone.zone.id
 }
 
-resource "cloudflare_record" "jenkins" {
-  name    = local.jenkins_domain_name
-  type    = "A"
-  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
-  zone_id = data.cloudflare_zone.zone.id
-}
+# resource "cloudflare_record" "jenkins" {
+#   name    = local.jenkins_domain_name
+#   type    = "A"
+#   content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+#   zone_id = data.cloudflare_zone.zone.id
+# }
 
 resource "cloudflare_record" "kafka_ui" {
   name    = local.kafka_ui_domain_name

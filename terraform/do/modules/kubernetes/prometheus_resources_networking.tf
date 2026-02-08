@@ -1,0 +1,169 @@
+// =========================
+// Read Prometheus server Service
+// =========================
+// Fetches the Service created by the Prometheus Helm chart.
+// This is used to dynamically retrieve service ports for Ingress configuration.
+data "kubernetes_service" "prometheus_server" {
+  metadata {
+    name      = local.prometheus.server_service_name
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+  }
+  depends_on = [helm_release.prometheus]
+}
+
+// =========================
+// Read Prometheus Alertmanager server Service
+// =========================
+// Fetches the Service created by the Prometheus Helm chart.
+// This is used to dynamically retrieve service ports for Ingress configuration.
+data "kubernetes_service" "prometheus_alertmanager_server" {
+  metadata {
+    name      = local.prometheus.alertmanager_server_service_name
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+  }
+  depends_on = [helm_release.prometheus]
+}
+
+// =========================
+// Prometheus Basic Auth Secret
+// =========================
+// Creates a Kubernetes secret containing htpasswd file for basic authentication.
+resource "kubernetes_secret" "prometheus_basic_auth" {
+  metadata {
+    name      = "prometheus-basic-auth"
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+  }
+  data = {
+    auth = var.prometheus_htpasswd
+  }
+  type = "Opaque"
+}
+
+// =========================
+// Prometheus Ingress
+// =========================
+// Exposes Prometheus UI and API via NGINX Ingress with TLS
+// managed by cert-manager and DNS handled by Cloudflare.
+// Basic authentication is enabled via NGINX Ingress annotations.
+resource "kubernetes_ingress_v1" "prometheus" {
+  metadata {
+    name      = "prometheus"
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+
+    annotations = {
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
+      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "acme.cert-manager.io/http01-edit-in-place"      = "true"
+      "nginx.ingress.kubernetes.io/auth-type"          = "basic"
+      "nginx.ingress.kubernetes.io/auth-secret"        = kubernetes_secret.prometheus_basic_auth.metadata[0].name
+      "nginx.ingress.kubernetes.io/auth-realm"         = "Prometheus Authentication Required"
+    }
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+
+    rule {
+      host = local.prometheus_domain_name
+      http {
+        path {
+          path = "/"
+          backend {
+            service {
+              // Dynamically resolved Prometheus service + port
+              name = data.kubernetes_service.prometheus_server.metadata[0].name
+              port {
+                number = local.prometheus.server_port
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tls {
+      hosts       = [local.prometheus_domain_name]
+      secret_name = "prometheus-tls"
+    }
+  }
+
+  depends_on = [
+    kubectl_manifest.cluster_issuer_letsencrypt_prod,
+    cloudflare_record.prometheus,
+    helm_release.prometheus,
+    kubernetes_secret.prometheus_basic_auth
+  ]
+}
+
+// =========================
+// Prometheus Alertmanager Basic Auth Secret
+// =========================
+// Creates a Kubernetes secret containing htpasswd file for basic authentication.
+resource "kubernetes_secret" "prometheus_alertmanager_basic_auth" {
+  metadata {
+    name      = "prometheus-alertmanager-basic-auth"
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+  }
+  data = {
+    auth = var.prometheus_alertmanager_htpasswd
+  }
+  type = "Opaque"
+}
+
+// =========================
+// Prometheus Alertmanager Ingress
+// =========================
+// Exposes Prometheus Alertmanager UI and API via NGINX Ingress with TLS
+// managed by cert-manager and DNS handled by Cloudflare.
+// Basic authentication is enabled via NGINX Ingress annotations.
+resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
+  metadata {
+    name      = "prometheus-alertmanager"
+    namespace = kubernetes_namespace.prometheus.metadata[0].name
+
+    annotations = {
+      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
+      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "acme.cert-manager.io/http01-edit-in-place"      = "true"
+      "nginx.ingress.kubernetes.io/auth-type"          = "basic"
+      "nginx.ingress.kubernetes.io/auth-secret"        = kubernetes_secret.prometheus_alertmanager_basic_auth.metadata[0].name
+      "nginx.ingress.kubernetes.io/auth-realm"         = "Prometheus Authentication Required"
+    }
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+
+    rule {
+      host = local.prometheus_alertmanager_domain_name
+      http {
+        path {
+          path = "/"
+          backend {
+            service {
+              // Dynamically resolved Prometheus service + port
+              name = data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name
+              port {
+                number = local.prometheus.alertmanager_server_port
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tls {
+      hosts       = [local.prometheus_alertmanager_domain_name]
+      secret_name = "prometheus-alertmanager-tls"
+    }
+  }
+
+  depends_on = [
+    kubectl_manifest.cluster_issuer_letsencrypt_prod,
+    cloudflare_record.prometheus_alertmanager,
+    helm_release.prometheus,
+    kubernetes_secret.prometheus_alertmanager_basic_auth
+  ]
+}

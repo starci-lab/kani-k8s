@@ -109,31 +109,3 @@ variable "prometheus_alertmanager_basic_auth_password" {
   sensitive   = true
 }
 
-locals {
-  grafana_presets = {
-    grafana = "16"
-  }
-}
-
-locals {
-  grafana = {
-    grafana = {
-      request_cpu = coalesce(
-        var.grafana_request_cpu,
-        try(var.resources_config[local.grafana_presets.grafana].requests.cpu, "100m")
-      )
-      request_memory = coalesce(
-        var.grafana_request_memory,
-        try(var.resources_config[local.grafana_presets.grafana].requests.memory, "128Mi")
-      )
-      limit_cpu = coalesce(
-        var.grafana_limit_cpu,
-        try(var.resources_config[local.grafana_presets.grafana].limits.cpu, "200m")
-      )
-      limit_memory = coalesce(
-        var.grafana_limit_memory,
-        try(var.resources_config[local.grafana_presets.grafana].limits.memory, "256Mi")
-      )
-    }
-  }
-}

@@ -1,24 +1,10 @@
 // =========================
-// Kani Executor local identifiers
-// =========================
-// Defines naming conventions shared across Helm, Service lookup,
-// and Ingress configuration.
-locals {
-  // Helm release name for Kani Executor
-  kani_executor_name = "kani-executor"
-
-  // Service name exposed by the Kani Executor server component
-  // (created by the Helm chart)
-  kani_executor_server_service_name = "kani-executor"
-}
-
-// =========================
 // Kani Executor Helm release
 // =========================
 // Deploys Kani Executor using the custom Helm chart.
 // All configuration is injected via a Terraform-rendered values file.
 resource "helm_release" "kani_executor" {
-  name      = local.kani_executor_name
+  name      = local.kani_executor.name
   namespace = kubernetes_namespace.kani.metadata[0].name
   // Custom Helm chart from chart repository
   repository = "https://k8s.kanibot.xyz/charts"
@@ -143,7 +129,7 @@ resource "helm_release" "kani_executor" {
     kubernetes_job_v1.seed,
     helm_release.argo_cd,
     helm_release.grafana,
-    helm_release.jenkins,
+    # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
     helm_release.prometheus,

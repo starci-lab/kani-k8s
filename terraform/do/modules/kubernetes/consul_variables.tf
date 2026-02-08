@@ -1,7 +1,9 @@
 // =========================
 // Consul replica count
 // =========================
+// Controls replica count for HashiCorp Consul server.
 
+// Number of HashiCorp Consul server replicas
 variable "consul_replica_count" {
   type        = number
   description = "Number of HashiCorp Consul server replicas"
@@ -11,7 +13,9 @@ variable "consul_replica_count" {
 // =========================
 // Consul persistence
 // =========================
+// Controls persistent volume size for Consul data.
 
+// Persistent volume size for Consul data
 variable "consul_persistence_size" {
   type        = string
   description = "Persistent volume size for Consul data"
@@ -23,6 +27,7 @@ variable "consul_persistence_size" {
 // =========================
 // Base64-encoded gossip key for cluster encryption; leave empty to disable.
 
+// Base64-encoded gossip key for Consul cluster encryption (optional)
 variable "consul_gossip_key" {
   type        = string
   description = "Base64-encoded gossip key for Consul cluster encryption (optional)"
@@ -33,7 +38,9 @@ variable "consul_gossip_key" {
 // =========================
 // Consul container resources
 // =========================
+// Controls resource allocation for Consul server.
 
+// CPU resource request for Consul server
 variable "consul_request_cpu" {
   type        = string
   description = "CPU resource request for Consul server"
@@ -41,6 +48,7 @@ variable "consul_request_cpu" {
   default     = null
 }
 
+// Memory resource request for Consul server
 variable "consul_request_memory" {
   type        = string
   description = "Memory resource request for Consul server"
@@ -48,6 +56,7 @@ variable "consul_request_memory" {
   default     = null
 }
 
+// CPU resource limit for Consul server
 variable "consul_limit_cpu" {
   type        = string
   description = "CPU resource limit for Consul server"
@@ -55,6 +64,7 @@ variable "consul_limit_cpu" {
   default     = null
 }
 
+// Memory resource limit for Consul server
 variable "consul_limit_memory" {
   type        = string
   description = "Memory resource limit for Consul server"
@@ -65,7 +75,9 @@ variable "consul_limit_memory" {
 // =========================
 // Volume permissions init container
 // =========================
+// Controls resource allocation for Consul volume permissions init container.
 
+// CPU resource request for Consul volume permissions init container
 variable "consul_volume_permissions_request_cpu" {
   type        = string
   description = "CPU resource request for Consul volume permissions init container"
@@ -73,6 +85,7 @@ variable "consul_volume_permissions_request_cpu" {
   default     = null
 }
 
+// Memory resource request for Consul volume permissions init container
 variable "consul_volume_permissions_request_memory" {
   type        = string
   description = "Memory resource request for Consul volume permissions init container"
@@ -80,6 +93,7 @@ variable "consul_volume_permissions_request_memory" {
   default     = null
 }
 
+// CPU resource limit for Consul volume permissions init container
 variable "consul_volume_permissions_limit_cpu" {
   type        = string
   description = "CPU resource limit for Consul volume permissions init container"
@@ -87,37 +101,10 @@ variable "consul_volume_permissions_limit_cpu" {
   default     = null
 }
 
+// Memory resource limit for Consul volume permissions init container
 variable "consul_volume_permissions_limit_memory" {
   type        = string
   description = "Memory resource limit for Consul volume permissions init container"
   nullable    = true
   default     = null
-}
-
-// =========================
-// Consul resource presets and computed locals
-// =========================
-
-locals {
-  consul_presets = {
-    consul             = "64"
-    volume_permissions = "16"
-  }
-}
-
-locals {
-  consul = {
-    consul = {
-      request_cpu    = coalesce(var.consul_request_cpu, try(var.resources_config[local.consul_presets.consul].requests.cpu, "100m"))
-      request_memory = coalesce(var.consul_request_memory, try(var.resources_config[local.consul_presets.consul].requests.memory, "128Mi"))
-      limit_cpu      = coalesce(var.consul_limit_cpu, try(var.resources_config[local.consul_presets.consul].limits.cpu, "256m"))
-      limit_memory   = coalesce(var.consul_limit_memory, try(var.resources_config[local.consul_presets.consul].limits.memory, "256Mi"))
-    }
-    volume_permissions = {
-      request_cpu    = coalesce(var.consul_volume_permissions_request_cpu, try(var.resources_config[local.consul_presets.volume_permissions].requests.cpu, "32m"))
-      request_memory = coalesce(var.consul_volume_permissions_request_memory, try(var.resources_config[local.consul_presets.volume_permissions].requests.memory, "64Mi"))
-      limit_cpu      = coalesce(var.consul_volume_permissions_limit_cpu, try(var.resources_config[local.consul_presets.volume_permissions].limits.cpu, "128m"))
-      limit_memory   = coalesce(var.consul_volume_permissions_limit_memory, try(var.resources_config[local.consul_presets.volume_permissions].limits.memory, "128Mi"))
-    }
-  }
 }
