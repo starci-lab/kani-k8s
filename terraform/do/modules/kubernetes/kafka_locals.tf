@@ -95,6 +95,17 @@ locals {
       )
     }
     name = "kafka"
+    // Services for Kafka
+    services = {
+      service = {
+        name = "kafka"
+        port = 9092
+      }
+      ui_service = {
+        name = "kafka-ui"
+        port = 8080
+      }
+    }
   }
 }
 
@@ -110,17 +121,17 @@ locals {
       port = try(
         one([
           for p in data.kubernetes_service.kafka.spec[0].port :
-          p.port if p.port == 9092
+          p.port if p.port == local.kafka.services.service.port
         ]),
         data.kubernetes_service.kafka.spec[0].port[0].port
       )
     }
     ui_service = {
-      host = "kafka-ui.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
+      host = "${data.kubernetes_service.kafka_ui.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
       port = try(
         one([
           for p in data.kubernetes_service.kafka_ui.spec[0].port :
-          p.port if p.port == 8080
+          p.port if p.port == local.kafka.services.ui_service.port
         ]),
         data.kubernetes_service.kafka_ui.spec[0].port[0].port
       )

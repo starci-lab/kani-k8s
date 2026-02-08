@@ -38,6 +38,12 @@ locals {
       )
     }
     name = "kani-coordinator"
-    server_service_name = "kani-coordinator"
+    // Services for Kani Coordinator
+    services = {
+      server_service = {
+        name = "kani-coordinator"
+        port = 3000
+      }
+    }
   }
 }

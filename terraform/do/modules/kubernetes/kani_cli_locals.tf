@@ -38,7 +38,13 @@ locals {
       )
     }
     name = "kani-cli"
-    server_service_name = "kani-cli"
+    // Services for Kani CLI
+    services = {
+      server_service = {
+        name = "kani-cli"
+        port = 3000
+      }
+    }
     service_env_vars_name = "kani-cli-service-env-vars"
   }
 }

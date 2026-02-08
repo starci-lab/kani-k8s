@@ -91,6 +91,16 @@ variable "prometheus_basic_auth_password" {
 }
 
 // =========================
+// Consul basic authentication variables
+// =========================
+
+variable "consul_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Consul basic authentication"
+  sensitive   = true
+}
+
+// =========================
 // Kafka UI basic authentication variables
 // =========================
 

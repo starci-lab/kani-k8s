@@ -71,11 +71,11 @@ variable "cert_manager_controller_replica_count" {
   2. **Main component block** (`local.<component>`) – Contains static configuration that does not depend on data sources:
      - Resource requests/limits (computed from variables/presets, referencing `_inputs`)
      - Static naming conventions
-     - Service names (hardcoded strings)
+     - Services configuration (service names and ports as hardcoded values)
 
   3. **Outputs block** (`local.<component>_outputs`) – Contains computed values that depend on data sources (e.g., `data.kubernetes_service`):
-     - Service ports (resolved from data sources)
      - Service hosts (constructed from data sources)
+     - Service ports (resolved from data sources, but should reference port from main block `services` when available)
      - Any other values that reference data sources
 
 This separation prevents dependency cycles between data sources and locals. Each block should have its own comment section explaining its purpose.
@@ -111,8 +111,19 @@ locals {
       // ... more resource values
     }
     name = "kube-prometheus"
-    server_service_name = "kube-prometheus-prometheus"
-    alertmanager_server_service_name = "kube-prometheus-alertmanager"
+    // Services configuration
+    // Defines service names and ports for all services exposed by this component.
+    // Ports are hardcoded default values that match the service configuration.
+    services = {
+      server_service = {
+        name = "kube-prometheus-prometheus"
+        port = 9090
+      }
+      alertmanager_server_service = {
+        name = "kube-prometheus-alertmanager"
+        port = 9093
+      }
+    }
   }
 }
 
@@ -123,25 +134,37 @@ locals {
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
   prometheus_outputs = {
-    server_port = try(
-      one([
-        for p in data.kubernetes_service.prometheus_server.spec[0].port :
-        p.port if p.port == 9090
-      ]),
-      data.kubernetes_service.prometheus_server.spec[0].port[0].port
-    )
-    alertmanager_server_port = try(
-      one([
-        for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
-        p.port if p.port == 9093
-      ]),
-      data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
-    )
+    server_service = {
+      host = "${data.kubernetes_service.prometheus_server.metadata[0].name}.${kubernetes_namespace.prometheus.metadata[0].name}.svc.cluster.local"
+      port = try(
+        one([
+          for p in data.kubernetes_service.prometheus_server.spec[0].port :
+          p.port if p.port == local.prometheus.services.server_service.port
+        ]),
+        data.kubernetes_service.prometheus_server.spec[0].port[0].port
+      )
+    }
+    alertmanager_server_service = {
+      host = "${data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name}.${kubernetes_namespace.prometheus.metadata[0].name}.svc.cluster.local"
+      port = try(
+        one([
+          for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
+          p.port if p.port == local.prometheus.services.alertmanager_server_service.port
+        ]),
+        data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
+      )
+    }
   }
 }
 ```
 
 The inputs block contains only preset mappings and has no dependencies. The main component block references `_inputs` for presets but should not reference data sources directly; use the `_outputs` block for data source-dependent values. All three blocks are placed in the same `*_locals.tf` file.
+
+**Services pattern**: All components that expose Kubernetes services must define a `services` object in the main component block. Each service entry contains:
+- `name`: The Kubernetes service name (hardcoded string)
+- `port`: The default port number (hardcoded integer)
+
+The outputs block should reference these port values when resolving service ports from data sources, using `local.<component>.services.<service_key>.port` instead of hardcoding port numbers in the try() expressions.
 
 - **Templatefile comments**: Use simple inline comments (`//`) for grouping within `templatefile()` blocks, not full comment blocks:
 

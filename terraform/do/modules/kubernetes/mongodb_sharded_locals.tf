@@ -74,6 +74,13 @@ locals {
         try(var.resources_config[local.mongodb_sharded_inputs.presets.mongos].limits.memory, "768Mi")
       )
     }
+    // Services for MongoDB Sharded
+    services = {
+      service = {
+        name = "mongodb-sharded"
+        port = 27017
+      }
+    }
   }
 }
 
@@ -89,7 +96,7 @@ locals {
       port = try(
         one([
           for p in data.kubernetes_service.mongodb_sharded.spec[0].port :
-          p.port if p.port == 27017
+          p.port if p.port == local.mongodb_sharded.services.service.port
         ]),
         data.kubernetes_service.mongodb_sharded.spec[0].port[0].port
       )

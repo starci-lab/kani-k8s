@@ -28,6 +28,11 @@ resource "helm_release" "consul" {
       volume_permissions_limit_memory   = local.consul.volume_permissions.limit_memory
       // Gossip key
       gossip_key = var.consul_gossip_key
+      // Consul exporter resources
+      exporter_request_cpu = local.consul.exporter.request_cpu
+      exporter_request_memory = local.consul.exporter.request_memory
+      exporter_limit_cpu = local.consul.exporter.limit_cpu
+      exporter_limit_memory = local.consul.exporter.limit_memory
     })
   ]
 

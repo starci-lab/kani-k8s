@@ -5,7 +5,7 @@
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "prometheus_server" {
   metadata {
-    name      = local.prometheus.server_service_name
+    name      = local.prometheus.services.server_service.name
     namespace = kubernetes_namespace.prometheus.metadata[0].name
   }
   depends_on = [helm_release.prometheus]
@@ -18,7 +18,7 @@ data "kubernetes_service" "prometheus_server" {
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "prometheus_alertmanager_server" {
   metadata {
-    name      = local.prometheus.alertmanager_server_service_name
+    name      = local.prometheus.services.alertmanager_server_service.name
     namespace = kubernetes_namespace.prometheus.metadata[0].name
   }
   depends_on = [helm_release.prometheus]
@@ -74,7 +74,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
               // Dynamically resolved Prometheus service + port
               name = data.kubernetes_service.prometheus_server.metadata[0].name
               port {
-                number = local.prometheus_outputs.server_port
+                number = local.prometheus_outputs.server_service.port
               }
             }
           }
@@ -146,7 +146,7 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
               // Dynamically resolved Prometheus service + port
               name = data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name
               port {
-                number = local.prometheus_outputs.alertmanager_server_port
+                number = local.prometheus_outputs.alertmanager_server_service.port
               }
             }
           }

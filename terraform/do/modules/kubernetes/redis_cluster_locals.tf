@@ -38,6 +38,13 @@ locals {
       )
     }
     name = "redis-cluster"
+    // Services for Redis Cluster
+    services = {
+      service = {
+        name = "redis-cluster"
+        port = 6379
+      }
+    }
   }
 }
 
@@ -53,7 +60,7 @@ locals {
       port = try(
         one([
           for p in data.kubernetes_service.redis_cluster.spec[0].port :
-          p.port if p.port == 6379
+          p.port if p.port == local.redis_cluster.services.service.port
         ]),
         data.kubernetes_service.redis_cluster.spec[0].port[0].port
       )

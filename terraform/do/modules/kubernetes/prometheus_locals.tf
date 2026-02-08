@@ -133,8 +133,17 @@ locals {
       )
     }
     name = "kube-prometheus"
-    server_service_name = "kube-prometheus-prometheus"
-    alertmanager_server_service_name = "kube-prometheus-alertmanager"
+    // Services for Prometheus
+    services = {
+      server_service = {
+        name = "kube-prometheus-prometheus"
+        port = 9090
+      }
+      alertmanager_server_service = {
+        name = "kube-prometheus-alertmanager"
+        port = 9093
+      }
+    }
   }
 }
 
@@ -145,19 +154,25 @@ locals {
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
   prometheus_outputs = {
-    server_port = try(
-      one([
-        for p in data.kubernetes_service.prometheus_server.spec[0].port :
-        p.port if p.port == 9090
-      ]),
-      data.kubernetes_service.prometheus_server.spec[0].port[0].port
-    )
-    alertmanager_server_port = try(
-      one([
-        for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
-        p.port if p.port == 9093
-      ]),
-      data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
-    )
+    server_service = {
+      host = "${data.kubernetes_service.prometheus_server.metadata[0].name}.${kubernetes_namespace.prometheus.metadata[0].name}.svc.cluster.local"
+      port = try(
+        one([
+          for p in data.kubernetes_service.prometheus_server.spec[0].port :
+          p.port if p.port == local.prometheus.services.server_service.port
+        ]),
+        data.kubernetes_service.prometheus_server.spec[0].port[0].port
+      )
+    }
+    alertmanager_server_service = {
+      host = "${data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name}.${kubernetes_namespace.prometheus.metadata[0].name}.svc.cluster.local"
+      port = try(
+        one([
+          for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
+          p.port if p.port == local.prometheus.services.alertmanager_server_service.port
+        ]),
+        data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
+      )
+    }
   }
 }

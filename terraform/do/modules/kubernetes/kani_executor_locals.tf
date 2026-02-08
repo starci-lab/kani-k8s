@@ -38,6 +38,12 @@ locals {
       )
     }
     name = "kani-executor"
-    server_service_name = "kani-executor"
+    // Services for Kani Executor
+    services = {
+      server_service = {
+        name = "kani-executor"
+        port = 3000
+      }
+    }
   }
 }

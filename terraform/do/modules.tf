@@ -117,4 +117,6 @@ module "kubernetes" {
   coin_market_cap_api_key = var.coin_market_cap_api_key
   // Kani DB Restore Job Backup ID
   kani_db_restore_job_backup_id = var.kani_db_restore_job_backup_id
+  // Consul basic authentication htpasswd
+  consul_htpasswd = var.consul_htpasswd
 }

@@ -38,6 +38,12 @@ locals {
       )
     }
     name = "kani-interface"
-    server_service_name = "kani-interface"
+    // Services for Kani Interface
+    services = {
+      server_service = {
+        name = "kani-interface"
+        port = 3000
+      }
+    }
   }
 }

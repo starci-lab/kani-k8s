@@ -7,7 +7,7 @@
 variable "consul_replica_count" {
   type        = number
   description = "Number of HashiCorp Consul server replicas"
-  default     = 3
+  default     = 1
 }
 
 // =========================
@@ -19,7 +19,7 @@ variable "consul_replica_count" {
 variable "consul_persistence_size" {
   type        = string
   description = "Persistent volume size for Consul data"
-  default     = "8Gi"
+  default     = "2Gi"
 }
 
 // =========================
@@ -107,4 +107,53 @@ variable "consul_volume_permissions_limit_memory" {
   description = "Memory resource limit for Consul volume permissions init container"
   nullable    = true
   default     = null
+}
+
+// =========================
+// Consul exporter resources
+// =========================
+// Controls resource allocation for Consul exporter.
+
+// CPU resource request for Consul exporter
+variable "consul_exporter_request_cpu" {
+  type        = string
+  description = "CPU resource request for Consul exporter"
+  nullable    = true
+  default     = null
+}
+
+// Memory resource request for Consul exporter
+variable "consul_exporter_request_memory" {
+  type        = string
+  description = "Memory resource request for Consul exporter"
+  nullable    = true
+  default     = null
+}
+
+// CPU resource limit for Consul exporter
+variable "consul_exporter_limit_cpu" {
+  type        = string
+  description = "CPU resource limit for Consul exporter"
+  nullable    = true
+  default     = null
+}
+
+// Memory resource limit for Consul exporter
+variable "consul_exporter_limit_memory" {
+  type        = string
+  description = "Memory resource limit for Consul exporter"
+  nullable    = true
+  default     = null
+}
+
+// =========================
+// Consul Basic Auth variables
+// =========================
+// Controls basic authentication for Consul ingress.
+
+// HTPASSWD for Consul basic authentication
+variable "consul_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Consul basic authentication"
+  sensitive   = true
 }

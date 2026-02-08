@@ -5,7 +5,7 @@
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "grafana_server" {
   metadata {
-    name      = local.grafana.server_service_name
+    name      = local.grafana.services.server_service.name
     namespace = kubernetes_namespace.grafana.metadata[0].name
   }
 

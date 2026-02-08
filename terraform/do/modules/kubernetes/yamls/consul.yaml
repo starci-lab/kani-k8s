@@ -39,6 +39,9 @@ persistence:
 ## =========================
 volumePermissions:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/os-shell
   resources:
     requests:
       cpu: ${volume_permissions_request_cpu}
@@ -52,3 +55,19 @@ volumePermissions:
 ## =========================
 ## Base64-encoded gossip key; leave empty to disable encryption.
 gossipKey: ${gossip_key}
+
+## =========================
+## Consul exporter
+## =========================
+metrics:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/consul-exporter
+  resources:
+    requests:
+      cpu: ${exporter_request_cpu}
+      memory: ${exporter_request_memory}
+    limits:
+      cpu: ${exporter_limit_cpu}
+      memory: ${exporter_limit_memory}

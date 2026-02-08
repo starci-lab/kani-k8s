@@ -38,6 +38,12 @@ locals {
       )
     }
     name = "kani-observer"
-    server_service_name = "kani-observer"
+    // Services for Kani Observer
+    services = {
+      server_service = {
+        name = "kani-observer"
+        port = 3000
+      }
+    }
   }
 }

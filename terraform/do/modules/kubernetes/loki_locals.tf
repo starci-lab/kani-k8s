@@ -57,7 +57,13 @@ locals {
       )
     }
     name = "loki"
-    gateway_service_name = "loki-gateway"
+    // Services for Loki
+    services = {
+      gateway_service = {
+        name = "loki-gateway"
+        port = 80
+      }
+    }
   }
 }
 
@@ -71,7 +77,7 @@ locals {
     gateway_port = try(
       one([
         for p in data.kubernetes_service.loki_gateway.spec[0].port :
-        p.port if p.port == 80
+        p.port if p.port == local.loki.services.gateway_service.port
       ]),
       data.kubernetes_service.loki_gateway.spec[0].port[0].port
     )
@@ -80,7 +86,7 @@ locals {
       port = try(
         one([
           for p in data.kubernetes_service.loki_gateway.spec[0].port :
-          p.port if p.port == 80
+          p.port if p.port == local.loki.services.gateway_service.port
         ]),
         data.kubernetes_service.loki_gateway.spec[0].port[0].port
       )

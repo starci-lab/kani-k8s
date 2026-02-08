@@ -5,7 +5,7 @@
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "portainer_server" {
   metadata {
-    name      = local.portainer.server_service_name
+    name      = local.portainer.services.server_service.name
     namespace = kubernetes_namespace.portainer.metadata[0].name
   }
 

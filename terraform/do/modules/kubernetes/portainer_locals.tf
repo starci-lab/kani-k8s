@@ -38,7 +38,13 @@ locals {
       )
     }
     name = "portainer"
-    server_service_name = "portainer"
+    // Services for Portainer
+    services = {
+      server_service = {
+        name = "portainer"
+        port = 9000
+      }
+    }
   }
 }
 
@@ -50,11 +56,11 @@ locals {
 locals {
   portainer_outputs = {
     server_port = try(
-      one([
-        for p in data.kubernetes_service.portainer_server.spec[0].port :
-        p.port if p.port == 9000
-      ]),
-      data.kubernetes_service.portainer_server.spec[0].port[0].port
-    )
+        one([
+          for p in data.kubernetes_service.portainer_server.spec[0].port :
+          p.port if p.port == local.portainer.services.server_service.port
+        ]),
+        data.kubernetes_service.portainer_server.spec[0].port[0].port
+      )
   }
 }

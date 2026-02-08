@@ -38,7 +38,13 @@ locals {
       )
     }
     name = "grafana"
-    server_service_name = "grafana"
+    // Services for Grafana
+    services = {
+      server_service = {
+        name = "grafana"
+        port = 3000
+      }
+    }
   }
 }
 
@@ -50,11 +56,11 @@ locals {
 locals {
   grafana_outputs = {
     server_port = try(
-      one([
-        for p in data.kubernetes_service.grafana_server.spec[0].port :
-        p.port if p.port == 3000
-      ]),
-      data.kubernetes_service.grafana_server.spec[0].port[0].port
-    )
+        one([
+          for p in data.kubernetes_service.grafana_server.spec[0].port :
+          p.port if p.port == local.grafana.services.server_service.port
+        ]),
+        data.kubernetes_service.grafana_server.spec[0].port[0].port
+      )
   }
 }

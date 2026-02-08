@@ -76,7 +76,13 @@ locals {
       )
     }
     name = "jenkins"
-    server_service_name = "jenkins"
+    // Services for Jenkins
+    services = {
+      server_service = {
+        name = "jenkins"
+        port = 80
+      }
+    }
   }
 }
 
@@ -107,7 +113,7 @@ locals {
 // Placeholder outputs when data sources are commented out
 locals {
   jenkins_outputs = {
-    server_port = 80
+    server_port = local.jenkins_base.services.server_service.port
     pod_templates = {
       deployment-rollout-jenkins-agent = {
         name = "deployment-rollout-jenkins-agent"

@@ -89,3 +89,13 @@ variable "kafka_ui_prefix" {
   description = "Subdomain prefix for the Kafka UI server (combined with domain_name)"
   default     = "kafka-ui"
 }
+
+// =========================
+// Consul domain configuration
+// =========================
+
+variable "consul_ui_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Consul UI server (combined with domain_name)"
+  default     = "consul"
+}

@@ -6,8 +6,9 @@
 locals {
   consul_inputs = {
     presets = {
-      consul             = "64"
+      consul             = "32"
       volume_permissions = "16"
+      exporter           = "16"
     }
   }
 }
@@ -56,8 +57,40 @@ locals {
         try(var.resources_config[local.consul_inputs.presets.volume_permissions].limits.memory, "128Mi")
       )
     }
+    exporter = {
+      request_cpu = coalesce(
+        var.consul_exporter_request_cpu,
+        try(var.resources_config[local.consul_inputs.presets.exporter].requests.cpu, "32m")
+      )
+      request_memory = coalesce(
+        var.consul_exporter_request_memory,
+        try(var.resources_config[local.consul_inputs.presets.exporter].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.consul_exporter_limit_cpu,
+        try(var.resources_config[local.consul_inputs.presets.exporter].limits.cpu, "128m")
+      )
+      limit_memory = coalesce(
+        var.consul_exporter_limit_memory,
+        try(var.resources_config[local.consul_inputs.presets.exporter].limits.memory, "128Mi")
+      )
+    }
     name = "consul"
-    server_service_name = "consul"
+    // Services for Consul
+    services = {
+      metrics_service = {
+        name = "consul-metrics"
+        port = 9107
+      }
+      headless_service = {
+        name = "consul-headless"
+        port = 8500
+      }
+      ui_service = {
+        name = "consul-ui"
+        port = 80
+      }
+    }
   }
 }
 
@@ -68,9 +101,17 @@ locals {
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
   consul_outputs = {
-    service = {
-      host = "${data.kubernetes_service.consul.metadata[0].name}.${kubernetes_namespace.consul.metadata[0].name}.svc.cluster.local"
-      port = 80
+    metrics_service = {
+      host = "${data.kubernetes_service.consul_metrics.metadata[0].name}.${kubernetes_namespace.consul.metadata[0].name}.svc.cluster.local"
+      port = local.consul.services.metrics_service.port
+    }
+    headless_service = {
+      host = "${data.kubernetes_service.consul_headless.metadata[0].name}.${kubernetes_namespace.consul.metadata[0].name}.svc.cluster.local"
+      port = local.consul.services.headless_service.port
+    }
+    ui_service = {
+      host = "${data.kubernetes_service.consul_ui.metadata[0].name}.${kubernetes_namespace.consul.metadata[0].name}.svc.cluster.local"
+      port = local.consul.services.ui_service.port
     }
   }
 }
