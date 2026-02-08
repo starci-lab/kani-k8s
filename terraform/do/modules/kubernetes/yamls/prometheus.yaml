@@ -36,12 +36,9 @@ prometheus:
       memory: ${prometheus_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
-  storageSpec:
-    volumeClaimTemplate:
-      spec:
-        resources:
-          requests:
-            storage: ${prometheus_persistence_size}
+  persistence:
+    enabled: true
+    size: ${prometheus_persistence_size}
   thanos:
     resources:
       requests:
@@ -68,13 +65,9 @@ alertmanager:
       memory: ${alertmanager_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
-  storageSpec:
-    volumeClaimTemplate:
-      spec:
-        resources:
-          requests:
-            storage: ${alertmanager_persistence_size}
-
+  persistence:
+    enabled: true
+    size: ${alertmanager_persistence_size}
 ## =========================
 ## Blackbox Exporter (replicaCount from TF, image, resources)
 ## =========================
