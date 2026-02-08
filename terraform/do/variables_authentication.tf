@@ -51,42 +51,42 @@ variable "argo_cd_admin_password" {
 }
 
 // =========================
-// Prometheus basic authentication variables
+// kube-prometheus basic authentication variables
 // =========================
 
-variable "prometheus_htpasswd" {
+variable "kube_prometheus_htpasswd" {
   type        = string
-  description = "HTPASSWD for Prometheus basic authentication"
+  description = "HTPASSWD for kube-prometheus basic authentication"
   sensitive   = true
 }
 
-variable "prometheus_alertmanager_basic_auth_user" {
+variable "kube_prometheus_alertmanager_basic_auth_user" {
   type        = string
-  description = "Username for Prometheus Alertmanager basic authentication"
+  description = "Username for kube-prometheus Alertmanager basic authentication"
   default     = "kani"
 }
 
-variable "prometheus_alertmanager_basic_auth_password" {
+variable "kube_prometheus_alertmanager_basic_auth_password" {
   type        = string
-  description = "Password for Prometheus Alertmanager basic authentication"
+  description = "Password for kube-prometheus Alertmanager basic authentication"
   sensitive   = true
 }
 
-variable "prometheus_alertmanager_htpasswd" {
+variable "kube_prometheus_alertmanager_htpasswd" {
   type        = string
-  description = "HTPASSWD for Prometheus Alertmanager basic authentication"
+  description = "HTPASSWD for kube-prometheus Alertmanager basic authentication"
   sensitive   = true
 }
 
-variable "prometheus_basic_auth_user" {
+variable "kube_prometheus_basic_auth_user" {
   type        = string
-  description = "Username for Prometheus basic authentication"
+  description = "Username for kube-prometheus basic authentication"
   default     = "kani"
 }
 
-variable "prometheus_basic_auth_password" {
+variable "kube_prometheus_basic_auth_password" {
   type        = string
-  description = "Password for Prometheus basic authentication"
+  description = "Password for kube-prometheus basic authentication"
   sensitive   = true
 }
 

@@ -1,54 +1,54 @@
 // =========================
-// Read Prometheus server Service
+// Read kube-prometheus server Service
 // =========================
-// Fetches the Service created by the Prometheus Helm chart.
+// Fetches the Service created by the kube-prometheus Helm chart.
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "prometheus_server" {
   metadata {
     name      = local.prometheus.services.server_service.name
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
   depends_on = [helm_release.prometheus]
 }
 
 // =========================
-// Read Prometheus Alertmanager server Service
+// Read kube-prometheus Alertmanager server Service
 // =========================
-// Fetches the Service created by the Prometheus Helm chart.
+// Fetches the Service created by the kube-prometheus Helm chart.
 // This is used to dynamically retrieve service ports for Ingress configuration.
 data "kubernetes_service" "prometheus_alertmanager_server" {
   metadata {
     name      = local.prometheus.services.alertmanager_server_service.name
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
   depends_on = [helm_release.prometheus]
 }
 
 // =========================
-// Prometheus Basic Auth Secret
+// kube-prometheus Basic Auth Secret
 // =========================
 // Creates a Kubernetes secret containing htpasswd file for basic authentication.
 resource "kubernetes_secret" "prometheus_basic_auth" {
   metadata {
     name      = "prometheus-basic-auth"
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
   data = {
-    auth = var.prometheus_htpasswd
+    auth = var.kube_prometheus_htpasswd
   }
   type = "Opaque"
 }
 
 // =========================
-// Prometheus Ingress
+// kube-prometheus Ingress
 // =========================
-// Exposes Prometheus UI and API via NGINX Ingress with TLS
+// Exposes kube-prometheus UI and API via NGINX Ingress with TLS
 // managed by cert-manager and DNS handled by Cloudflare.
 // Basic authentication is enabled via NGINX Ingress annotations.
 resource "kubernetes_ingress_v1" "prometheus" {
   metadata {
     name      = "prometheus"
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
 
     annotations = {
       "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
@@ -71,7 +71,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
           path = "/"
           backend {
             service {
-              // Dynamically resolved Prometheus service + port
+              // Dynamically resolved kube-prometheus service + port
               name = data.kubernetes_service.prometheus_server.metadata[0].name
               port {
                 number = local.prometheus_outputs.server_service.port
@@ -97,30 +97,30 @@ resource "kubernetes_ingress_v1" "prometheus" {
 }
 
 // =========================
-// Prometheus Alertmanager Basic Auth Secret
+// kube-prometheus Alertmanager Basic Auth Secret
 // =========================
 // Creates a Kubernetes secret containing htpasswd file for basic authentication.
 resource "kubernetes_secret" "prometheus_alertmanager_basic_auth" {
   metadata {
     name      = "prometheus-alertmanager-basic-auth"
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
   }
   data = {
-    auth = var.prometheus_alertmanager_htpasswd
+    auth = var.kube_prometheus_alertmanager_htpasswd
   }
   type = "Opaque"
 }
 
 // =========================
-// Prometheus Alertmanager Ingress
+// kube-prometheus Alertmanager Ingress
 // =========================
-// Exposes Prometheus Alertmanager UI and API via NGINX Ingress with TLS
+// Exposes kube-prometheus Alertmanager UI and API via NGINX Ingress with TLS
 // managed by cert-manager and DNS handled by Cloudflare.
 // Basic authentication is enabled via NGINX Ingress annotations.
 resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
   metadata {
     name      = "prometheus-alertmanager"
-    namespace = kubernetes_namespace.prometheus.metadata[0].name
+    namespace = kubernetes_namespace.kube_prometheus.metadata[0].name
 
     annotations = {
       "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
@@ -143,7 +143,7 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
           path = "/"
           backend {
             service {
-              // Dynamically resolved Prometheus service + port
+              // Dynamically resolved kube-prometheus service + port
               name = data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name
               port {
                 number = local.prometheus_outputs.alertmanager_server_service.port

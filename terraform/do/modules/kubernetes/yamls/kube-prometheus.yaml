@@ -1,6 +1,6 @@
-# Prometheus Configuration - Variables Only (minimal, replica count = 1)
+# kube-prometheus Configuration - Variables Only (minimal, replica count = 1)
 # All variables are injected via Terraform templatefile() in prometheus.tf
-# Defaults ref: _prometheus.yaml
+# Defaults ref: _kube-prometheus.yaml
 
 ## =========================
 ## Operator (image + resources)
@@ -11,79 +11,79 @@ operator:
     repository: bitnamilegacy/prometheus-operator
   resources:
     requests:
-      cpu: ${operator_request_cpu}
-      memory: ${operator_request_memory}
+      cpu: ${kube_prometheus_operator_request_cpu}
+      memory: ${kube_prometheus_operator_request_memory}
     limits:
-      cpu: ${operator_limit_cpu}
-      memory: ${operator_limit_memory}
+      cpu: ${kube_prometheus_operator_limit_cpu}
+      memory: ${kube_prometheus_operator_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
 ## =========================
-## Prometheus (replicaCount from TF, image, resources, storage)
+## kube-prometheus Prometheus (replicaCount from TF, image, resources, storage)
 ## =========================
 prometheus:
-  replicaCount: ${prometheus_replica_count}
+  replicaCount: ${kube_prometheus_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus
   resources:
     requests:
-      cpu: ${prometheus_request_cpu}
-      memory: ${prometheus_request_memory}
+      cpu: ${kube_prometheus_request_cpu}
+      memory: ${kube_prometheus_request_memory}
     limits:
-      cpu: ${prometheus_limit_cpu}
-      memory: ${prometheus_limit_memory}
+      cpu: ${kube_prometheus_limit_cpu}
+      memory: ${kube_prometheus_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   persistence:
-    enabled: true
-    size: ${prometheus_persistence_size}
+    enabled: false
+    size: ${kube_prometheus_persistence_size}
   thanos:
     resources:
       requests:
-        cpu: ${thanos_request_cpu}
-        memory: ${thanos_request_memory}
+        cpu: ${kube_prometheus_thanos_request_cpu}
+        memory: ${kube_prometheus_thanos_request_memory}
       limits:
-        cpu: ${thanos_limit_cpu}
-        memory: ${thanos_limit_memory}
+        cpu: ${kube_prometheus_thanos_limit_cpu}
+        memory: ${kube_prometheus_thanos_limit_memory}
 
 ## =========================
 ## Alertmanager (replicaCount from TF, image, resources, storage)
 ## =========================
 alertmanager:
-  replicaCount: ${alertmanager_replica_count}
+  replicaCount: ${kube_prometheus_alertmanager_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/alertmanager
   resources:
     requests:
-      cpu: ${alertmanager_request_cpu}
-      memory: ${alertmanager_request_memory}
+      cpu: ${kube_prometheus_alertmanager_request_cpu}
+      memory: ${kube_prometheus_alertmanager_request_memory}
     limits:
-      cpu: ${alertmanager_limit_cpu}
-      memory: ${alertmanager_limit_memory}
+      cpu: ${kube_prometheus_alertmanager_limit_cpu}
+      memory: ${kube_prometheus_alertmanager_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   persistence:
-    enabled: true
-    size: ${alertmanager_persistence_size}
+    enabled: false
+    size: ${kube_prometheus_alertmanager_persistence_size}
 ## =========================
 ## Blackbox Exporter (replicaCount from TF, image, resources)
 ## =========================
 blackboxExporter:
   enabled: false
-  replicaCount: ${blackbox_exporter_replica_count}
+  replicaCount: ${kube_prometheus_blackbox_exporter_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/blackbox-exporter
   resources:
     requests:
-      cpu: ${blackbox_exporter_request_cpu}
-      memory: ${blackbox_exporter_request_memory}
+      cpu: ${kube_prometheus_blackbox_exporter_request_cpu}
+      memory: ${kube_prometheus_blackbox_exporter_request_memory}
     limits:
-      cpu: ${blackbox_exporter_limit_cpu}
-      memory: ${blackbox_exporter_limit_memory}
+      cpu: ${kube_prometheus_blackbox_exporter_limit_cpu}
+      memory: ${kube_prometheus_blackbox_exporter_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
@@ -91,17 +91,17 @@ blackboxExporter:
 ## Thanos Ruler (replicaCount from TF, image, resources)
 ## =========================
 thanosRuler:
-  replicaCount: ${thanos_ruler_replica_count}
+  replicaCount: ${kube_prometheus_thanos_ruler_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/thanos
   resources:
     requests:
-      cpu: ${thanos_ruler_request_cpu}
-      memory: ${thanos_ruler_request_memory}
+      cpu: ${kube_prometheus_thanos_ruler_request_cpu}
+      memory: ${kube_prometheus_thanos_ruler_request_memory}
     limits:
-      cpu: ${thanos_ruler_limit_cpu}
-      memory: ${thanos_ruler_limit_memory}
+      cpu: ${kube_prometheus_thanos_ruler_limit_cpu}
+      memory: ${kube_prometheus_thanos_ruler_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 

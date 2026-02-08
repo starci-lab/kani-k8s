@@ -1,11 +1,11 @@
 // =========================
-// Namespace for Prometheus
+// Namespace for kube-prometheus
 // =========================
-// Creates a dedicated namespace to isolate the Prometheus
+// Creates a dedicated namespace to isolate the kube-prometheus
 // and its related resources from application workloads.
-resource "kubernetes_namespace" "prometheus" {
+resource "kubernetes_namespace" "kube_prometheus" {
   metadata {
-    name = "prometheus"
+    name = "kube-prometheus"
   }
 
   // Ensure the Kubernetes cluster exists before creating the namespace

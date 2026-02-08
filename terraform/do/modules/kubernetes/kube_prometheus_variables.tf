@@ -1,115 +1,115 @@
 // =========================
-// Prometheus replica count variables
+// kube-prometheus replica count variables
 // =========================
 // Number of replicas for each component (default 1).
 
-// Number of Prometheus server replicas
-variable "prometheus_replica_count" {
+// Number of kube-prometheus Prometheus server replicas
+variable "kube_prometheus_replica_count" {
   type        = number
-  description = "Number of Prometheus server replicas"
+  description = "Number of kube-prometheus Prometheus server replicas"
   default     = 1
 }
 
 // Number of Alertmanager replicas
-variable "alertmanager_replica_count" {
+variable "kube_prometheus_alertmanager_replica_count" {
   type        = number
   description = "Number of Alertmanager replicas"
   default     = 1
 }
 
 // Number of Blackbox Exporter replicas
-variable "blackbox_exporter_replica_count" {
+variable "kube_prometheus_blackbox_exporter_replica_count" {
   type        = number
   description = "Number of Blackbox Exporter replicas"
   default     = 1
 }
 
 // Number of Thanos Ruler replicas
-variable "thanos_ruler_replica_count" {
+variable "kube_prometheus_thanos_ruler_replica_count" {
   type        = number
   description = "Number of Thanos Ruler replicas"
   default     = 1
 }
 
 // =========================
-// Prometheus Operator resource variables
+// kube-prometheus Operator resource variables
 // =========================
-// Controls resource allocation for the Prometheus Operator.
+// Controls resource allocation for the kube-prometheus Operator.
 
-// CPU resource request for the Prometheus Operator
-variable "operator_request_cpu" {
+// CPU resource request for the kube-prometheus Operator
+variable "kube_prometheus_operator_request_cpu" {
   type        = string
-  description = "CPU resource request for the Prometheus Operator"
+  description = "CPU resource request for the kube-prometheus Operator"
   nullable    = true
   default     = null
 }
 
-// Memory resource request for the Prometheus Operator
-variable "operator_request_memory" {
+// Memory resource request for the kube-prometheus Operator
+variable "kube_prometheus_operator_request_memory" {
   type        = string
-  description = "Memory resource request for the Prometheus Operator"
+  description = "Memory resource request for the kube-prometheus Operator"
   nullable    = true
   default     = null
 }
 
-// CPU resource limit for the Prometheus Operator
-variable "operator_limit_cpu" {
+// CPU resource limit for the kube-prometheus Operator
+variable "kube_prometheus_operator_limit_cpu" {
   type        = string
-  description = "CPU resource limit for the Prometheus Operator"
+  description = "CPU resource limit for the kube-prometheus Operator"
   nullable    = true
   default     = null
 }
 
-// Memory resource limit for the Prometheus Operator
-variable "operator_limit_memory" {
+// Memory resource limit for the kube-prometheus Operator
+variable "kube_prometheus_operator_limit_memory" {
   type        = string
-  description = "Memory resource limit for the Prometheus Operator"
+  description = "Memory resource limit for the kube-prometheus Operator"
   nullable    = true
   default     = null
 }
 
 // =========================
-// Prometheus resource variables
+// kube-prometheus Prometheus resource variables
 // =========================
-// Controls resource allocation for Prometheus server.
+// Controls resource allocation for kube-prometheus Prometheus server.
 
-// CPU resource request for Prometheus server
-variable "prometheus_request_cpu" {
+// CPU resource request for kube-prometheus Prometheus server
+variable "kube_prometheus_request_cpu" {
   type        = string
-  description = "CPU resource request for Prometheus server"
+  description = "CPU resource request for kube-prometheus Prometheus server"
   nullable    = true
   default     = null
 }
 
-// Memory resource request for Prometheus server
-variable "prometheus_request_memory" {
+// Memory resource request for kube-prometheus Prometheus server
+variable "kube_prometheus_request_memory" {
   type        = string
-  description = "Memory resource request for Prometheus server"
+  description = "Memory resource request for kube-prometheus Prometheus server"
   nullable    = true
   default     = null
 }
 
-// CPU resource limit for Prometheus server
-variable "prometheus_limit_cpu" {
+// CPU resource limit for kube-prometheus Prometheus server
+variable "kube_prometheus_limit_cpu" {
   type        = string
-  description = "CPU resource limit for Prometheus server"
+  description = "CPU resource limit for kube-prometheus Prometheus server"
   nullable    = true
   default     = null
 }
 
-// Memory resource limit for Prometheus server
-variable "prometheus_limit_memory" {
+// Memory resource limit for kube-prometheus Prometheus server
+variable "kube_prometheus_limit_memory" {
   type        = string
-  description = "Memory resource limit for Prometheus server"
+  description = "Memory resource limit for kube-prometheus Prometheus server"
   nullable    = true
   default     = null
 }
 
-// Persistent volume size for Prometheus data
-variable "prometheus_persistence_size" {
+// Persistent volume size for kube-prometheus Prometheus data
+variable "kube_prometheus_persistence_size" {
   type        = string
-  description = "Persistent volume size for Prometheus data"
-  default     = "2Gi"
+  description = "Persistent volume size for kube-prometheus Prometheus data"
+  default     = "8Gi"
 }
 
 // =========================
@@ -118,7 +118,7 @@ variable "prometheus_persistence_size" {
 // Controls resource allocation for Thanos sidecar container.
 
 // CPU resource request for Thanos sidecar
-variable "thanos_request_cpu" {
+variable "kube_prometheus_thanos_request_cpu" {
   type        = string
   description = "CPU resource request for Thanos sidecar"
   nullable    = true
@@ -126,7 +126,7 @@ variable "thanos_request_cpu" {
 }
 
 // Memory resource request for Thanos sidecar
-variable "thanos_request_memory" {
+variable "kube_prometheus_thanos_request_memory" {
   type        = string
   description = "Memory resource request for Thanos sidecar"
   nullable    = true
@@ -134,7 +134,7 @@ variable "thanos_request_memory" {
 }
 
 // CPU resource limit for Thanos sidecar
-variable "thanos_limit_cpu" {
+variable "kube_prometheus_thanos_limit_cpu" {
   type        = string
   description = "CPU resource limit for Thanos sidecar"
   nullable    = true
@@ -142,7 +142,7 @@ variable "thanos_limit_cpu" {
 }
 
 // Memory resource limit for Thanos sidecar
-variable "thanos_limit_memory" {
+variable "kube_prometheus_thanos_limit_memory" {
   type        = string
   description = "Memory resource limit for Thanos sidecar"
   nullable    = true
@@ -155,7 +155,7 @@ variable "thanos_limit_memory" {
 // Controls resource allocation for Alertmanager.
 
 // CPU resource request for Alertmanager
-variable "alertmanager_request_cpu" {
+variable "kube_prometheus_alertmanager_request_cpu" {
   type        = string
   description = "CPU resource request for Alertmanager"
   nullable    = true
@@ -163,7 +163,7 @@ variable "alertmanager_request_cpu" {
 }
 
 // Memory resource request for Alertmanager
-variable "alertmanager_request_memory" {
+variable "kube_prometheus_alertmanager_request_memory" {
   type        = string
   description = "Memory resource request for Alertmanager"
   nullable    = true
@@ -171,7 +171,7 @@ variable "alertmanager_request_memory" {
 }
 
 // CPU resource limit for Alertmanager
-variable "alertmanager_limit_cpu" {
+variable "kube_prometheus_alertmanager_limit_cpu" {
   type        = string
   description = "CPU resource limit for Alertmanager"
   nullable    = true
@@ -179,7 +179,7 @@ variable "alertmanager_limit_cpu" {
 }
 
 // Memory resource limit for Alertmanager
-variable "alertmanager_limit_memory" {
+variable "kube_prometheus_alertmanager_limit_memory" {
   type        = string
   description = "Memory resource limit for Alertmanager"
   nullable    = true
@@ -187,10 +187,10 @@ variable "alertmanager_limit_memory" {
 }
 
 // Persistent volume size for Alertmanager data
-variable "alertmanager_persistence_size" {
+variable "kube_prometheus_alertmanager_persistence_size" {
   type        = string
   description = "Persistent volume size for Alertmanager data"
-  default     = "2Gi"
+  default     = "4Gi"
 }
 
 // =========================
@@ -199,7 +199,7 @@ variable "alertmanager_persistence_size" {
 // Controls resource allocation for Blackbox Exporter.
 
 // CPU resource request for Blackbox Exporter
-variable "blackbox_exporter_request_cpu" {
+variable "kube_prometheus_blackbox_exporter_request_cpu" {
   type        = string
   description = "CPU resource request for Blackbox Exporter"
   nullable    = true
@@ -207,7 +207,7 @@ variable "blackbox_exporter_request_cpu" {
 }
 
 // Memory resource request for Blackbox Exporter
-variable "blackbox_exporter_request_memory" {
+variable "kube_prometheus_blackbox_exporter_request_memory" {
   type        = string
   description = "Memory resource request for Blackbox Exporter"
   nullable    = true
@@ -215,7 +215,7 @@ variable "blackbox_exporter_request_memory" {
 }
 
 // CPU resource limit for Blackbox Exporter
-variable "blackbox_exporter_limit_cpu" {
+variable "kube_prometheus_blackbox_exporter_limit_cpu" {
   type        = string
   description = "CPU resource limit for Blackbox Exporter"
   nullable    = true
@@ -223,7 +223,7 @@ variable "blackbox_exporter_limit_cpu" {
 }
 
 // Memory resource limit for Blackbox Exporter
-variable "blackbox_exporter_limit_memory" {
+variable "kube_prometheus_blackbox_exporter_limit_memory" {
   type        = string
   description = "Memory resource limit for Blackbox Exporter"
   nullable    = true
@@ -236,7 +236,7 @@ variable "blackbox_exporter_limit_memory" {
 // Controls resource allocation for Thanos Ruler.
 
 // CPU resource request for Thanos Ruler
-variable "thanos_ruler_request_cpu" {
+variable "kube_prometheus_thanos_ruler_request_cpu" {
   type        = string
   description = "CPU resource request for Thanos Ruler"
   nullable    = true
@@ -244,7 +244,7 @@ variable "thanos_ruler_request_cpu" {
 }
 
 // Memory resource request for Thanos Ruler
-variable "thanos_ruler_request_memory" {
+variable "kube_prometheus_thanos_ruler_request_memory" {
   type        = string
   description = "Memory resource request for Thanos Ruler"
   nullable    = true
@@ -252,7 +252,7 @@ variable "thanos_ruler_request_memory" {
 }
 
 // CPU resource limit for Thanos Ruler
-variable "thanos_ruler_limit_cpu" {
+variable "kube_prometheus_thanos_ruler_limit_cpu" {
   type        = string
   description = "CPU resource limit for Thanos Ruler"
   nullable    = true
@@ -260,7 +260,7 @@ variable "thanos_ruler_limit_cpu" {
 }
 
 // Memory resource limit for Thanos Ruler
-variable "thanos_ruler_limit_memory" {
+variable "kube_prometheus_thanos_ruler_limit_memory" {
   type        = string
   description = "Memory resource limit for Thanos Ruler"
   nullable    = true
@@ -268,21 +268,21 @@ variable "thanos_ruler_limit_memory" {
 }
 
 // =========================
-// Prometheus Basic Auth variables
+// kube-prometheus Basic Auth variables
 // =========================
-// Controls basic authentication for Prometheus ingress.
+// Controls basic authentication for kube-prometheus ingress.
 
-// HTPASSWD for Prometheus basic authentication
-variable "prometheus_htpasswd" {
+// HTPASSWD for kube-prometheus basic authentication
+variable "kube_prometheus_htpasswd" {
   type        = string
-  description = "HTPASSWD for Prometheus basic authentication"
+  description = "HTPASSWD for kube-prometheus basic authentication"
   sensitive   = true
 }
 
-// HTPASSWD for Prometheus Alertmanager basic authentication
-variable "prometheus_alertmanager_htpasswd" {
+// HTPASSWD for kube-prometheus Alertmanager basic authentication
+variable "kube_prometheus_alertmanager_htpasswd" {
   type        = string
-  description = "HTPASSWD for Prometheus Alertmanager basic authentication"
+  description = "HTPASSWD for kube-prometheus Alertmanager basic authentication"
   sensitive   = true
 }
 

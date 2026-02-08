@@ -53,11 +53,11 @@ module "kubernetes" {
   domain_name = var.domain_name
   prefix_domain_name = var.prefix_domain_name
   // =========================
-  // Prometheus configuration
+  // kube-prometheus configuration
   // =========================
-  // Htpasswd for Prometheus basic authentication
-  prometheus_htpasswd = var.prometheus_htpasswd
-  prometheus_alertmanager_htpasswd = var.prometheus_alertmanager_htpasswd
+  // Htpasswd for kube-prometheus basic authentication
+  kube_prometheus_htpasswd = var.kube_prometheus_htpasswd
+  kube_prometheus_alertmanager_htpasswd = var.kube_prometheus_alertmanager_htpasswd
   // =========================
   // Grafana configuration
   // =========================
@@ -65,14 +65,14 @@ module "kubernetes" {
   grafana_user = var.grafana_user
   // Grafana password
   grafana_password = var.grafana_password
-  // Prometheus Alertmanager basic authentication username
-  prometheus_alertmanager_basic_auth_user = var.prometheus_alertmanager_basic_auth_user
-  // Prometheus Alertmanager basic authentication password
-  prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
-  // Prometheus basic authentication username
-  prometheus_basic_auth_user = var.prometheus_basic_auth_user
-  // Prometheus basic authentication password
-  prometheus_basic_auth_password = var.prometheus_basic_auth_password
+  // kube-prometheus Alertmanager basic authentication username
+  prometheus_alertmanager_basic_auth_user = var.kube_prometheus_alertmanager_basic_auth_user
+  // kube-prometheus Alertmanager basic authentication password
+  prometheus_alertmanager_basic_auth_password = var.kube_prometheus_alertmanager_basic_auth_password
+  // kube-prometheus basic authentication username
+  prometheus_basic_auth_user = var.kube_prometheus_basic_auth_user
+  // kube-prometheus basic authentication password
+  prometheus_basic_auth_password = var.kube_prometheus_basic_auth_password
   // Argo CD Git repository URL
   argo_cd_git_ssh_private_key = local.argo_cd_git_ssh_private_key_decoded
   // JWT salt
