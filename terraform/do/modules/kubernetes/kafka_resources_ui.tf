@@ -38,7 +38,7 @@ resource "kubernetes_deployment" "kafka_ui" {
           name  = "kafka-ui"
           image = "provectuslabs/kafka-ui:latest"
           port {
-            container_port = local.kafka.ui_service.port
+            container_port = 8080
           }
           env {
             name  = "KAFKA_CLUSTERS_0_NAME"
@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "kafka_ui" {
           }
           env {
             name  = "KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS"
-            value = "${local.kafka.service.host}:${local.kafka.service.port}"
+            value = "${local.kafka_outputs.service.host}:${local.kafka_outputs.service.port}"
           }
           env {
             name  = "KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL"
@@ -90,78 +90,9 @@ resource "kubernetes_service" "kafka_ui" {
       app = "kafka-ui"
     }
     port {
-      port        = local.kafka.ui_service.port
-      target_port = local.kafka.ui_service.port
+      port        = 8080
+      target_port = 8080
     }
   }
 }
 
-// =========================
-// Kafka UI Basic Auth Secret
-// =========================
-// Creates a Kubernetes secret containing htpasswd file for basic authentication.
-resource "kubernetes_secret" "kafka_ui_basic_auth" {
-  metadata {
-    name      = "kafka-ui-basic-auth"
-    namespace = kubernetes_namespace.kafka.metadata[0].name
-  }
-  data = {
-    auth = var.kafka_ui_htpasswd
-  }
-  type = "Opaque"
-}
-
-// =========================
-// Kafka UI Ingress
-// =========================
-// Exposes Kafka UI via NGINX Ingress with TLS
-// managed by cert-manager and DNS handled by Cloudflare.
-resource "kubernetes_ingress_v1" "kafka_ui" {
-  metadata {
-    name      = "kafka-ui"
-    namespace = kubernetes_namespace.kafka.metadata[0].name
-
-    annotations = {
-      "cert-manager.io/cluster-issuer"                 = var.cert_manager_cluster_issuer_name
-      "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
-      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
-      "acme.cert-manager.io/http01-edit-in-place"      = "true"
-      "nginx.ingress.kubernetes.io/auth-type"          = "basic"
-      "nginx.ingress.kubernetes.io/auth-secret"         = kubernetes_secret.kafka_ui_basic_auth.metadata[0].name
-      "nginx.ingress.kubernetes.io/auth-realm"        = "Kafka UI Authentication Required"
-    }
-  }
-
-  spec {
-    ingress_class_name = "nginx"
-
-    rule {
-      host = local.kafka_ui_domain_name
-      http {
-        path {
-          path = "/"
-          backend {
-            service {
-              name = kubernetes_service.kafka_ui.metadata[0].name
-              port {
-                number = local.kafka.ui_service.port
-              }
-            }
-          }
-        }
-      }
-    }
-
-    tls {
-      hosts       = [local.kafka_ui_domain_name]
-      secret_name = "kafka-ui-tls"
-    }
-  }
-
-  depends_on = [
-    kubectl_manifest.cluster_issuer_letsencrypt_prod,
-    cloudflare_record.kafka_ui,
-    helm_release.kafka,
-    kubernetes_service.kafka_ui
-  ]
-}

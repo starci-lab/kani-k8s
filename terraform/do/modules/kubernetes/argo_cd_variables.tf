@@ -302,13 +302,12 @@ variable "argo_cd_redis_replica_persistence_size" {
 }
 
 // =========================
-// Computed resource values
+// Argo CD inputs
 // =========================
-// Resource requests and limits for Argo CD components.
+// Preset mappings for Argo CD components.
 // Maps component subcomponents to resource size keys (16, 32, 64, etc.) for preset lookup.
-// Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
 locals {
-  argocd = {
+  argocd_inputs = {
     presets = {
       server         = "32"
       repo_server    = "16"
@@ -317,117 +316,127 @@ locals {
       controller     = "16"
       redis          = "16"
     }
+  }
+}
+
+// =========================
+// Argo CD computed values
+// =========================
+// Resource requests and limits for Argo CD components.
+// Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
+locals {
+  argocd = {
     server = {
       request_cpu = coalesce(
         var.argo_cd_server_request_cpu,
-        try(var.resources_config[local.argocd.presets.server].requests.cpu, "32m")
+        try(var.resources_config[local.argocd_inputs.presets.server].requests.cpu, "32m")
       )
       request_memory = coalesce(
         var.argo_cd_server_request_memory,
-        try(var.resources_config[local.argocd.presets.server].requests.memory, "64Mi")
+        try(var.resources_config[local.argocd_inputs.presets.server].requests.memory, "64Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_server_limit_cpu,
-        try(var.resources_config[local.argocd.presets.server].limits.cpu, "256m")
+        try(var.resources_config[local.argocd_inputs.presets.server].limits.cpu, "256m")
       )
       limit_memory = coalesce(
         var.argo_cd_server_limit_memory,
-        try(var.resources_config[local.argocd.presets.server].limits.memory, "512Mi")
+        try(var.resources_config[local.argocd_inputs.presets.server].limits.memory, "512Mi")
       )
     }
 
     repo_server = {
       request_cpu = coalesce(
         var.argo_cd_repo_server_request_cpu,
-        try(var.resources_config[local.argocd.presets.repo_server].requests.cpu, "16m")
+        try(var.resources_config[local.argocd_inputs.presets.repo_server].requests.cpu, "16m")
       )
       request_memory = coalesce(
         var.argo_cd_repo_server_request_memory,
-        try(var.resources_config[local.argocd.presets.repo_server].requests.memory, "32Mi")
+        try(var.resources_config[local.argocd_inputs.presets.repo_server].requests.memory, "32Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_repo_server_limit_cpu,
-        try(var.resources_config[local.argocd.presets.repo_server].limits.cpu, "128m")
+        try(var.resources_config[local.argocd_inputs.presets.repo_server].limits.cpu, "128m")
       )
       limit_memory = coalesce(
         var.argo_cd_repo_server_limit_memory,
-        try(var.resources_config[local.argocd.presets.repo_server].limits.memory, "256Mi")
+        try(var.resources_config[local.argocd_inputs.presets.repo_server].limits.memory, "256Mi")
       )
     }
 
     notifications = {
       request_cpu = coalesce(
         var.argo_cd_notifications_request_cpu,
-        try(var.resources_config[local.argocd.presets.notifications].requests.cpu, "16m")
+        try(var.resources_config[local.argocd_inputs.presets.notifications].requests.cpu, "16m")
       )
       request_memory = coalesce(
         var.argo_cd_notifications_request_memory,
-        try(var.resources_config[local.argocd.presets.notifications].requests.memory, "32Mi")
+        try(var.resources_config[local.argocd_inputs.presets.notifications].requests.memory, "32Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_notifications_limit_cpu,
-        try(var.resources_config[local.argocd.presets.notifications].limits.cpu, "128m")
+        try(var.resources_config[local.argocd_inputs.presets.notifications].limits.cpu, "128m")
       )
       limit_memory = coalesce(
         var.argo_cd_notifications_limit_memory,
-        try(var.resources_config[local.argocd.presets.notifications].limits.memory, "256Mi")
+        try(var.resources_config[local.argocd_inputs.presets.notifications].limits.memory, "256Mi")
       )
     }
 
     application_set = {
       request_cpu = coalesce(
         var.argo_cd_application_set_request_cpu,
-        try(var.resources_config[local.argocd.presets.applicationSet].requests.cpu, "16m")
+        try(var.resources_config[local.argocd_inputs.presets.applicationSet].requests.cpu, "16m")
       )
       request_memory = coalesce(
         var.argo_cd_application_set_request_memory,
-        try(var.resources_config[local.argocd.presets.applicationSet].requests.memory, "32Mi")
+        try(var.resources_config[local.argocd_inputs.presets.applicationSet].requests.memory, "32Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_application_set_limit_cpu,
-        try(var.resources_config[local.argocd.presets.applicationSet].limits.cpu, "128m")
+        try(var.resources_config[local.argocd_inputs.presets.applicationSet].limits.cpu, "128m")
       )
       limit_memory = coalesce(
         var.argo_cd_application_set_limit_memory,
-        try(var.resources_config[local.argocd.presets.applicationSet].limits.memory, "256Mi")
+        try(var.resources_config[local.argocd_inputs.presets.applicationSet].limits.memory, "256Mi")
       )
     }
 
     controller = {
       request_cpu = coalesce(
         var.argo_cd_controller_request_cpu,
-        try(var.resources_config[local.argocd.presets.controller].requests.cpu, "16m")
+        try(var.resources_config[local.argocd_inputs.presets.controller].requests.cpu, "16m")
       )
       request_memory = coalesce(
         var.argo_cd_controller_request_memory,
-        try(var.resources_config[local.argocd.presets.controller].requests.memory, "32Mi")
+        try(var.resources_config[local.argocd_inputs.presets.controller].requests.memory, "32Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_controller_limit_cpu,
-        try(var.resources_config[local.argocd.presets.controller].limits.cpu, "128m")
+        try(var.resources_config[local.argocd_inputs.presets.controller].limits.cpu, "128m")
       )
       limit_memory = coalesce(
         var.argo_cd_controller_limit_memory,
-        try(var.resources_config[local.argocd.presets.controller].limits.memory, "256Mi")
+        try(var.resources_config[local.argocd_inputs.presets.controller].limits.memory, "256Mi")
       )
     }
 
     redis = {
       request_cpu = coalesce(
         var.argo_cd_redis_request_cpu,
-        try(var.resources_config[local.argocd.presets.redis].requests.cpu, "16m")
+        try(var.resources_config[local.argocd_inputs.presets.redis].requests.cpu, "16m")
       )
       request_memory = coalesce(
         var.argo_cd_redis_request_memory,
-        try(var.resources_config[local.argocd.presets.redis].requests.memory, "32Mi")
+        try(var.resources_config[local.argocd_inputs.presets.redis].requests.memory, "32Mi")
       )
       limit_cpu = coalesce(
         var.argo_cd_redis_limit_cpu,
-        try(var.resources_config[local.argocd.presets.redis].limits.cpu, "128m")
+        try(var.resources_config[local.argocd_inputs.presets.redis].limits.cpu, "128m")
       )
       limit_memory = coalesce(
         var.argo_cd_redis_limit_memory,
-        try(var.resources_config[local.argocd.presets.redis].limits.memory, "256Mi")
+        try(var.resources_config[local.argocd_inputs.presets.redis].limits.memory, "256Mi")
       )
     }
   }

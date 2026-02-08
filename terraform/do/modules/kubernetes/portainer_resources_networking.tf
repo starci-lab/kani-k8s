@@ -43,7 +43,7 @@ resource "kubernetes_ingress_v1" "portainer" {
               // Dynamically resolved Portainer service + port
               name = data.kubernetes_service.portainer_server.metadata[0].name
               port {
-                number = local.portainer.server_port
+                number = local.portainer_outputs.server_port
               }
             }
           }

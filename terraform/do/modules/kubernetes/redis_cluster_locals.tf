@@ -1,38 +1,62 @@
 // =========================
-// Redis Cluster computed values
+// Redis Cluster inputs
 // =========================
-// Resource requests and limits for Redis Cluster components.
+// Preset mappings for Redis Cluster components.
 // Maps component subcomponents to resource size keys (16, 32, 64, etc.) for preset lookup.
-// Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
-// Also includes naming conventions and service configuration.
-
 locals {
-  redis_cluster = {
+  redis_cluster_inputs = {
     presets = {
       redis = "64"
     }
+  }
+}
+
+// =========================
+// Redis Cluster computed values
+// =========================
+// Resource requests and limits for Redis Cluster components.
+// Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
+// Also includes naming conventions.
+locals {
+  redis_cluster = {
     redis = {
       request_cpu = coalesce(
         var.redis_request_cpu,
-        try(var.resources_config[local.redis_cluster.presets.redis].requests.cpu, "96m")
+        try(var.resources_config[local.redis_cluster_inputs.presets.redis].requests.cpu, "96m")
       )
       request_memory = coalesce(
         var.redis_request_memory,
-        try(var.resources_config[local.redis_cluster.presets.redis].requests.memory, "192Mi")
+        try(var.resources_config[local.redis_cluster_inputs.presets.redis].requests.memory, "192Mi")
       )
       limit_cpu = coalesce(
         var.redis_limit_cpu,
-        try(var.resources_config[local.redis_cluster.presets.redis].limits.cpu, "192m")
+        try(var.resources_config[local.redis_cluster_inputs.presets.redis].limits.cpu, "192m")
       )
       limit_memory = coalesce(
         var.redis_limit_memory,
-        try(var.resources_config[local.redis_cluster.presets.redis].limits.memory, "384Mi")
+        try(var.resources_config[local.redis_cluster_inputs.presets.redis].limits.memory, "384Mi")
       )
     }
     name = "redis-cluster"
+  }
+}
+
+// =========================
+// Redis Cluster outputs
+// =========================
+// Service port resolution and computed service information.
+// These values depend on data sources and are separated to avoid dependency cycles.
+locals {
+  redis_cluster_outputs = {
     service = {
       host = "${data.kubernetes_service.redis_cluster.metadata[0].name}.${kubernetes_namespace.redis_cluster.metadata[0].name}.svc.cluster.local"
-      port = 6379
+      port = try(
+        one([
+          for p in data.kubernetes_service.redis_cluster.spec[0].port :
+          p.port if p.port == 6379
+        ]),
+        data.kubernetes_service.redis_cluster.spec[0].port[0].port
+      )
     }
   }
 }

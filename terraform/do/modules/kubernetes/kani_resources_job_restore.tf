@@ -197,13 +197,13 @@ resource "kubernetes_job_v1" "restore" {
         volume {
           name = "rpcs"
           secret {
-            secret_name = local.external_secrets_instances.rpcs.target_secret_name
+            secret_name = local.external_secrets.instances.rpcs.target_secret_name
           }
         }
         volume {
           name = "app"
           secret {
-            secret_name = local.external_secrets_instances.app.target_secret_name
+            secret_name = local.external_secrets.instances.app.target_secret_name
           }
         }
         volume {
@@ -220,7 +220,7 @@ resource "kubernetes_job_v1" "restore" {
     helm_release.kani_cli,
     kubectl_manifest.external_secret["app"],
     kubectl_manifest.external_secret["rpcs"],
-    helm_release.argo_cd,
+    # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,

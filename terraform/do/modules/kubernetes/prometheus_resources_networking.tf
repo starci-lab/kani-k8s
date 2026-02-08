@@ -74,7 +74,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
               // Dynamically resolved Prometheus service + port
               name = data.kubernetes_service.prometheus_server.metadata[0].name
               port {
-                number = local.prometheus.server_port
+                number = local.prometheus_outputs.server_port
               }
             }
           }
@@ -146,7 +146,7 @@ resource "kubernetes_ingress_v1" "prometheus_alertmanager" {
               // Dynamically resolved Prometheus service + port
               name = data.kubernetes_service.prometheus_alertmanager_server.metadata[0].name
               port {
-                number = local.prometheus.alertmanager_server_port
+                number = local.prometheus_outputs.alertmanager_server_port
               }
             }
           }

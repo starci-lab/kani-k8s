@@ -63,42 +63,85 @@ variable "cert_manager_controller_replica_count" {
 }
 ```
 
-- **Locals structure**: Use a single `locals` block per component. All computed values for a component should be grouped within a single object named after the component. Include presets, resource values, instances, and other configurations as nested objects:
+- **Locals structure**: Use three separate `locals` blocks per component file to prevent dependency cycles and self-references:
+
+  1. **Inputs block** (`local.<component>_inputs`) – Contains preset mappings that are referenced by the main component block:
+     - Presets mapping (maps component subcomponents to resource size keys)
+  
+  2. **Main component block** (`local.<component>`) – Contains static configuration that does not depend on data sources:
+     - Resource requests/limits (computed from variables/presets, referencing `_inputs`)
+     - Static naming conventions
+     - Service names (hardcoded strings)
+
+  3. **Outputs block** (`local.<component>_outputs`) – Contains computed values that depend on data sources (e.g., `data.kubernetes_service`):
+     - Service ports (resolved from data sources)
+     - Service hosts (constructed from data sources)
+     - Any other values that reference data sources
+
+This separation prevents dependency cycles between data sources and locals. Each block should have its own comment section explaining its purpose.
 
 ```hcl
+// =========================
+// Prometheus inputs
+// =========================
+// Preset mappings for Prometheus components.
+// Maps component subcomponents to resource size keys (16, 32, 64, etc.) for preset lookup.
 locals {
-  external_secrets = {
+  prometheus_inputs = {
     presets = {
-      external_secrets  = "16"
-      webhook           = "16"
-      cert_controller   = "16"
+      operator   = "16"
+      prometheus = "32"
     }
-    external_secrets = {
+  }
+}
+
+// =========================
+// Prometheus computed values
+// =========================
+// Resource requests and limits for Prometheus components.
+// Uses coalesce to prefer component-specific vars, fallback to preset, then hardcoded default.
+// Also includes naming conventions.
+locals {
+  prometheus = {
+    operator = {
       request_cpu = coalesce(
-        var.external_secrets_request_cpu,
-        try(var.resources_config[local.external_secrets.presets.external_secrets].requests.cpu, "100m")
+        var.operator_request_cpu,
+        try(var.resources_config[local.prometheus_inputs.presets.operator].requests.cpu, "32m")
       )
       // ... more resource values
     }
-    webhook = {
-      request_cpu = coalesce(...)
-      // ... more resource values
-    }
-    instances = {
-      app = {
-        name               = "app"
-        target_secret_name = "app"
-        // ... instance configuration
-      }
-    }
-    gcp_cluster_secret_store = {
-      name = "gcp-secret-store"
-    }
+    name = "kube-prometheus"
+    server_service_name = "kube-prometheus-prometheus"
+    alertmanager_server_service_name = "kube-prometheus-alertmanager"
+  }
+}
+
+// =========================
+// Prometheus outputs
+// =========================
+// Service port resolution and computed service information.
+// These values depend on data sources and are separated to avoid dependency cycles.
+locals {
+  prometheus_outputs = {
+    server_port = try(
+      one([
+        for p in data.kubernetes_service.prometheus_server.spec[0].port :
+        p.port if p.port == 9090
+      ]),
+      data.kubernetes_service.prometheus_server.spec[0].port[0].port
+    )
+    alertmanager_server_port = try(
+      one([
+        for p in data.kubernetes_service.prometheus_alertmanager_server.spec[0].port :
+        p.port if p.port == 9093
+      ]),
+      data.kubernetes_service.prometheus_alertmanager_server.spec[0].port[0].port
+    )
   }
 }
 ```
 
-All locals for a component must be consolidated into one `locals` block in the `*_locals.tf` file. Do not create multiple separate `locals` blocks for the same component.
+The inputs block contains only preset mappings and has no dependencies. The main component block references `_inputs` for presets but should not reference data sources directly; use the `_outputs` block for data source-dependent values. All three blocks are placed in the same `*_locals.tf` file.
 
 - **Templatefile comments**: Use simple inline comments (`//`) for grouping within `templatefile()` blocks, not full comment blocks:
 
