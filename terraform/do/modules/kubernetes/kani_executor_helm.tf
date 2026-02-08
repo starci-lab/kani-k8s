@@ -134,6 +134,8 @@ resource "helm_release" "kani_executor" {
     helm_release.mongodb_sharded,
     helm_release.prometheus,
     helm_release.redis_cluster,
+    helm_release.consul,
+    helm_release.loki,
     kubernetes_secret.gcp_cloud_kms_crypto_operator_sa,
     kubernetes_secret.gcp_crypto_key_ed_sa,
     kubernetes_secret.gcp_google_drive_ud_sa,

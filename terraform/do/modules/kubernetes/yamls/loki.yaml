@@ -5,11 +5,96 @@ loki:
   image:
     registry: docker.io
     repository: bitnamilegacy/grafana-loki
+  ## Loki configuration shared across all components
+  ## See: https://grafana.com/docs/loki/latest/configuration/
+  configuration: |
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+      grpc_listen_port: 9095
+    common:
+      compactor_address: http://loki-grafana-loki-compactor:3100
+
+    distributor:
+      ring:
+        kvstore:
+          store: memberlist
+
+    memberlist:
+      join_members:
+        - loki-grafana-loki-gossip-ring
+
+    ingester:
+      lifecycler:
+        ring:
+          kvstore:
+            store: memberlist
+          replication_factor: 1
+      chunk_idle_period: 30m
+      chunk_block_size: 262144
+      chunk_encoding: snappy
+      chunk_retain_period: 1m
+      wal:
+        dir: /bitnami/grafana-loki/wal
+
+    limits_config:
+      retention_period: ${retention_period}
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      max_cache_freshness_per_query: 10m
+      split_queries_by_interval: 15m
+      allow_structured_metadata: true
+
+    schema_config:
+      configs:
+      - from: 2020-10-24
+        store: boltdb-shipper
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
+      - from: 2024-03-12
+        store: tsdb
+        object_store: filesystem
+        schema: v12
+        index:
+          period: 24h
+          prefix: index_
+      - from: 2024-04-23
+        object_store: filesystem
+        store: tsdb
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+    storage_config:
+      boltdb_shipper:
+        cache_location: /bitnami/grafana-loki/loki/cache
+        cache_ttl: 168h
+      filesystem:
+        directory: /bitnami/grafana-loki/chunks
+      tsdb_shipper:
+        active_index_directory: /bitnami/grafana-loki/loki/tsdb-index
+        cache_location: /bitnami/grafana-loki/loki/tsdb-cache
+
+    query_scheduler:
+      max_outstanding_requests_per_tenant: 32768
+
+    querier:
+      max_concurrent: 16
+
+    chunk_store_config: {}
 
 ## =========================
 ## Gateway (entry point)
 ## =========================
 gateway:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/nginx
   enabled: true
   replicaCount: ${gateway_replica_count}
   nodeSelector:
@@ -48,6 +133,13 @@ distributor:
   replicaCount: ${distributor_replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
+  resources:
+    requests:
+      cpu: ${distributor_request_cpu}
+      memory: ${distributor_request_memory}
+    limits:
+      cpu: ${distributor_limit_cpu}
+      memory: ${distributor_limit_memory}
 
 ## =========================
 ## Ingester
@@ -59,6 +151,13 @@ ingester:
   persistence:
     enabled: true
     size: ${ingester_persistence_size}
+  resources:
+    requests:
+      cpu: ${ingester_request_cpu}
+      memory: ${ingester_request_memory}
+    limits:
+      cpu: ${ingester_limit_cpu}
+      memory: ${ingester_limit_memory}
 
 ## =========================
 ## Querier
@@ -70,6 +169,13 @@ querier:
   persistence:
     enabled: true
     size: ${querier_persistence_size}
+  resources:
+    requests:
+      cpu: ${querier_request_cpu}
+      memory: ${querier_request_memory}
+    limits:
+      cpu: ${querier_limit_cpu}
+      memory: ${querier_limit_memory}
 
 ## =========================
 ## Query Frontend
@@ -78,9 +184,31 @@ queryFrontend:
   replicaCount: ${query_frontend_replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
+  resources:
+    requests:
+      cpu: ${query_frontend_request_cpu}
+      memory: ${query_frontend_request_memory}
+    limits:
+      cpu: ${query_frontend_limit_cpu}
+      memory: ${query_frontend_limit_memory}
 
 ## =========================
 ## Grafana Alloy (log collector) – disabled by default
 ## =========================
 grafanaalloy:
+  enabled: false
+
+## =========================
+## Memcached sub-charts – disabled for single mode
+## =========================
+memcachedchunks:
+  enabled: false
+
+memcachedfrontend:
+  enabled: false
+
+memcachedindexqueries:
+  enabled: false
+
+memcachedindexwrites:
   enabled: false

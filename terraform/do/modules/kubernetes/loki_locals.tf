@@ -8,6 +8,10 @@ locals {
     presets = {
       gateway   = "16"
       compactor = "16"
+      distributor = "16"
+      ingester = "32"
+      querier = "16"
+      query_frontend = "16"
     }
   }
 }
@@ -56,12 +60,88 @@ locals {
         try(var.resources_config[local.loki_inputs.presets.compactor].limits.memory, "128Mi")
       )
     }
+    distributor = {
+      request_cpu = coalesce(
+        var.loki_distributor_request_cpu,
+        try(var.resources_config[local.loki_inputs.presets.distributor].requests.cpu, "50m")
+      )
+      request_memory = coalesce(
+        var.loki_distributor_request_memory,
+        try(var.resources_config[local.loki_inputs.presets.distributor].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.loki_distributor_limit_cpu,
+        try(var.resources_config[local.loki_inputs.presets.distributor].limits.cpu, "200m")
+      )
+      limit_memory = coalesce(
+        var.loki_distributor_limit_memory,
+        try(var.resources_config[local.loki_inputs.presets.distributor].limits.memory, "128Mi")
+      )
+    }
+    ingester = {
+      request_cpu = coalesce(
+        var.loki_ingester_request_cpu,
+        try(var.resources_config[local.loki_inputs.presets.ingester].requests.cpu, "100m")
+      )
+      request_memory = coalesce(
+        var.loki_ingester_request_memory,
+        try(var.resources_config[local.loki_inputs.presets.ingester].requests.memory, "128Mi")
+      )
+      limit_cpu = coalesce(
+        var.loki_ingester_limit_cpu,
+        try(var.resources_config[local.loki_inputs.presets.ingester].limits.cpu, "500m")
+      )
+      limit_memory = coalesce(
+        var.loki_ingester_limit_memory,
+        try(var.resources_config[local.loki_inputs.presets.ingester].limits.memory, "512Mi")
+      )
+    }
+    querier = {
+      request_cpu = coalesce(
+        var.loki_querier_request_cpu,
+        try(var.resources_config[local.loki_inputs.presets.querier].requests.cpu, "50m")
+      )
+      request_memory = coalesce(
+        var.loki_querier_request_memory,
+        try(var.resources_config[local.loki_inputs.presets.querier].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.loki_querier_limit_cpu,
+        try(var.resources_config[local.loki_inputs.presets.querier].limits.cpu, "200m")
+      )
+      limit_memory = coalesce(
+        var.loki_querier_limit_memory,
+        try(var.resources_config[local.loki_inputs.presets.querier].limits.memory, "128Mi")
+      )
+    }
+    query_frontend = {
+      request_cpu = coalesce(
+        var.loki_query_frontend_request_cpu,
+        try(var.resources_config[local.loki_inputs.presets.query_frontend].requests.cpu, "50m")
+      )
+      request_memory = coalesce(
+        var.loki_query_frontend_request_memory,
+        try(var.resources_config[local.loki_inputs.presets.query_frontend].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.loki_query_frontend_limit_cpu,
+        try(var.resources_config[local.loki_inputs.presets.query_frontend].limits.cpu, "200m")
+      )
+      limit_memory = coalesce(
+        var.loki_query_frontend_limit_memory,
+        try(var.resources_config[local.loki_inputs.presets.query_frontend].limits.memory, "128Mi")
+      )
+    }
     name = "loki"
     // Services for Loki
     services = {
       gateway_service = {
-        name = "loki-gateway"
+        name = "loki-grafana-loki-gateway"
         port = 80
+      }
+      distributor_service = {
+        name = "loki-grafana-loki-distributor"
+        port = 3100
       }
     }
   }

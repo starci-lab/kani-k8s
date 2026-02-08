@@ -58,7 +58,7 @@ resource "kubernetes_ingress_v1" "consul_ui" {
 
     tls {
       hosts       = [local.consul_ui_domain_name]
-      secret_name = "consul-tls"
+      secret_name = "consul-ui-tls"
     }
   }
 

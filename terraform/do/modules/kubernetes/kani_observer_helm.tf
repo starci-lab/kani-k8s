@@ -137,5 +137,7 @@ resource "helm_release" "kani_observer" {
     helm_release.mongodb_sharded,
     helm_release.prometheus,
     helm_release.redis_cluster,
+    helm_release.consul,
+    helm_release.loki,
   ]
 }

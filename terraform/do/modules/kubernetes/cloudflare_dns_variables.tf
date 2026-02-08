@@ -97,5 +97,15 @@ variable "kafka_ui_prefix" {
 variable "consul_ui_prefix" {
   type        = string
   description = "Subdomain prefix for the Consul UI server (combined with domain_name)"
-  default     = "consul"
+  default     = "consul-ui"
+}
+
+// =========================
+// Loki domain configuration
+// =========================
+
+variable "loki_prefix" {
+  type        = string
+  description = "Subdomain prefix for the Loki server (combined with domain_name)"
+  default     = "loki"
 }
