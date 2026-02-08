@@ -11,6 +11,7 @@ locals {
       distributor = "16"
       ingester = "32"
       querier = "16"
+      query_scheduler = "16"
       query_frontend = "16"
     }
   }
@@ -112,6 +113,24 @@ locals {
       limit_memory = coalesce(
         var.loki_querier_limit_memory,
         try(var.resources_config[local.loki_inputs.presets.querier].limits.memory, "128Mi")
+      )
+    }
+    query_scheduler = {
+      request_cpu = coalesce(
+        var.loki_query_scheduler_request_cpu,
+        try(var.resources_config[local.loki_inputs.presets.query_scheduler].requests.cpu, "50m")
+      )
+      request_memory = coalesce(
+        var.loki_query_scheduler_request_memory,
+        try(var.resources_config[local.loki_inputs.presets.query_scheduler].requests.memory, "64Mi")
+      )
+      limit_cpu = coalesce(
+        var.loki_query_scheduler_limit_cpu,
+        try(var.resources_config[local.loki_inputs.presets.query_scheduler].limits.cpu, "200m")
+      )
+      limit_memory = coalesce(
+        var.loki_query_scheduler_limit_memory,
+        try(var.resources_config[local.loki_inputs.presets.query_scheduler].limits.memory, "128Mi")
       )
     }
     query_frontend = {

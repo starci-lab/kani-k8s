@@ -51,6 +51,12 @@ resource "helm_release" "loki" {
       querier_request_memory       = local.loki.querier.request_memory
       querier_limit_cpu            = local.loki.querier.limit_cpu
       querier_limit_memory         = local.loki.querier.limit_memory
+      // Query Scheduler configuration
+      query_scheduler_replica_count = var.loki_query_scheduler_replica_count
+      query_scheduler_request_cpu   = local.loki.query_scheduler.request_cpu
+      query_scheduler_request_memory = local.loki.query_scheduler.request_memory
+      query_scheduler_limit_cpu      = local.loki.query_scheduler.limit_cpu
+      query_scheduler_limit_memory   = local.loki.query_scheduler.limit_memory
       // Query Frontend configuration
       query_frontend_replica_count = var.loki_query_frontend_replica_count
       query_frontend_request_cpu   = local.loki.query_frontend.request_cpu

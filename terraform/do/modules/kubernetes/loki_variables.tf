@@ -269,6 +269,50 @@ variable "loki_querier_limit_memory" {
 }
 
 // =========================
+// Loki query scheduler resource variables
+// =========================
+// Controls resource allocation for Loki query scheduler.
+
+// Number of replicas for Loki query scheduler
+variable "loki_query_scheduler_replica_count" {
+  type        = number
+  description = "Number of Loki query scheduler replicas"
+  default     = 1
+}
+
+// CPU resource request for Loki query scheduler
+variable "loki_query_scheduler_request_cpu" {
+  type        = string
+  description = "CPU resource request for Loki query scheduler"
+  nullable    = true
+  default     = null
+}
+
+// Memory resource request for Loki query scheduler
+variable "loki_query_scheduler_request_memory" {
+  type        = string
+  description = "Memory resource request for Loki query scheduler"
+  nullable    = true
+  default     = null
+}
+
+// CPU resource limit for Loki query scheduler
+variable "loki_query_scheduler_limit_cpu" {
+  type        = string
+  description = "CPU resource limit for Loki query scheduler"
+  nullable    = true
+  default     = null
+}
+
+// Memory resource limit for Loki query scheduler
+variable "loki_query_scheduler_limit_memory" {
+  type        = string
+  description = "Memory resource limit for Loki query scheduler"
+  nullable    = true
+  default     = null
+}
+
+// =========================
 // Loki query frontend resource variables
 // =========================
 // Controls resource allocation for Loki query frontend.

@@ -13,8 +13,10 @@ loki:
     server:
       http_listen_port: 3100
       grpc_listen_port: 9095
+
     common:
       compactor_address: http://loki-grafana-loki-compactor:3100
+      path_prefix: /bitnami/grafana-loki
 
     distributor:
       ring:
@@ -48,37 +50,42 @@ loki:
 
     schema_config:
       configs:
-      - from: 2020-10-24
-        store: boltdb-shipper
-        object_store: filesystem
-        schema: v11
-        index:
-          prefix: index_
-          period: 24h
-      - from: 2024-03-12
-        store: tsdb
-        object_store: filesystem
-        schema: v12
-        index:
-          period: 24h
-          prefix: index_
-      - from: 2024-04-23
-        object_store: filesystem
-        store: tsdb
-        schema: v13
-        index:
-          prefix: index_
-          period: 24h
+        - from: 2020-10-24
+          store: boltdb-shipper
+          object_store: filesystem
+          schema: v11
+          index:
+            prefix: index_
+            period: 24h
+
+        - from: 2024-03-12
+          store: tsdb
+          object_store: filesystem
+          schema: v12
+          index:
+            prefix: index_
+            period: 24h
+
+        - from: 2024-04-23
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h
 
     storage_config:
       boltdb_shipper:
-        cache_location: /bitnami/grafana-loki/loki/cache
+        active_index_directory: /bitnami/grafana-loki/loki/boltdb-index
+        cache_location: /bitnami/grafana-loki/loki/boltdb-cache
         cache_ttl: 168h
-      filesystem:
-        directory: /bitnami/grafana-loki/chunks
+
       tsdb_shipper:
         active_index_directory: /bitnami/grafana-loki/loki/tsdb-index
         cache_location: /bitnami/grafana-loki/loki/tsdb-cache
+
+      filesystem:
+        directory: /bitnami/grafana-loki/chunks
 
     query_scheduler:
       max_outstanding_requests_per_tenant: 32768
@@ -176,6 +183,22 @@ querier:
     limits:
       cpu: ${querier_limit_cpu}
       memory: ${querier_limit_memory}
+
+## =========================
+## Query Scheduler
+## =========================
+queryScheduler:
+  enabled: true
+  replicaCount: ${query_scheduler_replica_count}
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  resources:
+    requests:
+      cpu: ${query_scheduler_request_cpu}
+      memory: ${query_scheduler_request_memory}
+    limits:
+      cpu: ${query_scheduler_limit_cpu}
+      memory: ${query_scheduler_limit_memory}
 
 ## =========================
 ## Query Frontend

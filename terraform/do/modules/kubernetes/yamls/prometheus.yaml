@@ -27,30 +27,29 @@ prometheus:
   image:
     registry: docker.io
     repository: bitnamilegacy/prometheus
-  prometheusSpec:
+  resources:
+    requests:
+      cpu: ${prometheus_request_cpu}
+      memory: ${prometheus_request_memory}
+    limits:
+      cpu: ${prometheus_limit_cpu}
+      memory: ${prometheus_limit_memory}
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  storageSpec:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: ${prometheus_persistence_size}
+  thanos:
     resources:
       requests:
-        cpu: ${prometheus_request_cpu}
-        memory: ${prometheus_request_memory}
+        cpu: ${thanos_request_cpu}
+        memory: ${thanos_request_memory}
       limits:
-        cpu: ${prometheus_limit_cpu}
-        memory: ${prometheus_limit_memory}
-    nodeSelector:
-      "doks.digitalocean.com/node-pool": ${node_pool_label}
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          resources:
-            requests:
-              storage: ${prometheus_persistence_size}
-    thanos:
-      resources:
-        requests:
-          cpu: ${thanos_request_cpu}
-          memory: ${thanos_request_memory}
-        limits:
-          cpu: ${thanos_limit_cpu}
-          memory: ${thanos_limit_memory}
+        cpu: ${thanos_limit_cpu}
+        memory: ${thanos_limit_memory}
 
 ## =========================
 ## Alertmanager (replicaCount from TF, image, resources, storage)
@@ -60,22 +59,21 @@ alertmanager:
   image:
     registry: docker.io
     repository: bitnamilegacy/alertmanager
-  alertmanagerSpec:
-    resources:
-      requests:
-        cpu: ${alertmanager_request_cpu}
-        memory: ${alertmanager_request_memory}
-      limits:
-        cpu: ${alertmanager_limit_cpu}
-        memory: ${alertmanager_limit_memory}
-    nodeSelector:
-      "doks.digitalocean.com/node-pool": ${node_pool_label}
-    storage:
-      volumeClaimTemplate:
-        spec:
-          resources:
-            requests:
-              storage: ${alertmanager_persistence_size}
+  resources:
+    requests:
+      cpu: ${alertmanager_request_cpu}
+      memory: ${alertmanager_request_memory}
+    limits:
+      cpu: ${alertmanager_limit_cpu}
+      memory: ${alertmanager_limit_memory}
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  storageSpec:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: ${alertmanager_persistence_size}
 
 ## =========================
 ## Blackbox Exporter (replicaCount from TF, image, resources)
@@ -97,14 +95,14 @@ blackboxExporter:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
 ## =========================
-## Thanos Ruler (replicaCount from TF, image, storage resources)
+## Thanos Ruler (replicaCount from TF, image, resources)
 ## =========================
 thanosRuler:
   replicaCount: ${thanos_ruler_replica_count}
   image:
     registry: docker.io
     repository: bitnamilegacy/thanos
-  storage:
+  resources:
     requests:
       cpu: ${thanos_ruler_request_cpu}
       memory: ${thanos_ruler_request_memory}

@@ -12,13 +12,13 @@ data "kubernetes_service" "loki_gateway" {
 }
 
 // =========================
-// Loki Ingress
+// Loki Gateway Ingress
 // =========================
 // Exposes Loki Gateway via NGINX Ingress with TLS
 // managed by cert-manager and DNS handled by Cloudflare.
-resource "kubernetes_ingress_v1" "loki" {
+resource "kubernetes_ingress_v1" "loki_gateway" {
   metadata {
-    name      = "loki"
+    name      = "loki-gateway"
     namespace = kubernetes_namespace.loki.metadata[0].name
 
     annotations = {
