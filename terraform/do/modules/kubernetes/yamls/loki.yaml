@@ -131,7 +131,7 @@ networkPolicy:
 ## Compactor
 ## =========================
 compactor:
-  enabled: true
+  enabled: false
   replicaCount: ${compactor_replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
@@ -232,19 +232,4 @@ queryFrontend:
 ## Grafana Alloy (log collector) – disabled by default
 ## =========================
 grafanaalloy:
-  enabled: false
-
-## =========================
-## Memcached sub-charts – disabled for single mode
-## =========================
-memcachedchunks:
-  enabled: false
-
-memcachedfrontend:
-  enabled: false
-
-memcachedindexqueries:
-  enabled: false
-
-memcachedindexwrites:
   enabled: false
