@@ -233,3 +233,11 @@ queryFrontend:
 ## =========================
 grafanaalloy:
   enabled: false
+
+## =========================
+## Memcached Disabled
+## =========================
+memcachedchunks:
+  enabled: false
+memcachedfrontend:
+  enabled: false
