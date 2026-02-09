@@ -25,7 +25,7 @@ resource "helm_release" "grafana" {
       limit_memory   = local.grafana.grafana.limit_memory
       persistence_size = var.grafana_persistence_size
       // Prometheus datasource
-      prometheus_url                  = "https://${local.prometheus_outputs.server_service.host}:${local.prometheus_outputs.server_service.port}"
+      prometheus_url                  = "https://${local.kube_prometheus_outputs.server_service.host}:${local.kube_prometheus_outputs.server_service.port}"
       prometheus_basic_auth_user  = var.prometheus_basic_auth_user
       prometheus_basic_auth_password = var.prometheus_basic_auth_password
       // Alertmanager datasource
