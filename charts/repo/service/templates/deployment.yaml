@@ -98,6 +98,10 @@ spec:
                   fieldPath: metadata.name
             - name: POD_NAMESPACE
               value: {{ include "common.names.namespace" . | quote }}
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
 
           envFrom:
             {{- if .Values.envVarsCM }}

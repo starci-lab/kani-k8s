@@ -50,6 +50,8 @@ resource "helm_release" "kani_cli" {
       redis_throttler_port        = local.redis_cluster_outputs.service.port
       redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
+      // Consul
+      consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
@@ -103,9 +105,6 @@ resource "helm_release" "kani_cli" {
     kubernetes_secret.gcp_google_drive_ud_sa,
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
-    # Kubernetes jobs
-    kubernetes_job_v1.restore,
-    kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     helm_release.grafana,
     # helm_release.jenkins,

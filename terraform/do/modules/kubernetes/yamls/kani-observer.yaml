@@ -12,6 +12,7 @@ envVarsCM:
 
   # Application listening port (must match containerPorts & service ports)
   KANI_OBSERVER_PORT: "${port}"
+  PORT: "${port}"
 
   # ------------------------
   # PRIMARY MONGODB SETTINGS
@@ -56,6 +57,11 @@ envVarsCM:
   REDIS_THROTTLER_HOST: "${redis_throttler_host}"
   REDIS_THROTTLER_PORT: "${redis_throttler_port}"
   REDIS_THROTTLER_USE_CLUSTER: "${redis_throttler_use_cluster}"
+
+  # ------------------------
+  # CONSUL
+  # ------------------------
+  CONSUL_HOST: "${consul_host}"
 
   # ------------------------
   # FILE-BASED SECRETS (MOUNT PATHS)

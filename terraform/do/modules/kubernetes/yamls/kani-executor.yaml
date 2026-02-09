@@ -12,6 +12,7 @@ envVarsCM:
 
   # Application listening port (must match containerPorts & service ports)
   KANI_EXECUTOR_PORT: "${port}"
+  PORT: "${port}"
   # ------------------------
   # PRIMARY MONGODB SETTINGS
   # ------------------------
@@ -55,6 +56,11 @@ envVarsCM:
   REDIS_LOCK_AUTHORITY_HOST: "${redis_lock_authority_host}"
   REDIS_LOCK_AUTHORITY_PORT: "${redis_lock_authority_port}"
   REDIS_LOCK_AUTHORITY_USE_CLUSTER: "${redis_lock_authority_use_cluster}"
+
+  # ------------------------
+  # CONSUL
+  # ------------------------
+  CONSUL_HOST: "${consul_host}"
 
   # ------------------------
   # FILE-BASED SECRETS (MOUNT PATHS)

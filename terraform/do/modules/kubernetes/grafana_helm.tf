@@ -24,7 +24,6 @@ resource "helm_release" "grafana" {
       limit_cpu      = local.grafana.grafana.limit_cpu
       limit_memory   = local.grafana.grafana.limit_memory
       persistence_size = var.grafana_persistence_size
-
       // Prometheus datasource
       prometheus_url                  = var.prometheus_url
       prometheus_basic_auth_user  = var.prometheus_basic_auth_user

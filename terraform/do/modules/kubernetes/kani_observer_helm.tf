@@ -12,62 +12,45 @@ resource "helm_release" "kani_observer" {
   // Render Helm values from template and inject Terraform variables
   values = [
     templatefile("${path.module}/yamls/kani-observer.yaml", {
-      // =========================
       // Kani Observer image
-      // =========================
       kani_observer_image_repository = var.kani_observer_image_repository
       kani_observer_image_tag        = var.kani_observer_image_tag
       replica_count                  = var.kani_observer_replica_count
       port                           = var.kani_observer_port
-      // =========================
       // Primary MongoDB configuration
-      // =========================
       primary_mongodb_host     = local.mongodb_sharded_outputs.service.host
       primary_mongodb_port     = local.mongodb_sharded_outputs.service.port
       primary_mongodb_database = var.kani_primary_mongodb_database
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
-      // =========================
       // Kafka configuration
-      // =========================
       kafka_broker_host   = local.kafka_outputs.service.host
       kafka_broker_port   = local.kafka_outputs.service.port
       kafka_sasl_enabled  = var.kani_kafka_sasl_enabled
       kafka_sasl_username = var.kafka_sasl_user
       kafka_sasl_password = var.kafka_sasl_password
-      // =========================
       // Redis Cache configuration
-      // =========================
       redis_cache_host        = local.redis_cluster_outputs.service.host
       redis_cache_port        = local.redis_cluster_outputs.service.port
       redis_cache_password    = var.redis_password
       redis_cache_use_cluster = true
       cache_debug_enabled     = false
-      // =========================
       // Redis Adapter configuration
-      // =========================
       redis_adapter_host        = local.redis_cluster_outputs.service.host
       redis_adapter_port        = local.redis_cluster_outputs.service.port
       redis_adapter_password    = var.redis_password
       redis_adapter_use_cluster = true
-      // =========================
       // Redis BullMQ configuration
-      // =========================
       redis_bullmq_host        = local.redis_cluster_outputs.service.host
       redis_bullmq_port        = local.redis_cluster_outputs.service.port
       redis_bullmq_use_cluster = true
       redis_bullmq_password    = var.redis_password
-      // =========================
       // Redis Throttler configuration
-      // =========================
       redis_throttler_host        = local.redis_cluster_outputs.service.host
       redis_throttler_port        = local.redis_cluster_outputs.service.port
       redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
-      // =========================
       // Secret mount paths
-      // =========================
-      // Terraform variables
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
       gcp_google_drive_ud_sa_mount_path           = var.kani_gcp_google_drive_ud_sa_mount_path
@@ -79,32 +62,23 @@ resource "helm_release" "kani_observer" {
       // Configuration secrets
       rpcs_mount_path = var.kani_rpcs_mount_path
       app_mount_path  = var.kani_app_mount_path
-      // =========================
       // JWT and AES configuration
-      // =========================
       jwt_salt     = var.kani_jwt_salt
       aes_cbc_salt = var.kani_aes_cbc_salt
-      // =========================
       // Resource configuration
-      // =========================
       request_cpu    = local.kani_observer.kani_observer.request_cpu
       request_memory = local.kani_observer.kani_observer.request_memory
       limit_cpu      = local.kani_observer.kani_observer.limit_cpu
       limit_memory   = local.kani_observer.kani_observer.limit_memory
-      // =========================
       // Node scheduling
-      // =========================
-      // Ensures Kani Observer pods are scheduled onto the primary node pool
       node_pool_label = var.kubernetes_primary_node_pool_name
-      // =========================
       // Probes configuration
-      // =========================
       liveness_probe_path  = var.kani_liveness_probe_path
       readiness_probe_path = var.kani_readiness_probe_path
       startup_probe_path   = var.kani_startup_probe_path
-      // =========================
+      // Consul
+      consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Secret names
-      // =========================
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name             = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name
       gcp_google_drive_ud_sa_secret_name           = kubernetes_secret.gcp_google_drive_ud_sa.metadata[0].name
