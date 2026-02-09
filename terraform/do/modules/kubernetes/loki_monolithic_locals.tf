@@ -42,7 +42,7 @@ locals {
     name = "loki-monolithic"
     // Services for Loki Monolithic (Grafana chart single-binary creates this service)
     services = {
-      single_binary_service = {
+      loki_monolithic = {
         name = "loki-monolithic"
         port = 3100
       }
@@ -97,12 +97,12 @@ locals {
 // Depends on data source from loki_monolithic_resources_networking.tf.
 locals {
   loki_monolithic_outputs = {
-    single_binary_service = {
+    loki_monolithic = {
       host = "${data.kubernetes_service.loki_monolithic.metadata[0].name}.${kubernetes_namespace.loki.metadata[0].name}.svc.cluster.local"
       port = try(
         one([
           for p in data.kubernetes_service.loki_monolithic.spec[0].port :
-          p.port if p.port == local.loki_monolithic.services.single_binary_service.port
+          p.port if p.port == local.loki_monolithic.services.loki_monolithic.port
         ]),
         data.kubernetes_service.loki_monolithic.spec[0].port[0].port
       )
