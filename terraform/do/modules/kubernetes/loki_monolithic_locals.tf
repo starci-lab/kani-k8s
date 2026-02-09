@@ -43,7 +43,7 @@ locals {
     // Services for Loki Monolithic (Grafana chart single-binary creates this service)
     services = {
       single_binary_service = {
-        name = "loki-monolithic "
+        name = "loki-monolithic"
         port = 3100
       }
       gateway_service = {
