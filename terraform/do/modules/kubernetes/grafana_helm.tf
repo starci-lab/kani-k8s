@@ -33,7 +33,7 @@ resource "helm_release" "grafana" {
       prometheus_alertmanager_basic_auth_user     = var.prometheus_alertmanager_basic_auth_user
       prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
       // Loki basic authentication
-      loki_url = "http://${local.loki_monolithic_outputs.single_binary_service.host}:${local.loki_monolithic_outputs.single_binary_service.port}"
+      loki_url = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       loki_basic_auth_user = var.loki_basic_auth_user
       loki_basic_auth_password = var.loki_basic_auth_password
       // Node scheduling

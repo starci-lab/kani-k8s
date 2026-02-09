@@ -82,7 +82,7 @@ resource "helm_release" "kani_interface" {
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.single_binary_service.host}:${local.loki_monolithic_outputs.single_binary_service.port}"
+      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name

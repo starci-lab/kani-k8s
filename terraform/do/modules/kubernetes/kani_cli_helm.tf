@@ -53,7 +53,7 @@ resource "helm_release" "kani_cli" {
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.single_binary_service.host}:${local.loki_monolithic_outputs.single_binary_service.port}"
+      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
