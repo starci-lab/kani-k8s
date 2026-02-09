@@ -99,10 +99,10 @@ loki:
 ## Gateway (entry point)
 ## =========================
 gateway:
+  enabled: false
   image:
     registry: docker.io
     repository: bitnamilegacy/nginx
-  enabled: true
   replicaCount: ${gateway_replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
@@ -201,7 +201,7 @@ querier:
 ## Query Scheduler
 ## =========================
 queryScheduler:
-  enabled: true
+  enabled: false
   replicaCount: ${query_scheduler_replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}

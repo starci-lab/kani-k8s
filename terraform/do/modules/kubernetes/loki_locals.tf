@@ -8,11 +8,11 @@ locals {
     presets = {
       gateway   = "16"
       compactor = "16"
-      distributor = "16"
+      distributor = "32"
       ingester = "32"
-      querier = "16"
+      querier = "32"
       query_scheduler = "16"
-      query_frontend = "16"
+      query_frontend = "32"
     }
   }
 }
