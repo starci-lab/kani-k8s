@@ -28,19 +28,49 @@ admin:
 grafana:
   replicaCount: ${replica_count}
   datasources:
-    secretDefinition:
-      apiVersion: 1
-      datasources:
-        - name: Prometheus
-          url: ${prometheus_url}
-          basicAuthUser: ${prometheus_basic_auth_user}
-          secureJsonData:
-            basicAuthPassword: ${prometheus_basic_auth_password}
-        - name: Alertmanager
-          url: ${prometheus_alertmanager_url}
-          basicAuthUser: ${prometheus_alertmanager_basic_auth_user}
-          secureJsonData:
-            basicAuthPassword: ${prometheus_alertmanager_basic_auth_password}
+  secretDefinition:
+    apiVersion: 1  # API version for the datasource configuration
+    datasources:
+      # Configuration for the Prometheus data source
+      - name: Prometheus
+        type: prometheus  # Type of the data source
+        access: proxy  # Access mode (proxy means the Grafana pod will access the data source directly)
+        orgId: 1  # Organization ID in Grafana (default organization)
+        url: ${prometheus_url}  # URL for Prometheus instance
+        version: 1  # Version of the data source configuration
+        editable: true  # Allow users to edit the data source configuration
+        isDefault: true  # Set this as the default data source
+        basicAuth: true
+        basicAuthUser: ${prometheus_basic_auth_user}
+        secureJsonData:
+          basicAuthPassword: ${prometheus_basic_auth_password}
+        jsonData:
+          httpMethod: POST        # HTTP method (POST or GET)
+          keepCookies: []         # Cookies to keep
+          timeInterval: "5s"     # Time interval between queries
+          queryTimeout: "30s"    # Timeout for each query
+          tlsSkipVerify: false    # Skip TLS certificate verification (if any)
+
+      # Configuration for the Alertmanager data source
+      - name: Alertmanager
+        uid: alertmanager  # Unique identifier for Alertmanager
+        type: alertmanager  # Type of the data source
+        access: proxy  # Access mode (proxy means the Grafana pod will access the data source directly)
+        orgId: 1  # Organization ID in Grafana
+        url: ${prometheus_alertmanager_url}  # URL for Alertmanager instance
+        version: 1  # Version of the data source configuration
+        editable: true  # Allow users to edit the data source configuration
+        basicAuth: true
+        basicAuthUser: ${prometheus_alertmanager_basic_auth_user}
+        secureJsonData:
+          basicAuthPassword: ${prometheus_alertmanager_basic_auth_password}
+        jsonData:
+          implementation: prometheus  # Implementation type (Prometheus)
+          httpMethod: POST        # HTTP method (POST or GET)
+          keepCookies: []         # Cookies to keep
+          timeInterval: "5s"     # Time interval between queries
+          queryTimeout: "30s"     # Timeout for each query
+          tlsSkipVerify: false    # Skip TLS certificate verification (if any)
   nodeSelector: 
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   resources: 

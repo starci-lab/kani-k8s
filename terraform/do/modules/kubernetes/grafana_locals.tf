@@ -55,12 +55,15 @@ locals {
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
   grafana_outputs = {
-    server_port = try(
+    server_service = {
+      host = "${data.kubernetes_service.grafana_server.metadata[0].name}.${kubernetes_namespace.grafana.metadata[0].name}.svc.cluster.local"
+      port = try(
         one([
           for p in data.kubernetes_service.grafana_server.spec[0].port :
           p.port if p.port == local.grafana.services.server_service.port
         ]),
         data.kubernetes_service.grafana_server.spec[0].port[0].port
       )
+    }
   }
 }
