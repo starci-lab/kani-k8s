@@ -173,14 +173,7 @@ locals {
 // These values depend on data sources and are separated to avoid dependency cycles.
 locals {
   loki_outputs = {
-    gateway_port = try(
-      one([
-        for p in data.kubernetes_service.loki_gateway.spec[0].port :
-        p.port if p.port == local.loki.services.gateway_service.port
-      ]),
-      data.kubernetes_service.loki_gateway.spec[0].port[0].port
-    )
-    service = {
+    gateway_service = {
       host = "${data.kubernetes_service.loki_gateway.metadata[0].name}.${kubernetes_namespace.loki.metadata[0].name}.svc.cluster.local"
       port = try(
         one([

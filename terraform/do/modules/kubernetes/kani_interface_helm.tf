@@ -81,6 +81,8 @@ resource "helm_release" "kani_interface" {
       startup_probe_path   = var.kani_startup_probe_path
       // Consul
       consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
+      // Loki
+      loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name

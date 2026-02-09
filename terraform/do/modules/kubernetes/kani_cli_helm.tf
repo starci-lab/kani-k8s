@@ -52,6 +52,8 @@ resource "helm_release" "kani_cli" {
       redis_throttler_use_cluster = true
       // Consul
       consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
+      // Loki
+      loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path

@@ -70,6 +70,8 @@ resource "helm_release" "kani_observer" {
       request_memory = local.kani_observer.kani_observer.request_memory
       limit_cpu      = local.kani_observer.kani_observer.limit_cpu
       limit_memory   = local.kani_observer.kani_observer.limit_memory
+      // Loki
+      loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
       // Probes configuration

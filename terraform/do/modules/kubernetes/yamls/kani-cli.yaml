@@ -63,6 +63,10 @@ envVarsCM:
   CONSUL_HOST: "${consul_host}"
 
   # ------------------------
+  # LOKI
+  # ------------------------
+  LOKI_HOST: "${loki_host}"
+  # ------------------------
   # FILE-BASED SECRETS (MOUNT PATHS)
   # These paths point to mounted Kubernetes Secrets
   # Application reads secrets from files instead of env vars

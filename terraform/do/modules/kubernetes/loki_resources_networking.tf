@@ -41,7 +41,7 @@ resource "kubernetes_ingress_v1" "loki_gateway" {
               // Dynamically resolved Loki Gateway service + port
               name = data.kubernetes_service.loki_gateway.metadata[0].name
               port {
-                number = local.loki_outputs.service.port
+                number = local.loki_outputs.gateway_service.port
               }
             }
           }
