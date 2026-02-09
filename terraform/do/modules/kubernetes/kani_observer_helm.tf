@@ -71,7 +71,7 @@ resource "helm_release" "kani_observer" {
       limit_cpu      = local.kani_observer.kani_observer.limit_cpu
       limit_memory   = local.kani_observer.kani_observer.limit_memory
       // Loki
-      loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
+      loki_host = "http://${local.loki_monolithic_outputs.single_binary_service.host}:${local.loki_monolithic_outputs.single_binary_service.port}"
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
       // Probes configuration
@@ -118,6 +118,6 @@ resource "helm_release" "kani_observer" {
     helm_release.kube_prometheus,
     helm_release.redis_cluster,
     helm_release.consul,
-    helm_release.loki,
+    helm_release.loki_monolithic,
   ]
 }
