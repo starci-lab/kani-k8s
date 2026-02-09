@@ -53,18 +53,24 @@ prometheus:
     type: internal
     internal:
       jobList:
+        # Consul Exporter
         - job_name: consul-exporter
           static_configs:
             - targets:
                 - ${consul_exporter_target}
           metrics_path: ${consul_exporter_metrics_path}
           scrape_interval: ${consul_exporter_scrape_interval}
-        - job_name: consul
-          static_configs:
-            - targets:
-                - ${consul_target}
+
+        # Kani Executor
+        - job_name: consul-kani-executor
           metrics_path: ${consul_metrics_path}
-          scrape_interval: ${consul_scrape_interval}
+          consul_sd_configs:
+            - server: "${consul_target}"
+              services: ["kani-executor"]
+          relabel_configs:
+            - source_labels: [__meta_consul_service_address, __meta_consul_service_port]
+              separator: ":"
+              target_label: __address__
 ## =========================
 ## Alertmanager (replicaCount from TF, image, resources, storage)
 ## =========================
