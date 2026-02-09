@@ -41,9 +41,9 @@ resource "kubernetes_ingress_v1" "grafana" {
           backend {
             service {
               // Dynamically resolved Grafana service + port
-              name = local.grafana_outputs.server_service.host
+              name = data.kubernetes_service.grafana_server.metadata[0].name
               port {
-                number = local.grafana_outputs.server_service.port
+                number = data.kubernetes_service.grafana_server.spec[0].port[0].port
               }
             }
           }
