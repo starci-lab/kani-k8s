@@ -7,7 +7,8 @@ locals {
   loki_monolithic_inputs = {
     presets = {
       single_binary = "32"
-      canary = "16"
+      canary        = "16"
+      gateway       = "32"
     }
   }
 }
@@ -63,6 +64,24 @@ locals {
     limit_memory = coalesce(
       var.loki_monolithic_canary_limit_memory,
       try(var.resources_config[local.loki_monolithic_inputs.presets.canary].limits.memory, "512Mi")
+    )
+  }
+  loki_monolithic_gateway = {
+    request_cpu = coalesce(
+      var.loki_monolithic_gateway_request_cpu,
+      try(var.resources_config[local.loki_monolithic_inputs.presets.gateway].requests.cpu, "100m")
+    )
+    request_memory = coalesce(
+      var.loki_monolithic_gateway_request_memory,
+      try(var.resources_config[local.loki_monolithic_inputs.presets.gateway].requests.memory, "128Mi")
+    )
+    limit_cpu = coalesce(
+      var.loki_monolithic_gateway_limit_cpu,
+      try(var.resources_config[local.loki_monolithic_inputs.presets.gateway].limits.cpu, "200m")
+    )
+    limit_memory = coalesce(
+      var.loki_monolithic_gateway_limit_memory,
+      try(var.resources_config[local.loki_monolithic_inputs.presets.gateway].limits.memory, "256Mi")
     )
   }
 }

@@ -100,3 +100,47 @@ variable "loki_monolithic_canary_replicas" {
   description = "Number of replicas for Loki monolithic canary"
   default     = 1
 }
+
+// =========================
+// Loki Monolithic Gateway
+// =========================
+// Gateway (NGINX) in front of Loki monolithic; preset usage = 32.
+
+// Number of replicas for Loki monolithic gateway
+variable "loki_monolithic_gateway_replicas" {
+  type        = number
+  description = "Number of replicas for Loki monolithic gateway"
+  default     = 1
+}
+
+// CPU resource request for Loki monolithic gateway
+variable "loki_monolithic_gateway_request_cpu" {
+  type        = string
+  description = "CPU resource request for Loki monolithic gateway"
+  default     = null
+  nullable    = true
+}
+
+// Memory resource request for Loki monolithic gateway
+variable "loki_monolithic_gateway_request_memory" {
+  type        = string
+  description = "Memory resource request for Loki monolithic gateway"
+  default     = null
+  nullable    = true
+}
+
+// CPU resource limit for Loki monolithic gateway
+variable "loki_monolithic_gateway_limit_cpu" {
+  type        = string
+  description = "CPU resource limit for Loki monolithic gateway"
+  default     = null
+  nullable    = true
+}
+
+// Memory resource limit for Loki monolithic gateway
+variable "loki_monolithic_gateway_limit_memory" {
+  type        = string
+  description = "Memory resource limit for Loki monolithic gateway"
+  default     = null
+  nullable    = true
+}

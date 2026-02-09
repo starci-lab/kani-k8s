@@ -31,6 +31,12 @@ resource "helm_release" "loki_monolithic" {
       canary_limit_memory = local.loki_monolithic_canary.limit_memory
       // Loki monolithic canary replicas
       canary_replicas = var.loki_monolithic_canary_replicas
+      // Loki monolithic gateway
+      gateway_replicas       = var.loki_monolithic_gateway_replicas
+      gateway_request_cpu    = local.loki_monolithic_gateway.request_cpu
+      gateway_request_memory = local.loki_monolithic_gateway.request_memory
+      gateway_limit_cpu      = local.loki_monolithic_gateway.limit_cpu
+      gateway_limit_memory   = local.loki_monolithic_gateway.limit_memory
     })
   ]
 

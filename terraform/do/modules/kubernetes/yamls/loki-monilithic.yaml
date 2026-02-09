@@ -124,3 +124,19 @@ lokiCanary:
       memory: ${canary_limit_memory}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
+    
+## =========================
+## Loki Gateway
+## =========================
+lokiGateway:
+  enabled: true
+  replicas: ${gateway_replicas}
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  resources:
+    requests:
+      cpu: ${gateway_request_cpu}
+      memory: ${gateway_request_memory}
+    limits:
+      cpu: ${gateway_limit_cpu}
+      memory: ${gateway_limit_memory}
