@@ -58,10 +58,11 @@ datasources:
         version: 1  # Version of the data source configuration
         editable: true  # Allow users to edit the data source configuration
         isDefault: true  # Set this as the default data source
-        basicAuth: true
-        basicAuthUser: ${prometheus_basic_auth_user}
-        secureJsonData:
-          basicAuthPassword: ${prometheus_basic_auth_password}
+        basicAuth: false
+        # basicAuth: true
+        # basicAuthUser: ${prometheus_basic_auth_user}
+        # secureJsonData:
+        #   basicAuthPassword: ${prometheus_basic_auth_password}
         jsonData:
           httpMethod: POST        # HTTP method (POST or GET)
           keepCookies: []         # Cookies to keep
@@ -78,10 +79,11 @@ datasources:
         url: ${prometheus_alertmanager_url}  # URL for Alertmanager instance
         version: 1  # Version of the data source configuration
         editable: true  # Allow users to edit the data source configuration
-        basicAuth: true
-        basicAuthUser: ${prometheus_alertmanager_basic_auth_user}
-        secureJsonData:
-          basicAuthPassword: ${prometheus_alertmanager_basic_auth_password}
+        basicAuth: false
+        # basicAuth: true
+        # basicAuthUser: ${prometheus_alertmanager_basic_auth_user}
+        # secureJsonData:
+        #   basicAuthPassword: ${prometheus_alertmanager_basic_auth_password}
         jsonData:
           implementation: prometheus  # Implementation type (Prometheus)
           httpMethod: POST        # HTTP method (POST or GET)
@@ -98,7 +100,8 @@ datasources:
         url: ${loki_url}  # URL for Loki instance
         version: 1  # Version of the data source configuration
         editable: true  # Allow users to edit the data source configuration
-        basicAuth: true
-        basicAuthUser: ${loki_basic_auth_user}
-        secureJsonData:
-          basicAuthPassword: ${loki_basic_auth_password}
+        basicAuth: false
+        # basicAuth: true
+        # basicAuthUser: ${loki_basic_auth_user}
+        # secureJsonData:
+        #   basicAuthPassword: ${loki_basic_auth_password}

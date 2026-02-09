@@ -25,15 +25,15 @@ resource "helm_release" "grafana" {
       limit_memory     = local.grafana.grafana.limit_memory
       persistence_size = var.grafana_persistence_size
       // Prometheus datasource
-      prometheus_url                 = var.prometheus_url
+      prometheus_url                 = "https://${local.kube_prometheus_outputs.server_service.host}:${local.kube_prometheus_outputs.server_service.port}"
       prometheus_basic_auth_user     = var.prometheus_basic_auth_user
       prometheus_basic_auth_password = var.prometheus_basic_auth_password
       // Alertmanager datasource
-      prometheus_alertmanager_url                 = var.prometheus_alertmanager_url
+      prometheus_alertmanager_url                 = "https://${local.kube_prometheus_outputs.alertmanager_server_service.host}:${local.kube_prometheus_outputs.alertmanager_server_service.port}"
       prometheus_alertmanager_basic_auth_user     = var.prometheus_alertmanager_basic_auth_user
       prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
       // Loki basic authentication
-      loki_url = var.loki_url
+      loki_url = "https://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       loki_basic_auth_user = var.loki_basic_auth_user
       loki_basic_auth_password = var.loki_basic_auth_password
       // Node scheduling
