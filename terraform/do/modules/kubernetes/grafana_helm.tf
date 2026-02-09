@@ -40,6 +40,10 @@ resource "helm_release" "grafana" {
 
   // Ensure the Grafana namespace exists before installing the chart
   depends_on = [
-    kubernetes_namespace.grafana
+    kubernetes_namespace.grafana,
+    // Prometheus Helm release
+    helm_release.kube_prometheus,
+    // Consul Helm release
+    helm_release.consul,
   ]
 }
