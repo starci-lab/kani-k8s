@@ -7,7 +7,12 @@ terraform {
   // Specifies the compatible Terraform CLI version
   // to ensure consistent behavior across environments.
   required_version = "~> 1.14.2"
-
+  cloud {
+    organization = "Kanibot"
+    workspaces {
+      name = "kani-k8s"
+    }
+  }
   // Declares all Terraform providers required by this project
   // along with their sources and version constraints.
   required_providers {
