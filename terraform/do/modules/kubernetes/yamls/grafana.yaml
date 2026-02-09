@@ -10,6 +10,11 @@ image:
   repository: bitnamilegacy/grafana
 
 ## =========================
+## Metrics
+## =========================
+metrics:
+  enabled: true  # Set to true to enable metrics
+## =========================
 ## Persistence
 ## =========================
 persistence:
@@ -23,11 +28,24 @@ admin:
   password: "${grafana_password}"
 
 ## =========================
-## Grafana (replicaCount, datasources, nodeSelector, resources)
+## Grafana (replicaCount, nodeSelector, resources)
 ## =========================
 grafana:
-  replicaCount: ${replica_count}
-  datasources:
+  replicaCount: ${grafana_replica_count}
+  nodeSelector:
+    "doks.digitalocean.com/node-pool": ${node_pool_label}
+  resources:
+    requests:
+      cpu: ${request_cpu}  # Minimum CPU requested for the Grafana pod
+      memory: ${request_memory}  # Minimum memory requested for the Grafana pod
+    limits:
+      cpu: ${limit_cpu}  # Maximum CPU limit for the Grafana pod
+      memory: ${limit_memory}  # Maximum memory limit for the Grafana pod
+
+## =========================
+## Datasources
+## =========================
+datasources:
   secretDefinition:
     apiVersion: 1  # API version for the datasource configuration
     datasources:
@@ -71,12 +89,3 @@ grafana:
           timeInterval: "5s"     # Time interval between queries
           queryTimeout: "30s"     # Timeout for each query
           tlsSkipVerify: false    # Skip TLS certificate verification (if any)
-  nodeSelector: 
-    "doks.digitalocean.com/node-pool": ${node_pool_label}
-  resources: 
-    requests:
-      cpu: ${request_cpu}
-      memory: ${request_memory}
-    limits:
-      cpu: ${limit_cpu}
-      memory: ${limit_memory}
