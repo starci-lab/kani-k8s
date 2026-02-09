@@ -29,6 +29,8 @@ resource "helm_release" "loki_monolithic" {
       canary_request_memory = local.loki_monolithic_canary.request_memory
       canary_limit_cpu = local.loki_monolithic_canary.limit_cpu
       canary_limit_memory = local.loki_monolithic_canary.limit_memory
+      // Loki monolithic canary replicas
+      canary_replicas = var.loki_monolithic_canary_replicas
     })
   ]
 

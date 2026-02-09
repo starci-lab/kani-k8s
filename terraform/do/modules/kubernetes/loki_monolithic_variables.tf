@@ -93,3 +93,10 @@ variable "loki_monolithic_canary_limit_memory" {
   default     = null
   nullable    = true
 }
+
+// Number of replicas for Loki monolithic canary
+variable "loki_monolithic_canary_replicas" {
+  type        = number
+  description = "Number of replicas for Loki monolithic canary"
+  default     = 1
+}

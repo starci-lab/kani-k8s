@@ -113,6 +113,7 @@ chunksCache:
 ## Loki Canary
 ## =========================
 lokiCanary:
+  replicas: ${canary_replicas}
   enabled: true
   resources:
     requests:
