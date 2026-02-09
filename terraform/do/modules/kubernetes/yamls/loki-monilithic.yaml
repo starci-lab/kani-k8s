@@ -128,7 +128,7 @@ lokiCanary:
 ## =========================
 ## Loki Gateway
 ## =========================
-lokiGateway:
+gateway:
   enabled: true
   replicas: ${gateway_replicas}
   nodeSelector:
