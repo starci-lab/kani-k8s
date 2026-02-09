@@ -57,3 +57,39 @@ variable "loki_monolithic_persistence_size" {
   description = "Persistent volume size for Loki monolithic data"
   default     = "10Gi"
 }
+
+// =========================
+// Loki Monolithic canary resources
+// =========================
+
+// CPU resource request for Loki monolithic canary
+variable "loki_monolithic_canary_request_cpu" {
+  type        = string
+  description = "CPU resource request for Loki monolithic canary"
+  default     = null
+  nullable    = true
+}
+
+// Memory resource request for Loki monolithic canary
+variable "loki_monolithic_canary_request_memory" {
+  type        = string
+  description = "Memory resource request for Loki monolithic canary"
+  default     = null
+  nullable    = true
+}
+
+// CPU resource limit for Loki monolithic canary
+variable "loki_monolithic_canary_limit_cpu" {
+  type        = string
+  description = "CPU resource limit for Loki monolithic canary"
+  default     = null
+  nullable    = true
+}
+
+// Memory resource limit for Loki monolithic canary
+variable "loki_monolithic_canary_limit_memory" {
+  type        = string
+  description = "Memory resource limit for Loki monolithic canary"
+  default     = null
+  nullable    = true
+}

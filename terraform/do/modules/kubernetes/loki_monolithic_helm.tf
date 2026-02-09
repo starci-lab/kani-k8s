@@ -24,6 +24,11 @@ resource "helm_release" "loki_monolithic" {
       limit_memory   = local.loki_monolithic.single_binary.limit_memory
       // Persistence
       persistence_size = var.loki_monolithic_persistence_size
+      // Loki monolithic canary configuration
+      canary_request_cpu = local.loki_monolithic_canary.request_cpu
+      canary_request_memory = local.loki_monolithic_canary.request_memory
+      canary_limit_cpu = local.loki_monolithic_canary.limit_cpu
+      canary_limit_memory = local.loki_monolithic_canary.limit_memory
     })
   ]
 
