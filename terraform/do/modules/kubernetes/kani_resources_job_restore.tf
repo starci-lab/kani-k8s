@@ -64,6 +64,16 @@ resource "kubernetes_job_v1" "restore" {
               name = local.kani_cli.service_env_vars_name
             }
           }
+          
+          // Disable manual load and enable manual seed
+          env {
+            name  = "PRIMARY_MONGO_DB_MANUAL_LOAD"
+            value = "false"
+          }
+          env {
+            name  = "PRIMARY_MONGO_DB_MANUAL_SEED"
+            value = "true"
+          }
 
           // =========================
           // Resource configuration
@@ -220,5 +230,7 @@ resource "kubernetes_job_v1" "restore" {
     kubernetes_namespace.kani,
     # Helm releases
     helm_release.kani_cli,
+    # Seed job
+    kubernetes_job_v1.seed,
   ]
 }

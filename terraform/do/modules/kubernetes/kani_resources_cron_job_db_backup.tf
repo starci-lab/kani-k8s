@@ -63,6 +63,16 @@ resource "kubernetes_cron_job_v1" "db_backup" {
                 }
               }
 
+              env {
+                name  = "PRIMARY_MONGO_DB_MANUAL_LOAD"
+                value = "false"
+              }
+
+              env {
+                name  = "PRIMARY_MONGO_DB_MANUAL_SEED"
+                value = "true"
+              }
+
               // Load sensitive environment variables from the shared Secret
               env_from {
                 secret_ref {

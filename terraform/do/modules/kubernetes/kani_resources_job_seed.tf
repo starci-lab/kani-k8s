@@ -64,6 +64,16 @@ resource "kubernetes_job_v1" "seed" {
               name = local.kani_cli.service_env_vars_name
             }
           }
+          // Enable manual load and seed, with mean no automatic load and seed will be performed.
+          env {
+            name  = "PRIMARY_MONGO_DB_MANUAL_LOAD"
+            value = "true"
+          }
+
+          env {
+            name  = "PRIMARY_MONGO_DB_MANUAL_SEED"
+            value = "true"
+          }
 
           // =========================
           // Resource configuration
