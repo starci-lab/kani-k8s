@@ -1,13 +1,61 @@
+## =========================
+## Loki Monolithic (Grafana chart, SingleBinary)
+## =========================
+## Template variables: replication_factor, request_cpu, request_memory, limit_cpu, limit_memory, persistence_size, node_pool_label
+## Values are injected via Terraform templatefile() in loki_monolithic_helm.tf
+##
+## =========================
+## Loki configuration
+## =========================
+## Common config, schema, limits and ruler for single-binary mode.
+## See: https://grafana.com/docs/loki/latest/configuration/
 loki:
   commonConfig:
     replication_factor: ${replication_factor}
-  useTestSchema: true
+  storage:
+    type: filesystem
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
 
+  schemaConfig:
+    configs:
+      - from: "2024-04-01"
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+
+  pattern_ingester:
+    enabled: true
+
+  limits_config:
+    allow_structured_metadata: true
+    volume_enabled: true
+
+  ruler:
+    enable_api: true
+
+## =========================
+## MinIO (object storage)
+## =========================
+## Disabled when using external S3 or filesystem; set enabled: true for local object storage.
 minio:
   enabled: false
-      
+
+## =========================
+## Deployment mode
+## =========================
+## SingleBinary runs all Loki components in one process (one or few pods).
 deploymentMode: SingleBinary
 
+## =========================
+## Single-binary deployment
+## =========================
+## Replicas, resources, persistence and node scheduling for the Loki single-binary pod(s).
 singleBinary:
   replicas: ${replication_factor}
   resources:
@@ -22,7 +70,10 @@ singleBinary:
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
 
-# Zero out replica counts of other deployment modes
+## =========================
+## Other deployment modes (disabled)
+## =========================
+## Zero out replica counts so only SingleBinary is used.
 backend:
   replicas: 0
 read:
@@ -49,6 +100,9 @@ bloomCompactor:
 bloomGateway:
   replicas: 0
 
+## =========================
+## Caches and canary
+## =========================
 resultsCache:
   enabled: false
 
