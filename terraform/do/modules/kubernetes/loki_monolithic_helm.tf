@@ -37,6 +37,8 @@ resource "helm_release" "loki_monolithic" {
       gateway_request_memory = local.loki_monolithic_gateway.request_memory
       gateway_limit_cpu      = local.loki_monolithic_gateway.limit_cpu
       gateway_limit_memory   = local.loki_monolithic_gateway.limit_memory
+      // Loki monolithic retention period
+      retention_period = var.loki_monolithic_retention_period
     })
   ]
 

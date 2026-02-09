@@ -144,3 +144,12 @@ variable "loki_monolithic_gateway_limit_memory" {
   default     = null
   nullable    = true
 }
+
+// =========================
+// Loki Monolithic retention period
+// =========================
+variable "loki_monolithic_retention_period" {
+  type        = string
+  description = "Retention period for Loki monolithic"
+  default     = "24h"
+}
