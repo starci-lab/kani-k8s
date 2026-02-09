@@ -18,6 +18,7 @@ loki:
       chunks: chunks
       ruler: ruler
       admin: admin
+  auth_enabled: false
 
   schemaConfig:
     configs:
