@@ -115,6 +115,19 @@ gateway:
       memory: ${gateway_limit_memory}
 
 ## =========================
+## Network Policies
+## =========================
+networkPolicy:
+  enabled: true
+  allowExternal: true
+  allowExternalEgress: true
+  addExternalClientAccess: true
+  extraIngress:
+    - ports:
+        - port: 80
+          protocol: TCP
+
+## =========================
 ## Compactor
 ## =========================
 compactor:
