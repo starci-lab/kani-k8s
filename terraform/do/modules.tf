@@ -70,6 +70,10 @@ module "kubernetes" {
   prometheus_alertmanager_basic_auth_password = var.kube_prometheus_alertmanager_basic_auth_password
   prometheus_basic_auth_user                 = var.kube_prometheus_basic_auth_user
   prometheus_basic_auth_password             = var.kube_prometheus_basic_auth_password
+  // Loki basic authentication htpasswd
+  loki_gateway_htpasswd = var.loki_gateway_htpasswd
+  loki_basic_auth_user = var.loki_basic_auth_user
+  loki_basic_auth_password = var.loki_basic_auth_password
   // Argo CD Git repository URL
   argo_cd_git_ssh_private_key = local.argo_cd_git_ssh_private_key_decoded
   // JWT salt

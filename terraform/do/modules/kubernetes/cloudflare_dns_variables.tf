@@ -104,8 +104,8 @@ variable "consul_ui_prefix" {
 // Loki domain configuration
 // =========================
 
-variable "loki_prefix" {
+variable "loki_gateway_prefix" {
   type        = string
   description = "Subdomain prefix for the Loki server (combined with domain_name)"
-  default     = "loki"
+  default     = "loki-gateway"
 }

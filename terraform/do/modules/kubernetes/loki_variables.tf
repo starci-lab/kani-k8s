@@ -348,3 +348,15 @@ variable "loki_query_frontend_limit_memory" {
   nullable    = true
   default     = null
 }
+
+// =========================
+// Loki gateway authentication
+// =========================
+// Controls HTTP basic authentication for Loki gateway.
+
+// HTPASSWD for Loki gateway basic authentication
+variable "loki_gateway_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Loki gateway basic authentication"
+  sensitive   = true
+}

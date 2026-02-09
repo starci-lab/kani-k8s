@@ -91,6 +91,28 @@ variable "kube_prometheus_basic_auth_password" {
 }
 
 // =========================
+// Loki basic authentication variables
+// =========================
+
+variable "loki_gateway_htpasswd" {
+  type        = string
+  description = "HTPASSWD for Loki gateway basic authentication"
+  sensitive   = true
+}
+
+variable "loki_basic_auth_user" {
+  type        = string
+  description = "Username for Loki basic authentication"
+  default     = "kani"
+}
+
+variable "loki_basic_auth_password" {
+  type        = string
+  description = "Password for Loki basic authentication"
+  sensitive   = true
+}
+
+// =========================
 // Consul basic authentication variables
 // =========================
 

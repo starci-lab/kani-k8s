@@ -109,3 +109,23 @@ variable "prometheus_alertmanager_basic_auth_password" {
   sensitive   = true
 }
 
+// =========================
+// Loki basic authentication variables
+// =========================
+variable "loki_url" {
+  type        = string
+  description = "URL for Loki instance (used as Grafana data source)"
+  default     = "https://loki-gateway.kanibot.xyz"
+}
+
+variable "loki_basic_auth_user" {
+  type        = string
+  description = "User for Loki basic authentication"
+  sensitive   = true
+}
+
+variable "loki_basic_auth_password" {
+  type        = string
+  description = "Password for Loki basic authentication"
+  sensitive   = true
+}
