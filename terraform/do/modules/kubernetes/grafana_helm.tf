@@ -19,18 +19,18 @@ resource "helm_release" "grafana" {
       // Replica count
       replica_count = var.grafana_replica_count
       // Grafana server resources
-      request_cpu    = local.grafana.grafana.request_cpu
-      request_memory = local.grafana.grafana.request_memory
-      limit_cpu      = local.grafana.grafana.limit_cpu
-      limit_memory   = local.grafana.grafana.limit_memory
+      request_cpu      = local.grafana.grafana.request_cpu
+      request_memory   = local.grafana.grafana.request_memory
+      limit_cpu        = local.grafana.grafana.limit_cpu
+      limit_memory     = local.grafana.grafana.limit_memory
       persistence_size = var.grafana_persistence_size
       // Prometheus datasource
-      prometheus_url                  = "https://${local.kube_prometheus_outputs.server_service.host}:${local.kube_prometheus_outputs.server_service.port}"
-      prometheus_basic_auth_user  = var.prometheus_basic_auth_user
+      prometheus_url                 = "https://${local.kube_prometheus_outputs.server_service.host}:${local.kube_prometheus_outputs.server_service.port}"
+      prometheus_basic_auth_user     = var.prometheus_basic_auth_user
       prometheus_basic_auth_password = var.prometheus_basic_auth_password
       // Alertmanager datasource
-      prometheus_alertmanager_url                  = "https://${local.kube_prometheus_outputs.alertmanager_server_service.host}:${local.kube_prometheus_outputs.alertmanager_server_service.port}"
-      prometheus_alertmanager_basic_auth_user  = var.prometheus_alertmanager_basic_auth_user
+      prometheus_alertmanager_url                 = "https://${local.kube_prometheus_outputs.alertmanager_server_service.host}:${local.kube_prometheus_outputs.alertmanager_server_service.port}"
+      prometheus_alertmanager_basic_auth_user     = var.prometheus_alertmanager_basic_auth_user
       prometheus_alertmanager_basic_auth_password = var.prometheus_alertmanager_basic_auth_password
       // Node scheduling
       // Ensures Grafana pods are scheduled onto the primary node pool

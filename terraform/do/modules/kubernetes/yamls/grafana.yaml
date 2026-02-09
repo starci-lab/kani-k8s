@@ -31,7 +31,7 @@ admin:
 ## Grafana (replicaCount, nodeSelector, resources)
 ## =========================
 grafana:
-  replicaCount: ${grafana_replica_count}
+  replicaCount: ${replica_count}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
   resources:
