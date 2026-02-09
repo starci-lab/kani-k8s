@@ -1,8 +1,3 @@
-# =========================
-# Loki monolithic (Grafana chart, SingleBinary, filesystem storage)
-# =========================
-# Template variables: replication_factor, request_cpu, request_memory, limit_cpu, limit_memory, persistence_size, node_pool_label
-#
 loki:
   commonConfig:
     replication_factor: ${replication_factor}
@@ -10,36 +5,22 @@ loki:
     configs:
       - from: "2024-04-01"
         store: tsdb
-        object_store: filesystem
+        object_store: s3
         schema: v13
         index:
           prefix: loki_index_
           period: 24h
-
-  storageConfig:
-    filesystem:
-      directory: /var/loki/chunks
-
-  storage:
-    type: filesystem
-    bucketNames:
-      chunks: dummy
-      ruler: dummy
-      admin: dummy
-
   pattern_ingester:
-    enabled: true
-
+      enabled: true
   limits_config:
     allow_structured_metadata: true
     volume_enabled: true
-
   ruler:
     enable_api: true
 
 minio:
-  enabled: false
-
+  enabled: true
+      
 deploymentMode: SingleBinary
 
 singleBinary:
@@ -55,7 +36,7 @@ singleBinary:
     size: ${persistence_size}
   nodeSelector:
     "doks.digitalocean.com/node-pool": ${node_pool_label}
-
+    
 # Zero out replica counts of other deployment modes
 backend:
   replicas: 0
@@ -63,6 +44,7 @@ read:
   replicas: 0
 write:
   replicas: 0
+
 ingester:
   replicas: 0
 querier:
