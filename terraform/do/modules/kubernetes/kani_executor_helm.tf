@@ -77,7 +77,7 @@ resource "helm_release" "kani_executor" {
       readiness_probe_path = var.kani_readiness_probe_path
       startup_probe_path   = var.kani_startup_probe_path
       // Consul
-      consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
+      consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
       loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       // Secret names

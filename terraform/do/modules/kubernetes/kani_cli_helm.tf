@@ -51,7 +51,7 @@ resource "helm_release" "kani_cli" {
       redis_throttler_password    = var.redis_password
       redis_throttler_use_cluster = true
       // Consul
-      consul_host = "${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
+      consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
       loki_host = "http://${local.loki_outputs.gateway_service.host}:${local.loki_outputs.gateway_service.port}"
       // Secret mount paths
