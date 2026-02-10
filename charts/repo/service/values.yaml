@@ -84,12 +84,12 @@ service:
   extraPorts: []  # Define extra service ports if necessary.
 
 # Environment Variables from ConfigMap and Secret
-envVarsCM: 
-  FOO: "bar"  # Example environment variable from ConfigMap.
-  FOO2: "bar2"  # Another example from ConfigMap.
-envVarsSecret:
-  FOO3: "bar"  # Example environment variable from Secret.
-  FOO4: "bar2"  # Another example from Secret.
+envVarsCM: {}
+  # FOO: "bar"  # Example environment variable from ConfigMap.
+  # FOO2: "bar2"  # Another example from ConfigMap.
+envVarsSecret: {}
+  # FOO3: "bar"  # Example environment variable from Secret.
+  # FOO4: "bar2"  # Another example from Secret.
 
 containerPorts:
   app:
