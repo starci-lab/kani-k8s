@@ -6,7 +6,7 @@
 locals {
   kani_cli_inputs = {
     presets = {
-      kani_cli = "64"
+      kani_cli = "32"
     }
   }
 }

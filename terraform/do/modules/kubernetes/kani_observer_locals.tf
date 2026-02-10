@@ -6,7 +6,7 @@
 locals {
   kani_observer_inputs = {
     presets = {
-      kani_observer = "128"
+      kani_observer = "64"
     }
   }
 }

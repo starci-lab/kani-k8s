@@ -6,7 +6,7 @@
 locals {
   kani_coordinator_inputs = {
     presets = {
-      kani_coordinator = "64"
+      kani_coordinator = "32"
     }
   }
 }
