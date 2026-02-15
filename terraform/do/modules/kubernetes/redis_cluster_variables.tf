@@ -1,16 +1,4 @@
 // =========================
-// Redis Cluster enable variables
-// =========================
-// Controls whether the Redis Cluster is enabled.
-
-// Enable Redis Cluster
-variable "enable_redis_cluster" {
-  type        = bool
-  description = "Enable Redis Cluster"
-  default     = true
-}
-
-// =========================
 // Redis Cluster authentication variables
 // =========================
 // Defines authentication credentials used by clients and

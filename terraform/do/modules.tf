@@ -31,9 +31,8 @@ module "kubernetes" {
   // =========================
   // Password for Redis (used by Redis Cluster and Argo CD Redis)
   redis_password = var.redis_password
-
-  // Enable / disable Redis Cluster deployment
-  enable_redis_cluster = var.enable_redis_cluster
+  // Password for Redis Standalone
+  redis_standalone_password = var.redis_password
   // =========================
   // Argo CD configuration
   // =========================

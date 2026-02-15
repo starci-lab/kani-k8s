@@ -159,3 +159,38 @@ variable "kani_frontend_url_2" {
   description = "Frontend URL 2"
   default     = "https://app.kanibot.xyz"
 }
+
+// =========================
+// Redis Standalone configuration
+// =========================
+// Configures connection to Redis Standalone for caching and message queuing.
+
+variable "kani_redis_cache_enabled" {
+  type        = bool
+  description = "Enable Redis cache"
+  default     = false
+}
+
+variable "kani_redis_adapter_enabled" {
+  type        = bool
+  description = "Enable Redis adapter"
+  default     = false
+}
+
+variable "kani_redis_bullmq_enabled" {
+  type        = bool
+  description = "Enable Redis BullMQ"
+  default     = false
+}
+
+variable "kani_redis_throttler_enabled" {
+  type        = bool
+  description = "Enable Redis throttler"
+  default     = false
+}
+
+variable "kani_redis_lock_authority_enabled" {
+  type        = bool
+  description = "Enable Redis lock authority"
+  default     = false
+}

@@ -2,20 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/argoproj-labs/argocd" {
-  version     = "7.12.5"
+  version     = "7.13.0"
   constraints = ">= 7.0.0"
   hashes = [
-    "h1:kwdBQHiB7TOHEUxXtNWERfcs0dZp/soQrnePl3Br97k=",
-    "zh:086749014d194fe082ab55bac2ee424246fb8366c1f86de1aeabe887b235e24e",
-    "zh:13b21adaeabb2b2154121afe298cfb6172c0425294f8857559391c464b6a1f84",
-    "zh:4ec9829dae9bbaa604d61590ce9afdd3eb4140a143f740805c967a872efe479c",
-    "zh:587120958ec55a5f825b2935cef6c8ca74321214eff78343d7586df76c9d556b",
-    "zh:80e731c686848e837262da7016fc0effd75ecd0d0fb7922f61ffdb06ed31fc14",
-    "zh:9bb4651702e56f25eb48f0adbfa13b7b5d570ccf1df4fcee1d4d98a6359385cc",
-    "zh:a5a2fb9621c6bb8933c4bfc7e6502559a696163af86ceafffa1ded3acc74ce23",
-    "zh:abf734b139b2728bba89d94f25c1e290dcff86ac0fb56f8a909298d587c1e5e9",
-    "zh:ba97ae2958a30dbbacbc53a8a72dc5f7dc0508e201a4d405b70e25ba4f8fb1ca",
-    "zh:c224037f233c946b9ebeb394a0d825ecc452f5ca28beac08aeab70bf73f14faf",
+    "h1:eWb6+ojY0AT1+D7vMKC8kF8OvxaVHpY8r1No6Anci2o=",
+    "zh:3bcd5409a19f063a7976a053cc6930f91d1dd0c910f5db95561baaade03c0428",
+    "zh:56537d1859082d793a283316ce9ec712be2385310ee6042375619e7bd4f4d625",
+    "zh:68176f06ce23a2bce06ad03f11efa51148690b621002cffcff2a4ccd4fd7dac0",
+    "zh:6e74596dd642514ff102884e8095f76523249f02e7748d586e0b91b6c992197d",
+    "zh:6fc4bee17a699994914ba5cf54d8b6c072ca657e60cdf8a0b42def3eb554394b",
+    "zh:726056fdc907d10f5b493e62e98d9ed9be5065329cabb0704abbc68b1279cc3d",
+    "zh:86dbf36c4e635f03b98f94404efdea092efcb718a176ca806a5c24aed9481153",
+    "zh:998666bab1c05421866351c7ccaac9b93280a8080a87fc550c0f15eea55c59ed",
+    "zh:ed87ce57acf64609f2bbba7afe75c881293df7ee3d38de750db742bc4f4859e8",
+    "zh:f8ffbf70ba38d5f0437bc740b7103478be9cd6e4480c2dac5c3daeb27f166887",
   ]
 }
 

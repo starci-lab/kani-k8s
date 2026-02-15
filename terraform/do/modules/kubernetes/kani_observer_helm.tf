@@ -30,26 +30,26 @@ resource "helm_release" "kani_observer" {
       kafka_sasl_username = var.kafka_sasl_user
       kafka_sasl_password = var.kafka_sasl_password
       // Redis Cache configuration
-      redis_cache_host        = local.redis_cluster_outputs.service.host
-      redis_cache_port        = local.redis_cluster_outputs.service.port
-      redis_cache_password    = var.redis_password
-      redis_cache_use_cluster = true
+      redis_cache_host        = local.redis_standalone_outputs.service.host
+      redis_cache_port        = local.redis_standalone_outputs.service.port
+      redis_cache_password    = var.redis_standalone_password
+      redis_cache_use_cluster = var.kani_redis_cache_enabled
       cache_debug_enabled     = false
       // Redis Adapter configuration
-      redis_adapter_host        = local.redis_cluster_outputs.service.host
-      redis_adapter_port        = local.redis_cluster_outputs.service.port
-      redis_adapter_password    = var.redis_password
-      redis_adapter_use_cluster = true
+      redis_adapter_host        = local.redis_standalone_outputs.service.host
+      redis_adapter_port        = local.redis_standalone_outputs.service.port
+      redis_adapter_password    = var.redis_standalone_password
+      redis_adapter_use_cluster = var.kani_redis_adapter_enabled
       // Redis BullMQ configuration
-      redis_bullmq_host        = local.redis_cluster_outputs.service.host
-      redis_bullmq_port        = local.redis_cluster_outputs.service.port
-      redis_bullmq_use_cluster = true
-      redis_bullmq_password    = var.redis_password
+      redis_bullmq_host        = local.redis_standalone_outputs.service.host
+      redis_bullmq_port        = local.redis_standalone_outputs.service.port
+      redis_bullmq_use_cluster = var.kani_redis_bullmq_enabled
+      redis_bullmq_password    = var.redis_standalone_password
       // Redis Throttler configuration
-      redis_throttler_host        = local.redis_cluster_outputs.service.host
-      redis_throttler_port        = local.redis_cluster_outputs.service.port
-      redis_throttler_password    = var.redis_password
-      redis_throttler_use_cluster = true
+      redis_throttler_host        = local.redis_standalone_outputs.service.host
+      redis_throttler_port        = local.redis_standalone_outputs.service.port
+      redis_throttler_password    = var.redis_standalone_password
+      redis_throttler_use_cluster = var.kani_redis_throttler_enabled
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
@@ -116,7 +116,7 @@ resource "helm_release" "kani_observer" {
     helm_release.kafka,
     helm_release.mongodb_sharded,
     helm_release.kube_prometheus,
-    helm_release.redis_cluster,
+    helm_release.redis_standalone,
     helm_release.consul,
     helm_release.loki_monolithic,
   ]
