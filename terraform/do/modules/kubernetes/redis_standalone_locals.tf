@@ -60,7 +60,7 @@ locals {
     // Services for Redis Standalone
     services = {
       service = {
-        name = "redis-standalone"
+        name = "redis-standalone-master"
         port = 6379
       }
     }
