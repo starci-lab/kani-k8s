@@ -111,7 +111,7 @@ resource "helm_release" "kani_interface" {
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
     # Kubernetes jobs
-    kubernetes_job_v1.restore,
+    # kubernetes_job_v1.restore,
     kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     helm_release.grafana,
