@@ -94,16 +94,19 @@ resource "helm_release" "kani_coordinator" {
       liveness_probe_period = var.kani_liveness_probe_period
       liveness_probe_failure_threshold = var.kani_liveness_probe_failure_threshold
       liveness_probe_success_threshold = var.kani_liveness_probe_success_threshold
+      liveness_probe_timeout = var.kani_liveness_probe_timeout
       readiness_probe_path = var.kani_readiness_probe_path
       readiness_probe_initial_delay = var.kani_readiness_probe_initial_delay
       readiness_probe_period = var.kani_readiness_probe_period
       readiness_probe_failure_threshold = var.kani_readiness_probe_failure_threshold
       readiness_probe_success_threshold = var.kani_readiness_probe_success_threshold
+      readiness_probe_timeout = var.kani_readiness_probe_timeout
       startup_probe_path = var.kani_startup_probe_path
       startup_probe_initial_delay = var.kani_startup_probe_initial_delay
       startup_probe_period = var.kani_startup_probe_period
       startup_probe_failure_threshold = var.kani_startup_probe_failure_threshold
       startup_probe_success_threshold = var.kani_startup_probe_success_threshold
+      startup_probe_timeout = var.kani_startup_probe_timeout
     })
   ]
 
