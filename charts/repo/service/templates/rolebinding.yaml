@@ -1,4 +1,4 @@
-{{- if and .Values.rbac.create (not .Values.configOnly) }}
+ {{- if and .Values.rbac.create (not .Values.configOnly) }}
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: RoleBinding
 metadata:

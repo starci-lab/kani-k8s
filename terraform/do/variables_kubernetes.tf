@@ -38,7 +38,7 @@ variable "kubernetes_primary_node_pool_name" {
 variable "kubernetes_primary_node_pool_size" {
   type        = string
   description = "Droplet size (instance type) used for nodes in the primary node pool"
-  default     = "s-2vcpu-4gb"
+  default     = "s-4vcpu-8gb"
 }
 
 // Number of worker nodes provisioned in the primary node pool
