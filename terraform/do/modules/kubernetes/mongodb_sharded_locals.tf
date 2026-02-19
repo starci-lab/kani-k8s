@@ -8,7 +8,7 @@ locals {
     presets = {
       configsvr = "64"
       shardsvr  = "192"
-      mongos    = "64"
+      mongos    = "128"
     }
   }
 }

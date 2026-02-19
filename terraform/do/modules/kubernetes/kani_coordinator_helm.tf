@@ -76,7 +76,8 @@ resource "helm_release" "kani_coordinator" {
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      loki_host = "http://localhost:3100" # dump for now
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name             = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name
@@ -127,13 +128,13 @@ resource "helm_release" "kani_coordinator" {
     # kubernetes_job_v1.restore,
     kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
+    # helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.kube_prometheus,
+    # helm_release.kube_prometheus,
     helm_release.redis_standalone,
     helm_release.consul,
-    helm_release.loki_monolithic,
+    # helm_release.loki_monolithic,
   ]
 }

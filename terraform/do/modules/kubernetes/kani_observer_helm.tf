@@ -71,7 +71,8 @@ resource "helm_release" "kani_observer" {
       limit_cpu      = local.kani_observer.kani_observer.limit_cpu
       limit_memory   = local.kani_observer.kani_observer.limit_memory
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      loki_host = "http://localhost:3100" # dump for now
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
       // Consul
@@ -126,13 +127,13 @@ resource "helm_release" "kani_observer" {
     # kubernetes_job_v1.restore,
     kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
+    # helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.kube_prometheus,
+    # helm_release.kube_prometheus,
     helm_release.redis_standalone,
     helm_release.consul,
-    helm_release.loki_monolithic,
+    # helm_release.loki_monolithic,
   ]
 }

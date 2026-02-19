@@ -53,7 +53,8 @@ resource "helm_release" "kani_cli" {
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      loki_host = "http://localhost:3100" # dump for now
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
@@ -124,13 +125,13 @@ resource "helm_release" "kani_cli" {
     kubernetes_secret.encrypted_aes_key,
     kubernetes_secret.encrypted_jwt_secret_key,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
+    # helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.kube_prometheus,
+    # helm_release.kube_prometheus,
     helm_release.redis_standalone,
     helm_release.consul,
-    helm_release.loki_monolithic,
+    # helm_release.loki_monolithic,
   ]
 }

@@ -4,7 +4,7 @@
 // Used by components via coalesce(var.x, try(var.resources_config[preset_key].requests.cpu, "fallback")).
 
 variable "resources_config" {
-  type        = map(object({
+  type = map(object({
     requests = object({
       cpu               = string
       memory            = string
@@ -17,7 +17,7 @@ variable "resources_config" {
     })
   }))
   description = "Pod resource configurations for different sizes (keyed by preset name e.g. 16, 32, 64)"
-  default     = {
+  default = {
     "16" = {
       requests = {
         cpu               = "16m"
@@ -25,8 +25,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "128m"
-        memory            = "256Mi"
+        cpu               = "64m"
+        memory            = "128Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -37,8 +37,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "256m"
-        memory            = "512Mi"
+        cpu               = "128m"
+        memory            = "256Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -49,8 +49,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "512m"
-        memory            = "1024Mi"
+        cpu               = "256m"
+        memory            = "512Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -61,7 +61,7 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "1024m"
+        cpu               = "512m"
         memory            = "2048Mi"
         ephemeral_storage = "2Gi"
       }
@@ -73,8 +73,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "1536m"
-        memory            = "3072Mi"
+        cpu               = "768m"
+        memory            = "1536Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -85,8 +85,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "2048m"
-        memory            = "4096Mi"
+        cpu               = "1024m"
+        memory            = "2048Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -97,8 +97,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "3072m"
-        memory            = "6144Mi"
+        cpu               = "1536m"
+        memory            = "3072Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -109,8 +109,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "4096m"
-        memory            = "8192Mi"
+        cpu               = "2048m"
+        memory            = "4096Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -121,8 +121,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "6144m"
-        memory            = "12288Mi"
+        cpu               = "3072m"
+        memory            = "6144Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -133,8 +133,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "8192m"
-        memory            = "16384Mi"
+        cpu               = "4096m"
+        memory            = "8192Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -145,8 +145,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "12288m"
-        memory            = "24576Mi"
+        cpu               = "6144m"
+        memory            = "12288Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -157,8 +157,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "16384m"
-        memory            = "32768Mi"
+        cpu               = "8192m"
+        memory            = "16384Mi"
         ephemeral_storage = "2Gi"
       }
     }

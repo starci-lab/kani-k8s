@@ -6,7 +6,7 @@
 locals {
   nginx_ingress_controller_inputs = {
     presets = {
-      controller      = "32"
+      controller      = "64"
       default_backend = "16"
     }
   }
