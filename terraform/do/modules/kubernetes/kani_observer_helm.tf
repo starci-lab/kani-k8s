@@ -74,10 +74,6 @@ resource "helm_release" "kani_observer" {
       loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
-      // Probes configuration
-      liveness_probe_path  = var.kani_liveness_probe_path
-      readiness_probe_path = var.kani_readiness_probe_path
-      startup_probe_path   = var.kani_startup_probe_path
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Secret names
@@ -91,6 +87,22 @@ resource "helm_release" "kani_observer" {
       privy_app_secret_key_secret_name             = kubernetes_secret.privy_app_secret_key.metadata[0].name
       privy_signer_private_key_secret_name         = kubernetes_secret.privy_signer_private_key.metadata[0].name
       coin_market_cap_api_key_secret_name          = kubernetes_secret.coin_market_cap_api_key.metadata[0].name
+      // Probes configuration
+      liveness_probe_path = var.kani_liveness_probe_path
+      liveness_probe_initial_delay = var.kani_liveness_probe_initial_delay
+      liveness_probe_period = var.kani_liveness_probe_period
+      liveness_probe_failure_threshold = var.kani_liveness_probe_failure_threshold
+      liveness_probe_success_threshold = var.kani_liveness_probe_success_threshold
+      readiness_probe_path = var.kani_readiness_probe_path
+      readiness_probe_initial_delay = var.kani_readiness_probe_initial_delay
+      readiness_probe_period = var.kani_readiness_probe_period
+      readiness_probe_failure_threshold = var.kani_readiness_probe_failure_threshold
+      readiness_probe_success_threshold = var.kani_readiness_probe_success_threshold
+      startup_probe_path = var.kani_startup_probe_path
+      startup_probe_initial_delay = var.kani_startup_probe_initial_delay
+      startup_probe_period = var.kani_startup_probe_period
+      startup_probe_failure_threshold = var.kani_startup_probe_failure_threshold
+      startup_probe_success_threshold = var.kani_startup_probe_success_threshold
     })
   ]
 

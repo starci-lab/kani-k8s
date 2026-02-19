@@ -194,3 +194,111 @@ variable "kani_redis_lock_authority_enabled" {
   description = "Enable Redis lock authority"
   default     = false
 }
+
+// =========================
+// Kubernetes Probe Configuration (Kani)
+// =========================
+
+// -------------------------
+// Liveness Probe
+// -------------------------
+// Should be a lightweight endpoint (no Redis/Mongo checks).
+variable "kani_liveness_probe_timeout" {
+  type        = number
+  description = "HTTP timeout (seconds) for the liveness probe"
+  default     = 30
+}
+
+variable "kani_liveness_probe_initial_delay" {
+  type        = number
+  description = "Initial delay (seconds) before starting liveness probe"
+  default     = 60
+}
+
+variable "kani_liveness_probe_period" {
+  type        = number
+  description = "Period (seconds) between liveness checks"
+  default     = 60
+}
+
+variable "kani_liveness_probe_failure_threshold" {
+  type        = number
+  description = "Consecutive failures before restarting the container"
+  default     = 3
+}
+
+variable "kani_liveness_probe_success_threshold" {
+  type        = number
+  description = "Consecutive successes required to be considered healthy (usually 1 for liveness)"
+  default     = 1
+}
+
+
+// -------------------------
+// Readiness Probe
+// -------------------------
+// May check dependencies (Redis/Mongo/etc.) to decide if the pod should receive traffic.
+variable "kani_readiness_probe_timeout" {
+  type        = number
+  description = "HTTP timeout (seconds) for the readiness probe"
+  default     = 30
+}
+
+variable "kani_readiness_probe_initial_delay" {
+  type        = number
+  description = "Initial delay (seconds) before starting readiness probe"
+  default     = 60
+}
+
+variable "kani_readiness_probe_period" {
+  type        = number
+  description = "Period (seconds) between readiness checks"
+  default     = 60
+}
+
+variable "kani_readiness_probe_failure_threshold" {
+  type        = number
+  description = "Consecutive failures before marking the pod unready"
+  default     = 3
+}
+
+variable "kani_readiness_probe_success_threshold" {
+  type        = number
+  description = "Consecutive successes required to be considered ready"
+  default     = 1
+}
+
+
+// -------------------------
+// Startup Probe
+// -------------------------
+// Used during application startup; allows longer warm-up without restart loops.
+variable "kani_startup_probe_timeout" {
+  type        = number
+  description = "HTTP timeout (seconds) for the startup probe"
+  default     = 30
+}
+
+variable "kani_startup_probe_initial_delay" {
+  type        = number
+  description = "Initial delay (seconds) before starting startup probe"
+  default     = 60
+}
+
+variable "kani_startup_probe_period" {
+  type        = number
+  description = "Period (seconds) between startup checks"
+  default     = 60
+}
+
+variable "kani_startup_probe_failure_threshold" {
+  type        = number
+  description = "Consecutive failures allowed before startup is considered failed"
+  default     = 3
+}
+
+variable "kani_startup_probe_success_threshold" {
+  type        = number
+  description = "Consecutive successes required to be considered started"
+  default     = 1
+}
