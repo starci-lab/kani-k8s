@@ -126,15 +126,15 @@ locals {
         data.kubernetes_service.kafka.spec[0].port[0].port
       )
     }
-    ui_service = {
-      host = "${data.kubernetes_service.kafka_ui.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
-      port = try(
-        one([
-          for p in data.kubernetes_service.kafka_ui.spec[0].port :
-          p.port if p.port == local.kafka.services.ui_service.port
-        ]),
-        data.kubernetes_service.kafka_ui.spec[0].port[0].port
-      )
-    }
+    # ui_service = {
+    #   host = "${data.kubernetes_service.kafka_ui.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
+    #   port = try(
+    #     one([
+    #       for p in data.kubernetes_service.kafka_ui.spec[0].port :
+    #       p.port if p.port == local.kafka.services.ui_service.port
+    #     ]),
+    #     data.kubernetes_service.kafka_ui.spec[0].port[0].port
+    #   )
+    # }
   }
 }

@@ -4,13 +4,6 @@
 // External Secrets Operator is a Kubernetes operator that integrates external secret management systems.
 // This section configures replica counts for all External Secrets components.
 
-// Number of replicas for the External Secrets operator pod
-variable "external_secrets_operator_replica_count" {
-  type        = number
-  description = "Number of External Secrets operator replicas"
-  default     = 1
-}
-
 // Number of replicas for the External Secrets webhook pod
 variable "external_secrets_webhook_replica_count" {
   type        = number

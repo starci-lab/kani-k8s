@@ -73,14 +73,11 @@ resource "helm_release" "kani_coordinator" {
       limit_memory   = local.kani_coordinator.kani_coordinator.limit_memory
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
-      // Probes configuration
-      liveness_probe_path  = var.kani_liveness_probe_path
-      readiness_probe_path = var.kani_readiness_probe_path
-      startup_probe_path   = var.kani_startup_probe_path
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      loki_host = "http://localhost:3100" # dump for now
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name             = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name
@@ -92,6 +89,25 @@ resource "helm_release" "kani_coordinator" {
       coin_market_cap_api_key_secret_name          = kubernetes_secret.coin_market_cap_api_key.metadata[0].name
       app_secret_name                              = local.external_secrets.instances.app.target_secret_name
       rpcs_secret_name                             = local.external_secrets.instances.rpcs.target_secret_name
+      // Probes configuration
+      liveness_probe_path = var.kani_liveness_probe_path
+      liveness_probe_initial_delay = var.kani_liveness_probe_initial_delay
+      liveness_probe_period = var.kani_liveness_probe_period
+      liveness_probe_failure_threshold = var.kani_liveness_probe_failure_threshold
+      liveness_probe_success_threshold = var.kani_liveness_probe_success_threshold
+      liveness_probe_timeout = var.kani_liveness_probe_timeout
+      readiness_probe_path = var.kani_readiness_probe_path
+      readiness_probe_initial_delay = var.kani_readiness_probe_initial_delay
+      readiness_probe_period = var.kani_readiness_probe_period
+      readiness_probe_failure_threshold = var.kani_readiness_probe_failure_threshold
+      readiness_probe_success_threshold = var.kani_readiness_probe_success_threshold
+      readiness_probe_timeout = var.kani_readiness_probe_timeout
+      startup_probe_path = var.kani_startup_probe_path
+      startup_probe_initial_delay = var.kani_startup_probe_initial_delay
+      startup_probe_period = var.kani_startup_probe_period
+      startup_probe_failure_threshold = var.kani_startup_probe_failure_threshold
+      startup_probe_success_threshold = var.kani_startup_probe_success_threshold
+      startup_probe_timeout = var.kani_startup_probe_timeout
     })
   ]
 
@@ -112,13 +128,13 @@ resource "helm_release" "kani_coordinator" {
     # kubernetes_job_v1.restore,
     kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
+    # helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.kube_prometheus,
+    # helm_release.kube_prometheus,
     helm_release.redis_standalone,
     helm_release.consul,
-    helm_release.loki_monolithic,
+    # helm_release.loki_monolithic,
   ]
 }

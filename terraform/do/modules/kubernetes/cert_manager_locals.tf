@@ -6,10 +6,10 @@
 locals {
   cert_manager_inputs = {
     presets = {
-      cert_manager = "16"
+      cert_manager = "32"
       webhook      = "16"
       cainjector   = "16"
-      controller   = "16"
+      controller   = "32"
     }
   }
 }

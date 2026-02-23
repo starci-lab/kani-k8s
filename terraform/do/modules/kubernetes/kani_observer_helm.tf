@@ -71,13 +71,10 @@ resource "helm_release" "kani_observer" {
       limit_cpu      = local.kani_observer.kani_observer.limit_cpu
       limit_memory   = local.kani_observer.kani_observer.limit_memory
       // Loki
-      loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
+      loki_host = "http://localhost:3100" # dump for now
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
-      // Probes configuration
-      liveness_probe_path  = var.kani_liveness_probe_path
-      readiness_probe_path = var.kani_readiness_probe_path
-      startup_probe_path   = var.kani_startup_probe_path
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Secret names
@@ -91,6 +88,25 @@ resource "helm_release" "kani_observer" {
       privy_app_secret_key_secret_name             = kubernetes_secret.privy_app_secret_key.metadata[0].name
       privy_signer_private_key_secret_name         = kubernetes_secret.privy_signer_private_key.metadata[0].name
       coin_market_cap_api_key_secret_name          = kubernetes_secret.coin_market_cap_api_key.metadata[0].name
+      // Probes configuration
+      liveness_probe_path = var.kani_liveness_probe_path
+      liveness_probe_initial_delay = var.kani_liveness_probe_initial_delay
+      liveness_probe_period = var.kani_liveness_probe_period
+      liveness_probe_failure_threshold = var.kani_liveness_probe_failure_threshold
+      liveness_probe_success_threshold = var.kani_liveness_probe_success_threshold
+      liveness_probe_timeout = var.kani_liveness_probe_timeout
+      readiness_probe_path = var.kani_readiness_probe_path
+      readiness_probe_initial_delay = var.kani_readiness_probe_initial_delay
+      readiness_probe_period = var.kani_readiness_probe_period
+      readiness_probe_failure_threshold = var.kani_readiness_probe_failure_threshold
+      readiness_probe_success_threshold = var.kani_readiness_probe_success_threshold
+      readiness_probe_timeout = var.kani_readiness_probe_timeout
+      startup_probe_path = var.kani_startup_probe_path
+      startup_probe_initial_delay = var.kani_startup_probe_initial_delay
+      startup_probe_period = var.kani_startup_probe_period
+      startup_probe_failure_threshold = var.kani_startup_probe_failure_threshold
+      startup_probe_success_threshold = var.kani_startup_probe_success_threshold
+      startup_probe_timeout = var.kani_startup_probe_timeout
     })
   ]
 
@@ -111,13 +127,13 @@ resource "helm_release" "kani_observer" {
     # kubernetes_job_v1.restore,
     kubernetes_job_v1.seed,
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
-    helm_release.grafana,
+    # helm_release.grafana,
     # helm_release.jenkins,
     helm_release.kafka,
     helm_release.mongodb_sharded,
-    helm_release.kube_prometheus,
+    # helm_release.kube_prometheus,
     helm_release.redis_standalone,
     helm_release.consul,
-    helm_release.loki_monolithic,
+    # helm_release.loki_monolithic,
   ]
 }

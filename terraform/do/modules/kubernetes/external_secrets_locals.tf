@@ -6,9 +6,9 @@
 locals {
   external_secrets_inputs = {
     presets = {
-      external_secrets  = "16"
+      external_secrets  = "32"
       webhook           = "16"
-      cert_controller   = "16"
+      cert_controller   = "32"
     }
   }
 }
