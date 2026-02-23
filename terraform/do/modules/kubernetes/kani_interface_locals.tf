@@ -6,7 +6,7 @@
 locals {
   kani_interface_inputs = {
     presets = {
-      kani_interface = "64"
+      kani_interface = "96"
     }
   }
 }
