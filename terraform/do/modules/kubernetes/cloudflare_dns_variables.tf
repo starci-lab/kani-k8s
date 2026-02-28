@@ -109,3 +109,13 @@ variable "loki_gateway_prefix" {
   description = "Subdomain prefix for the Loki server (combined with domain_name)"
   default     = "loki-gateway"
 }
+
+// =========================
+// InfluxDB domain configuration
+// =========================
+
+variable "influxdb_prefix" {
+  type        = string
+  description = "Subdomain prefix for the InfluxDB server (combined with domain_name, e.g. influxdb.kanibot.xyz)"
+  default     = "influxdb"
+}
