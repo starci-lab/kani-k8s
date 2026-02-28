@@ -1,0 +1,60 @@
+## =========================
+## InfluxDB image (Bitnami legacy)
+## =========================
+## Template variables: node_pool_label, replica_count, request_cpu, request_memory, limit_cpu, limit_memory, persistence_size
+## Values are injected via Terraform templatefile() in influxdb_helm.tf
+##
+image:
+  registry: docker.io
+  repository: bitnamilegacy/influxdb
+
+## =========================
+## Authentication
+## =========================
+## Bearer token auth. With createAdminTokenJob.enabled: true the chart creates a random
+## admin token at first boot and stores it in a Secret (not supported when objectStore is memory).
+## Set auth.existingSecret to use a pre-created secret instead.
+auth:
+  enabled: true
+  existingSecret: ""
+  existingSecretAdminTokenKey: ""
+
+## =========================
+## Create admin token (random)
+## =========================
+## K8s job creates a random admin token at first boot; token is stored in a Secret.
+## Ignored if objectStore is memory or auth.enabled is false.
+createAdminTokenJob:
+  enabled: true
+
+## =========================
+## Storage
+## =========================
+## objectStore: file for persistent data (uses persistence below); memory for ephemeral.
+objectStore: file
+
+## =========================
+## Replica count and scheduling
+## =========================
+replicaCount: ${replica_count}
+nodeSelector:
+  "doks.digitalocean.com/node-pool": ${node_pool_label}
+
+## =========================
+## Resources
+## =========================
+resources:
+  requests:
+    cpu: ${request_cpu}
+    memory: ${request_memory}
+  limits:
+    cpu: ${limit_cpu}
+    memory: ${limit_memory}
+
+## =========================
+## Persistence
+## =========================
+## Used when objectStore is file.
+persistence:
+  enabled: true
+  size: ${persistence_size}
