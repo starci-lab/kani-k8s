@@ -6,7 +6,7 @@
 locals {
   kani_inspector_inputs = {
     presets = {
-      kani_inspector = "96"
+      kani_inspector = "256"
     }
   }
 }
