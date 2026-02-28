@@ -9,3 +9,15 @@ resource "kubernetes_namespace" "influxdb" {
 
   depends_on = [digitalocean_kubernetes_cluster.kubernetes]
 }
+
+// =========================
+// InfluxDB Service (data)
+// =========================
+// Fetches the Service created by the InfluxDB Helm chart.
+data "kubernetes_service" "influxdb" {
+  metadata {
+    name      = local.influxdb.services.server_service.name
+    namespace = kubernetes_namespace.influxdb.metadata[0].name
+  }
+  depends_on = [helm_release.influxdb]
+}
