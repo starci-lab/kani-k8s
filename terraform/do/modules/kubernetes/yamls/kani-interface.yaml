@@ -65,6 +65,10 @@ envVarsCM:
   CONSUL_HOST: "${consul_host}"
 
   # ------------------------
+  # INFLUXDB
+  # ------------------------
+  PRIMARY_INFLUXDB_URL: "${primary_influxdb_url}"
+  # ------------------------
   # LOKI
   # ------------------------
   LOKI_HOSTL: "${loki_host}"

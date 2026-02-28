@@ -21,3 +21,15 @@ data "kubernetes_service" "influxdb" {
   }
   depends_on = [helm_release.influxdb]
 }
+
+// =========================
+// InfluxDB Service (data)
+// =========================
+// Fetches the Service created by the InfluxDB Helm chart.
+data "kubernetes_secret" "influxdb" {
+  metadata {
+    name      = "influxdb"
+    namespace = kubernetes_namespace.influxdb.metadata[0].name
+  }
+  depends_on = [helm_release.influxdb]
+}

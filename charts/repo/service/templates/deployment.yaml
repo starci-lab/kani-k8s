@@ -142,6 +142,9 @@ spec:
             - secretRef:
                 name: {{ include "service.envVarsSecretName" . }}
             {{- end }}
+            {{- if .Values.extraEnvFrom }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvFrom "context" $) | nindent 12 }}
+            {{- end }}
 
           ports:
             {{ if .Values.containerPorts.app.enabled }}
