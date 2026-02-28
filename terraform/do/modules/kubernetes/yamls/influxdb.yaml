@@ -26,6 +26,9 @@ auth:
 ## Ignored if objectStore is memory or auth.enabled is false.
 createAdminTokenJob:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/kubectl
 
 ## =========================
 ## Storage
