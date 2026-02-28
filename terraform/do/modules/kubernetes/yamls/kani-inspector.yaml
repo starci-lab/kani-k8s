@@ -1,4 +1,4 @@
-# Number of pod replicas to run for kani-interface
+# Number of pod replicas to run for kani-inspector
 # Should be increased for high availability or high traffic
 replicaCount: ${replica_count}
 
@@ -7,13 +7,14 @@ replicaCount: ${replica_count}
 # These variables are visible in plain text inside the cluster
 # =========================================================
 envVarsCM:
+  # Cors
+  CORS_ORIGIN_1: "${cors_origin_1}"
+  CORS_ORIGIN_2: "${cors_origin_2}"
   # Application runtime environment
   NODE_ENV: production
-
   # Application listening port (must match containerPorts & service ports)
-  KANI_OBSERVER_PORT: "${port}"
+  KANI_INSPECTOR_PORT: "${port}"
   PORT: "${port}"
-
   # ------------------------
   # PRIMARY MONGODB SETTINGS
   # ------------------------
@@ -59,19 +60,18 @@ envVarsCM:
   REDIS_THROTTLER_USE_CLUSTER: "${redis_throttler_use_cluster}"
 
   # ------------------------
-  # INFLUXDB
-  # ------------------------
-  PRIMARY_INFLUXDB_URL: "${primary_influxdb_url}"
- 
-  # ------------------------
   # CONSUL
   # ------------------------
   CONSUL_HOST: "${consul_host}"
 
   # ------------------------
+  # INFLUXDB
+  # ------------------------
+  PRIMARY_INFLUXDB_URL: "${primary_influxdb_url}"
+  # ------------------------
   # LOKI
   # ------------------------
-  LOKI_HOST: "${loki_host}"
+  LOKI_HOSTL: "${loki_host}"
   # ------------------------
   # FILE-BASED SECRETS (MOUNT PATHS)
   # These paths point to mounted Kubernetes Secrets
@@ -87,6 +87,7 @@ envVarsCM:
   TERRAFORM_COIN_MARKET_CAP_API_KEY_MOUNT_PATH: "${coin_market_cap_api_key_mount_path}/data"
   CONFIG_RPCS_MOUNT_PATH: "${rpcs_mount_path}/data"
   CONFIG_APP_MOUNT_PATH: "${app_mount_path}/data"
+
 # =========================================================
 # SENSITIVE ENVIRONMENT VARIABLES (Kubernetes Secrets)
 # These values are base64-encoded and not visible in plain text
@@ -130,8 +131,8 @@ service:
 # =========================================================
 image:
   registry: docker.io
-  repository: ${kani_observer_image_repository}
-  tag: ${kani_observer_image_tag}            # Image tag (avoid 'latest' in production if possible)
+  repository: ${kani_inspector_image_repository}
+  tag: ${kani_inspector_image_tag}            # Image tag (avoid 'latest' in production if possible)
   digest: ""             # Optional image digest (overrides tag if set)
   pullPolicy: Always     # Always pull image on pod start
   pullSecrets: []        # Add secrets here if using private registry

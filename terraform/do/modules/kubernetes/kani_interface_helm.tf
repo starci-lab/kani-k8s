@@ -80,6 +80,9 @@ resource "helm_release" "kani_interface" {
       // Loki
       // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       loki_host = "http://localhost:3100" # dump for now
+      // InfluxDB
+      primary_influxdb_url = "http://${local.influxdb_outputs.server_service.host}:${local.influxdb_outputs.server_service.port}"
+      influxdb_token = local.influxdb_secret.token
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name

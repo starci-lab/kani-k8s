@@ -105,6 +105,10 @@ envVarsSecret:
   JWT_SALT: "${jwt_salt}"
   AES_CBC_SALT: "${aes_cbc_salt}"
 
+  # INFLUXDB
+  # ------------------------
+  PRIMARY_INFLUXDB_TOKEN: "${influxdb_token}"
+
 # =========================================================
 # CONTAINER PORTS
 # Ports exposed by the application container

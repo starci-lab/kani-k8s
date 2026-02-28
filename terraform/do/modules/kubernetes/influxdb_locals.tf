@@ -65,3 +65,13 @@ locals {
     }
   }
 }
+
+// =========================
+// InfluxDB secret
+// =========================
+// Secret for InfluxDB. Depends on data source from influxdb_resources_networking.tf.
+locals {
+  influxdb_secret = {
+    token = base64decode(data.kubernetes_secret.influxdb.data["admin-token"])
+  }
+}
