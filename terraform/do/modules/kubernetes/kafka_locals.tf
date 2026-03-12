@@ -148,3 +148,16 @@ locals {
     # }
   }
 }
+
+// =========================
+// Kafka broker env for kani-* (KAFKA_BROKERS_LENGTH + KAFKA_BROKER_1..10_HOST/PORT)
+// =========================
+locals {
+  kafka_broker_env = {
+    length       = var.kafka_broker_replica_count > 0 ? var.kafka_broker_replica_count : 1
+    default_host = local.kafka_outputs.service.host
+    default_port = local.kafka_outputs.service.port
+    broker_hosts = [for i in range(10) : try(local.kafka_outputs.headless_services[i].host, local.kafka_outputs.service.host)]
+    broker_ports = [for i in range(10) : try(local.kafka_outputs.headless_services[i].port, local.kafka_outputs.service.port)]
+  }
+}

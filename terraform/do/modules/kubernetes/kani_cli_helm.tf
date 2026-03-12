@@ -23,10 +23,29 @@ resource "helm_release" "kani_cli" {
       primary_mongodb_database = var.kani_primary_mongodb_database
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
-      // Kafka configuration
-      kafka_broker_host   = local.kafka_outputs.headless_services[0].host
-      kafka_broker_port   = local.kafka_outputs.headless_services[0].port
-      kafka_sasl_enabled  = var.kani_kafka_sasl_enabled
+      // Kafka configuration (KAFKA_BROKERS_LENGTH + KAFKA_BROKER_1..10_HOST/PORT)
+      kafka_brokers_length  = tostring(local.kafka_broker_env.length)
+      kafka_broker_1_host   = local.kafka_broker_env.broker_hosts[0]
+      kafka_broker_1_port   = tostring(local.kafka_broker_env.broker_ports[0])
+      kafka_broker_2_host   = local.kafka_broker_env.broker_hosts[1]
+      kafka_broker_2_port   = tostring(local.kafka_broker_env.broker_ports[1])
+      kafka_broker_3_host   = local.kafka_broker_env.broker_hosts[2]
+      kafka_broker_3_port   = tostring(local.kafka_broker_env.broker_ports[2])
+      kafka_broker_4_host   = local.kafka_broker_env.broker_hosts[3]
+      kafka_broker_4_port   = tostring(local.kafka_broker_env.broker_ports[3])
+      kafka_broker_5_host   = local.kafka_broker_env.broker_hosts[4]
+      kafka_broker_5_port   = tostring(local.kafka_broker_env.broker_ports[4])
+      kafka_broker_6_host   = local.kafka_broker_env.broker_hosts[5]
+      kafka_broker_6_port   = tostring(local.kafka_broker_env.broker_ports[5])
+      kafka_broker_7_host   = local.kafka_broker_env.broker_hosts[6]
+      kafka_broker_7_port   = tostring(local.kafka_broker_env.broker_ports[6])
+      kafka_broker_8_host   = local.kafka_broker_env.broker_hosts[7]
+      kafka_broker_8_port   = tostring(local.kafka_broker_env.broker_ports[7])
+      kafka_broker_9_host   = local.kafka_broker_env.broker_hosts[8]
+      kafka_broker_9_port   = tostring(local.kafka_broker_env.broker_ports[8])
+      kafka_broker_10_host  = local.kafka_broker_env.broker_hosts[9]
+      kafka_broker_10_port  = tostring(local.kafka_broker_env.broker_ports[9])
+      kafka_sasl_enabled    = var.kani_kafka_sasl_enabled
       kafka_sasl_username = var.kafka_sasl_user
       kafka_sasl_password = var.kafka_sasl_password
       // Redis Cache configuration

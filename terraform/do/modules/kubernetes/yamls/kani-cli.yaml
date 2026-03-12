@@ -21,10 +21,29 @@ envVarsCM:
   PRIMARY_MONGO_DB_NAME: "${primary_mongodb_database}"
 
   # ------------------------
-  # KAFKA CONFIGURATION
+  # KAFKA CONFIGURATION (KAFKA_BROKERS_LENGTH = kafka_broker_replica_count, broker 1..10)
   # ------------------------
-  KAFKA_BROKER_HOST: "${kafka_broker_host}"              # Kafka bootstrap server host
-  KAFKA_BROKER_PORT: "${kafka_broker_port}"              # Kafka broker port
+  KAFKA_BROKERS_LENGTH: "${kafka_brokers_length}"
+  KAFKA_BROKER_1_HOST: "${kafka_broker_1_host}"
+  KAFKA_BROKER_1_PORT: "${kafka_broker_1_port}"
+  KAFKA_BROKER_2_HOST: "${kafka_broker_2_host}"
+  KAFKA_BROKER_2_PORT: "${kafka_broker_2_port}"
+  KAFKA_BROKER_3_HOST: "${kafka_broker_3_host}"
+  KAFKA_BROKER_3_PORT: "${kafka_broker_3_port}"
+  KAFKA_BROKER_4_HOST: "${kafka_broker_4_host}"
+  KAFKA_BROKER_4_PORT: "${kafka_broker_4_port}"
+  KAFKA_BROKER_5_HOST: "${kafka_broker_5_host}"
+  KAFKA_BROKER_5_PORT: "${kafka_broker_5_port}"
+  KAFKA_BROKER_6_HOST: "${kafka_broker_6_host}"
+  KAFKA_BROKER_6_PORT: "${kafka_broker_6_port}"
+  KAFKA_BROKER_7_HOST: "${kafka_broker_7_host}"
+  KAFKA_BROKER_7_PORT: "${kafka_broker_7_port}"
+  KAFKA_BROKER_8_HOST: "${kafka_broker_8_host}"
+  KAFKA_BROKER_8_PORT: "${kafka_broker_8_port}"
+  KAFKA_BROKER_9_HOST: "${kafka_broker_9_host}"
+  KAFKA_BROKER_9_PORT: "${kafka_broker_9_port}"
+  KAFKA_BROKER_10_HOST: "${kafka_broker_10_host}"
+  KAFKA_BROKER_10_PORT: "${kafka_broker_10_port}"
   KAFKA_SASL_ENABLED: "${kafka_sasl_enabled}"            # Enable SASL authentication (true/false)
   KAFKA_SASL_USERNAME: "${kafka_sasl_username}"
 
