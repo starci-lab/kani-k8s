@@ -6,7 +6,7 @@
 locals {
   kani_executor_inputs = {
     presets = {
-      kani_executor = "192"
+      kani_executor = "128"
     }
   }
 }
