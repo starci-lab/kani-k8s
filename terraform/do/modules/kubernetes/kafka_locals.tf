@@ -6,7 +6,7 @@
 locals {
   kafka_inputs = {
     presets = {
-      controller        = "384"
+      controller        = "512"
       broker            = "192"
       volume_permissions = "16"
       kafka_ui          = "64"
