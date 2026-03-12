@@ -50,6 +50,11 @@ resource "helm_release" "kani_cli" {
       redis_throttler_port        = local.redis_standalone_outputs.service.port
       redis_throttler_password    = var.redis_standalone_password
       redis_throttler_use_cluster = var.kani_redis_throttler_enabled
+      // Redis Lock Authority configuration
+      redis_lock_authority_host        = local.redis_standalone_outputs.service.host
+      redis_lock_authority_port        = local.redis_standalone_outputs.service.port
+      redis_lock_authority_password    = var.redis_standalone_password
+      redis_lock_authority_use_cluster = var.kani_redis_lock_authority_enabled
       // Consul
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki

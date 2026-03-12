@@ -63,6 +63,13 @@ envVarsCM:
   REDIS_THROTTLER_USE_CLUSTER: "${redis_throttler_use_cluster}"
 
   # ------------------------
+  # REDIS – LOCK AUTHORITY
+  # ------------------------
+  REDIS_LOCK_AUTHORITY_HOST: "${redis_lock_authority_host}"
+  REDIS_LOCK_AUTHORITY_PORT: "${redis_lock_authority_port}"
+  REDIS_LOCK_AUTHORITY_USE_CLUSTER: "${redis_lock_authority_use_cluster}"
+
+  # ------------------------
   # CONSUL
   # ------------------------
   CONSUL_HOST: "${consul_host}"
@@ -99,6 +106,7 @@ envVarsSecret:
   REDIS_ADAPTER_PASSWORD: "${redis_adapter_password}"
   REDIS_BULLMQ_PASSWORD: "${redis_bullmq_password}"
   REDIS_THROTTLER_PASSWORD: "${redis_throttler_password}"
+  REDIS_LOCK_AUTHORITY_PASSWORD: "${redis_lock_authority_password}"
 
   # Cryptography & security secrets
   JWT_SALT: "${jwt_salt}"
