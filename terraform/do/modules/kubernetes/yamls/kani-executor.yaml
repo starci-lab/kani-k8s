@@ -58,6 +58,11 @@ envVarsCM:
   REDIS_LOCK_AUTHORITY_USE_CLUSTER: "${redis_lock_authority_use_cluster}"
 
   # ------------------------
+  # INFLUXDB
+  # ------------------------
+  PRIMARY_INFLUXDB_URL: "${primary_influxdb_url}"
+
+  # ------------------------
   # CONSUL
   # ------------------------
   CONSUL_HOST: "${consul_host}"
@@ -94,6 +99,9 @@ envVarsSecret:
   REDIS_BULLMQ_PASSWORD: "${redis_bullmq_password}"
   REDIS_THROTTLER_PASSWORD: "${redis_throttler_password}"
   REDIS_LOCK_AUTHORITY_PASSWORD: "${redis_lock_authority_password}"
+
+  # INFLUXDB
+  PRIMARY_INFLUXDB_TOKEN: "${influxdb_token}"
 
   # Cryptography & security secrets
   JWT_SALT: "${jwt_salt}"

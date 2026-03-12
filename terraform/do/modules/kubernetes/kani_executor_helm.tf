@@ -50,6 +50,9 @@ resource "helm_release" "kani_executor" {
       redis_lock_authority_port        = local.redis_standalone_outputs.service.port
       redis_lock_authority_password    = var.redis_standalone_password
       redis_lock_authority_use_cluster = var.kani_redis_lock_authority_enabled
+      // InfluxDB configuration
+      primary_influxdb_url = "http://${local.influxdb_outputs.server_service.host}:${local.influxdb_outputs.server_service.port}"
+      influxdb_token       = local.influxdb_secret.token
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path
