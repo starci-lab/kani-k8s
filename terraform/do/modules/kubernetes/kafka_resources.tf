@@ -22,3 +22,14 @@ data "kubernetes_service" "kafka" {
   }
   depends_on = [helm_release.kafka]
 }
+
+// =========================
+// Kafka Headless Service (data)
+// =========================
+data "kubernetes_service" "kafka_headless" {
+  metadata {
+    name      = local.kafka.services.headless_service.name
+    namespace = kubernetes_namespace.kafka.metadata[0].name
+  }
+  depends_on = [helm_release.kafka]
+}

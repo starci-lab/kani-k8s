@@ -24,8 +24,8 @@ resource "helm_release" "kani_cli" {
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
       // Kafka configuration
-      kafka_broker_host   = local.kafka_outputs.service.host
-      kafka_broker_port   = local.kafka_outputs.service.port
+      kafka_broker_host   = local.kafka_outputs.headless_services[0].host
+      kafka_broker_port   = local.kafka_outputs.headless_services[0].port
       kafka_sasl_enabled  = var.kani_kafka_sasl_enabled
       kafka_sasl_username = var.kafka_sasl_user
       kafka_sasl_password = var.kafka_sasl_password

@@ -105,6 +105,10 @@ locals {
         name = "kafka-ui"
         port = 8080
       }
+      headless_service = {
+        name = "kafka-controller-headless"
+        port = 9092
+      }
     }
   }
 }
@@ -126,6 +130,12 @@ locals {
         data.kubernetes_service.kafka.spec[0].port[0].port
       )
     }
+    headless_services = [
+      for i in range(var.kafka_broker_replica_count) : {
+        host = "kafka-controller-${i}.${data.kubernetes_service.kafka_headless.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
+        port = local.kafka.services.service.port
+      }
+    ]
     # ui_service = {
     #   host = "${data.kubernetes_service.kafka_ui.metadata[0].name}.${kubernetes_namespace.kafka.metadata[0].name}.svc.cluster.local"
     #   port = try(
