@@ -5,6 +5,7 @@
 image:
   registry: docker.io
   repository: bitnamilegacy/kafka
+  tag: 3.9
 
 ## =========================
 ## SASL Authentication
