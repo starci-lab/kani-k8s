@@ -302,3 +302,13 @@ variable "kani_startup_probe_success_threshold" {
   description = "Consecutive successes required to be considered started"
   default     = 1
 }
+
+// =========================
+// Actual broker count
+// =========================
+// Actual broker count for kani-* (KAFKA_BROKERS_LENGTH)
+variable "kani_broker_count" {
+  type        = number
+  description = "Actual broker count"
+  default     = 1
+}

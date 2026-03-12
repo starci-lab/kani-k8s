@@ -27,7 +27,7 @@ resource "helm_release" "kani_interface" {
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
       // Kafka configuration (KAFKA_BROKERS_LENGTH + KAFKA_BROKER_1..10_HOST/PORT)
-      kafka_brokers_length  = tostring(local.kafka_broker_env.length)
+      kafka_brokers_length  = tostring(var.kani_broker_count)
       kafka_broker_1_host   = local.kafka_broker_env.broker_hosts[0]
       kafka_broker_1_port   = tostring(local.kafka_broker_env.broker_ports[0])
       kafka_broker_2_host   = local.kafka_broker_env.broker_hosts[1]
