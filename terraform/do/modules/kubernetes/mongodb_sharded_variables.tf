@@ -99,7 +99,7 @@ variable "mongodb_configsvr_limit_memory" {
 variable "mongodb_shardsvr_replica_count" {
   type        = number
   description = "Number of replicas per MongoDB shard"
-  default     = 1
+  default     = 2
 }
 
 // CPU resource request for MongoDB Shard Server
