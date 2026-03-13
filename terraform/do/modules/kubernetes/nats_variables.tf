@@ -35,7 +35,7 @@ variable "nats_limit_memory" {
 variable "nats_auth_enabled" {
   type        = bool
   description = "Enable NATS client authentication"
-  default     = false
+  default     = true
 }
 
 variable "nats_auth_token" {
