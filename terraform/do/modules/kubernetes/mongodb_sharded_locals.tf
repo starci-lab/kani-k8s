@@ -7,8 +7,8 @@ locals {
   mongodb_sharded_inputs = {
     presets = {
       configsvr = "64"
-      shardsvr  = "384"
-      mongos    = "256"
+      shardsvr  = "256"
+      mongos    = "192"
     }
   }
 }
