@@ -155,7 +155,8 @@ resource "helm_release" "kani_observer" {
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     # helm_release.grafana,
     # helm_release.jenkins,
-    helm_release.kafka,
+    # helm_release.kafka,
+    helm_release.nats,
     helm_release.mongodb_sharded,
     # helm_release.kube_prometheus,
     helm_release.redis_standalone,
