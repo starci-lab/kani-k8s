@@ -25,31 +25,30 @@ resource "helm_release" "kani_coordinator" {
       primary_mongodb_database = var.kani_primary_mongodb_database
       primary_mongodb_username = var.mongodb_root_username
       primary_mongodb_password = var.mongodb_root_password
-      // Kafka configuration (KAFKA_BROKERS_LENGTH + KAFKA_BROKER_1..10_HOST/PORT)
-      kafka_brokers_length  = tostring(var.kani_broker_count)
-      kafka_broker_1_host   = local.kafka_broker_env.broker_hosts[0]
-      kafka_broker_1_port   = tostring(local.kafka_broker_env.broker_ports[0])
-      kafka_broker_2_host   = local.kafka_broker_env.broker_hosts[1]
-      kafka_broker_2_port   = tostring(local.kafka_broker_env.broker_ports[1])
-      kafka_broker_3_host   = local.kafka_broker_env.broker_hosts[2]
-      kafka_broker_3_port   = tostring(local.kafka_broker_env.broker_ports[2])
-      kafka_broker_4_host   = local.kafka_broker_env.broker_hosts[3]
-      kafka_broker_4_port   = tostring(local.kafka_broker_env.broker_ports[3])
-      kafka_broker_5_host   = local.kafka_broker_env.broker_hosts[4]
-      kafka_broker_5_port   = tostring(local.kafka_broker_env.broker_ports[4])
-      kafka_broker_6_host   = local.kafka_broker_env.broker_hosts[5]
-      kafka_broker_6_port   = tostring(local.kafka_broker_env.broker_ports[5])
-      kafka_broker_7_host   = local.kafka_broker_env.broker_hosts[6]
-      kafka_broker_7_port   = tostring(local.kafka_broker_env.broker_ports[6])
-      kafka_broker_8_host   = local.kafka_broker_env.broker_hosts[7]
-      kafka_broker_8_port   = tostring(local.kafka_broker_env.broker_ports[7])
-      kafka_broker_9_host   = local.kafka_broker_env.broker_hosts[8]
-      kafka_broker_9_port   = tostring(local.kafka_broker_env.broker_ports[8])
-      kafka_broker_10_host  = local.kafka_broker_env.broker_hosts[9]
-      kafka_broker_10_port  = tostring(local.kafka_broker_env.broker_ports[9])
-      kafka_sasl_enabled    = var.kani_kafka_sasl_enabled
-      kafka_sasl_username = var.kafka_sasl_user
-      kafka_sasl_password = var.kafka_sasl_password
+      // NATS (server URL, reconnect, ping; used by coordinator/executor)
+      nats_servers_count            = tostring(local.nats_env.servers_count)
+      nats_server_1_host            = local.nats_env.server_hosts[0]
+      nats_server_1_port            = tostring(local.nats_env.server_ports[0])
+      nats_server_2_host            = local.nats_env.server_hosts[1]
+      nats_server_2_port            = tostring(local.nats_env.server_ports[1])
+      nats_server_3_host            = local.nats_env.server_hosts[2]
+      nats_server_3_port            = tostring(local.nats_env.server_ports[2])
+      nats_server_4_host            = local.nats_env.server_hosts[3]
+      nats_server_4_port            = tostring(local.nats_env.server_ports[3])
+      nats_server_5_host            = local.nats_env.server_hosts[4]
+      nats_server_5_port            = tostring(local.nats_env.server_ports[4])
+      nats_server_6_host            = local.nats_env.server_hosts[5]
+      nats_server_6_port            = tostring(local.nats_env.server_ports[5])
+      nats_server_7_host            = local.nats_env.server_hosts[6]
+      nats_server_7_port            = tostring(local.nats_env.server_ports[6])
+      nats_server_8_host            = local.nats_env.server_hosts[7]
+      nats_server_8_port            = tostring(local.nats_env.server_ports[7])
+      nats_server_9_host            = local.nats_env.server_hosts[8]
+      nats_server_9_port            = tostring(local.nats_env.server_ports[8])
+      nats_server_10_host           = local.nats_env.server_hosts[9]
+      nats_server_10_port           = tostring(local.nats_env.server_ports[9])
+      nats_auth_enabled              = tostring(var.nats_auth_enabled)
+      nats_auth_token                = var.nats_auth_token
       // Redis Cache configuration
       redis_cache_host        = local.redis_standalone_outputs.service.host
       redis_cache_port        = local.redis_standalone_outputs.service.port
@@ -154,7 +153,7 @@ resource "helm_release" "kani_coordinator" {
     # helm_release.argo_cd, # Commented out - argo_cd helm release is currently disabled
     # helm_release.grafana,
     # helm_release.jenkins,
-    helm_release.kafka,
+    helm_release.nats,
     helm_release.mongodb_sharded,
     # helm_release.kube_prometheus,
     helm_release.redis_standalone,

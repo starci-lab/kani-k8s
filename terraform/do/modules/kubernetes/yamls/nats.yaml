@@ -1,0 +1,31 @@
+# NATS Configuration - Bitnami NATS (values from reference nats.yaml)
+# Variables injected via Terraform templatefile() in nats_helm.tf
+
+image:
+  registry: docker.io
+  repository: bitnamilegacy/nats
+
+auth:
+  enabled: ${auth_enabled}
+  token: "${auth_token}"
+  credentials: []
+  timeout: 1
+
+replicaCount: ${replica_count}
+
+resources:
+  requests:
+    cpu: ${request_cpu}
+    memory: ${request_memory}
+  limits:
+    cpu: ${limit_cpu}
+    memory: ${limit_memory}
+
+nodeSelector:
+  "doks.digitalocean.com/node-pool": ${node_pool_label}
+
+jetstream:
+  enabled: false
+
+metrics:
+  enabled: false

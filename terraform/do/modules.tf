@@ -119,4 +119,8 @@ module "kubernetes" {
   kani_db_restore_job_backup_id = var.kani_db_restore_job_backup_id
   // Consul basic authentication htpasswd
   consul_htpasswd = var.consul_htpasswd
+  // =========================
+  // NATS authentication
+  // =========================
+  nats_auth_token = var.nats_auth_token
 }

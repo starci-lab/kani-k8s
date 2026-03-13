@@ -167,3 +167,13 @@ variable "grafana_password" {
 #   description = "Jenkins password"
 #   sensitive = true
 # }
+
+// =========================
+// NATS authentication variables
+// =========================
+
+variable "nats_auth_token" {
+  type        = string
+  description = "NATS auth token"
+  sensitive   = true
+}

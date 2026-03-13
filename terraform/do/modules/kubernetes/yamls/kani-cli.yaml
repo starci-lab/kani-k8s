@@ -21,31 +21,31 @@ envVarsCM:
   PRIMARY_MONGO_DB_NAME: "${primary_mongodb_database}"
 
   # ------------------------
-  # KAFKA CONFIGURATION (KAFKA_BROKERS_LENGTH = kafka_broker_replica_count, broker 1..10)
+  # NATS (server URLs, auth)
   # ------------------------
-  KAFKA_BROKERS_LENGTH: "${kafka_brokers_length}"
-  KAFKA_BROKER_1_HOST: "${kafka_broker_1_host}"
-  KAFKA_BROKER_1_PORT: "${kafka_broker_1_port}"
-  KAFKA_BROKER_2_HOST: "${kafka_broker_2_host}"
-  KAFKA_BROKER_2_PORT: "${kafka_broker_2_port}"
-  KAFKA_BROKER_3_HOST: "${kafka_broker_3_host}"
-  KAFKA_BROKER_3_PORT: "${kafka_broker_3_port}"
-  KAFKA_BROKER_4_HOST: "${kafka_broker_4_host}"
-  KAFKA_BROKER_4_PORT: "${kafka_broker_4_port}"
-  KAFKA_BROKER_5_HOST: "${kafka_broker_5_host}"
-  KAFKA_BROKER_5_PORT: "${kafka_broker_5_port}"
-  KAFKA_BROKER_6_HOST: "${kafka_broker_6_host}"
-  KAFKA_BROKER_6_PORT: "${kafka_broker_6_port}"
-  KAFKA_BROKER_7_HOST: "${kafka_broker_7_host}"
-  KAFKA_BROKER_7_PORT: "${kafka_broker_7_port}"
-  KAFKA_BROKER_8_HOST: "${kafka_broker_8_host}"
-  KAFKA_BROKER_8_PORT: "${kafka_broker_8_port}"
-  KAFKA_BROKER_9_HOST: "${kafka_broker_9_host}"
-  KAFKA_BROKER_9_PORT: "${kafka_broker_9_port}"
-  KAFKA_BROKER_10_HOST: "${kafka_broker_10_host}"
-  KAFKA_BROKER_10_PORT: "${kafka_broker_10_port}"
-  KAFKA_SASL_ENABLED: "${kafka_sasl_enabled}"            # Enable SASL authentication (true/false)
-  KAFKA_SASL_USERNAME: "${kafka_sasl_username}"
+  NATS_SERVERS_COUNT: "${nats_servers_count}"
+  NATS_SERVER_1_HOST: "${nats_server_1_host}"
+  NATS_SERVER_1_PORT: "${nats_server_1_port}"
+  NATS_SERVER_2_HOST: "${nats_server_2_host}"
+  NATS_SERVER_2_PORT: "${nats_server_2_port}"
+  NATS_SERVER_3_HOST: "${nats_server_3_host}"
+  NATS_SERVER_3_PORT: "${nats_server_3_port}"
+  NATS_SERVER_4_HOST: "${nats_server_4_host}"
+  NATS_SERVER_4_PORT: "${nats_server_4_port}"
+  NATS_SERVER_5_HOST: "${nats_server_5_host}"
+  NATS_SERVER_5_PORT: "${nats_server_5_port}"
+  NATS_SERVER_6_HOST: "${nats_server_6_host}"
+  NATS_SERVER_6_PORT: "${nats_server_6_port}"
+  NATS_SERVER_7_HOST: "${nats_server_7_host}"
+  NATS_SERVER_7_PORT: "${nats_server_7_port}"
+  NATS_SERVER_8_HOST: "${nats_server_8_host}"
+  NATS_SERVER_8_PORT: "${nats_server_8_port}"
+  NATS_SERVER_9_HOST: "${nats_server_9_host}"
+  NATS_SERVER_9_PORT: "${nats_server_9_port}"
+  NATS_SERVER_10_HOST: "${nats_server_10_host}"
+  NATS_SERVER_10_PORT: "${nats_server_10_port}"
+  NATS_AUTH_ENABLED: "${nats_auth_enabled}"
+  NATS_AUTH_TOKEN: "${nats_auth_token}"
 
   # ------------------------
   # REDIS – CACHE LAYER
@@ -116,7 +116,6 @@ envVarsCM:
 # =========================================================
 envVarsSecret:
   PRIMARY_MONGO_DB_PASSWORD: "${primary_mongodb_password}"
-  KAFKA_SASL_PASSWORD: "${kafka_sasl_password}"
 
   REDIS_CACHE_PASSWORD: "${redis_cache_password}"
   REDIS_ADAPTER_PASSWORD: "${redis_adapter_password}"

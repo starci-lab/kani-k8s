@@ -83,12 +83,12 @@ resource "cloudflare_record" "api" {
 #   zone_id = data.cloudflare_zone.zone.id
 # }
 
-resource "cloudflare_record" "kafka_ui" {
-  name    = local.kafka_ui_domain_name
-  type    = "A"
-  content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
-  zone_id = data.cloudflare_zone.zone.id
-}
+# resource "cloudflare_record" "kafka_ui" {
+#   name    = local.kafka_ui_domain_name
+#   type    = "A"
+#   content = data.kubernetes_service.nginx_ingress_controller.status[0].load_balancer[0].ingress[0].ip
+#   zone_id = data.cloudflare_zone.zone.id
+# }
 
 resource "cloudflare_record" "consul_ui" {
   name    = local.consul_ui_domain_name
