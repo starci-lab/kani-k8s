@@ -41,11 +41,14 @@ locals {
   nats_outputs = {
     service = {
       host = "${data.kubernetes_service.nats.metadata[0].name}.${kubernetes_namespace.nats.metadata[0].name}.svc.cluster.local"
-      port = try(
-        one([
-          for p in data.kubernetes_service.nats.spec[0].port :
-          p.port if p.name == "client"
-        ]),
+      port = coalesce(
+        try(
+          one([
+            for p in data.kubernetes_service.nats.spec[0].port :
+            p.port if p.name == "client"
+          ]),
+          null
+        ),
         local.nats.services.service.port
       )
     }
@@ -59,10 +62,13 @@ locals {
 }
 
 // NATS env for kani-* (NATS_SERVERS_COUNT + NATS_SERVER_1..10_HOST/PORT)
+// When replica_count is 1, headless_services[1..9] are out of range; fallback to service host/port.
+// service.port can be null if no port named "client" exists, so coalesce with default 4222.
 locals {
   nats_env = {
-    servers_count = var.nats_replica_count > 0 ? var.nats_replica_count : 1
+    servers_count  = var.nats_replica_count > 0 ? var.nats_replica_count : 1
+    default_port   = local.nats.services.service.port
     server_hosts   = [for i in range(10) : try(local.nats_outputs.headless_services[i].host, local.nats_outputs.service.host)]
-    server_ports   = [for i in range(10) : try(local.nats_outputs.headless_services[i].port, local.nats_outputs.service.port)]
+    server_ports   = [for i in range(10) : coalesce(try(local.nats_outputs.headless_services[i].port, local.nats_outputs.service.port), local.nats.services.service.port)]
   }
 }
