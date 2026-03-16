@@ -102,7 +102,7 @@ resource "helm_release" "kani_interface" {
       consul_host = "http://${local.consul_outputs.headless_service.host}:${local.consul_outputs.headless_service.port}"
       // Loki
       // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
-      loki_host = "http://localhost:3100" # dump for now
+      loki_host = "https://logs-prod-020.grafana.net" # dump for now
       // InfluxDB
       primary_influxdb_url = "http://${local.influxdb_outputs.server_service.host}:${local.influxdb_outputs.server_service.port}"
       influxdb_token = local.influxdb_secret.token

@@ -98,7 +98,7 @@ resource "helm_release" "kani_observer" {
       limit_memory   = local.kani_observer.kani_observer.limit_memory
       // Loki
       // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
-      loki_host = "http://localhost:3100" # dump for now
+      loki_host = "https://logs-prod-020.grafana.net" # dump for now
       // Node scheduling
       node_pool_label = var.kubernetes_primary_node_pool_name
       // Consul
