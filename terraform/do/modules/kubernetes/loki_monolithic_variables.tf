@@ -153,3 +153,24 @@ variable "loki_monolithic_retention_period" {
   description = "Retention period for Loki monolithic"
   default     = "24h"
 }
+
+// =========================
+// Loki Monolithic basic auth
+// =========================
+variable "loki_username" {
+  type        = string
+  description = "Basic auth username for Loki monolithic"
+  sensitive   = true
+}
+
+variable "loki_password" {
+  type        = string
+  description = "Basic auth password for Loki monolithic"
+  sensitive   = true
+}
+
+variable "loki_require_auth" {
+  type        = bool
+  description = "Require basic auth for Loki monolithic"
+  default     = true
+}

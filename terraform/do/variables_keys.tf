@@ -126,3 +126,19 @@ variable "jenkins_password" {
   description = "Password for Jenkins admin user"
   sensitive   = true
 }
+
+// =========================
+// Loki Monolithic basic auth variables
+// =========================
+
+variable "loki_username" {
+  type        = string
+  description = "Basic auth username for Loki"
+  default     = "1478295"
+}
+
+variable "loki_password" {
+  type        = string
+  description = "Basic auth password for Loki"
+  sensitive   = true
+}

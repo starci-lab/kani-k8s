@@ -78,6 +78,9 @@ resource "helm_release" "kani_cli" {
       // Loki
       // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       loki_host = "https://logs-prod-020.grafana.net" # dump for now
+      loki_username = var.loki_username
+      loki_password = var.loki_password
+      loki_require_auth = var.loki_require_auth
       // Secret mount paths
       gcp_cloud_kms_crypto_operator_sa_mount_path = var.kani_gcp_cloud_kms_crypto_operator_sa_mount_path
       gcp_crypto_key_ed_sa_mount_path             = var.kani_gcp_crypto_key_ed_sa_mount_path

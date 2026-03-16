@@ -98,6 +98,9 @@ resource "helm_release" "kani_executor" {
       // Loki
       // loki_host = "http://${local.loki_monolithic_outputs.gateway_service.host}:${local.loki_monolithic_outputs.gateway_service.port}"
       loki_host = "https://logs-prod-020.grafana.net" # dump for now
+      loki_username = var.loki_username
+      loki_password = var.loki_password
+      loki_require_auth = var.loki_require_auth
       // Secret names
       gcp_cloud_kms_crypto_operator_sa_secret_name = kubernetes_secret.gcp_cloud_kms_crypto_operator_sa.metadata[0].name
       gcp_crypto_key_ed_sa_secret_name             = kubernetes_secret.gcp_crypto_key_ed_sa.metadata[0].name

@@ -123,4 +123,8 @@ module "kubernetes" {
   // NATS authentication
   // =========================
   nats_auth_token = var.nats_auth_token
+  // Loki basic authentication username
+  loki_username = var.loki_username
+  // Loki basic authentication password
+  loki_password = var.loki_password
 }
