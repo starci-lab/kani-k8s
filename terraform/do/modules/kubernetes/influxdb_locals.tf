@@ -5,7 +5,7 @@
 locals {
   influxdb_inputs = {
     presets = {
-      influxdb = "128"
+      influxdb = "256"
     }
   }
 }
