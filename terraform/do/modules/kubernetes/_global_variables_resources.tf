@@ -25,8 +25,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "256m"   # 16x request
-        memory            = "512Mi"  # 16x request
+        cpu               = "96m"    // 6x request
+        memory            = "192Mi"  // 6x request
         ephemeral_storage = "2Gi"
       }
     }
@@ -37,8 +37,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "512m"
-        memory            = "1024Mi"
+        cpu               = "192m"
+        memory            = "384Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -49,8 +49,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "1024m"
-        memory            = "2048Mi"
+        cpu               = "384m"
+        memory            = "768Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -61,8 +61,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "2048m"
-        memory            = "8192Mi"
+        cpu               = "768m"
+        memory            = "3072Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -73,8 +73,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "3072m"
-        memory            = "6144Mi"
+        cpu               = "1152m"
+        memory            = "2304Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -85,8 +85,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "4096m"
-        memory            = "8192Mi"
+        cpu               = "1536m"
+        memory            = "3072Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -97,8 +97,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "6144m"
-        memory            = "12288Mi"
+        cpu               = "2304m"
+        memory            = "4608Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -109,8 +109,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "8192m"
-        memory            = "16384Mi"
+        cpu               = "3072m"
+        memory            = "6144Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -121,8 +121,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "12288m"
-        memory            = "24576Mi"
+        cpu               = "4608m"
+        memory            = "9216Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -133,8 +133,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "16384m"
-        memory            = "32768Mi"
+        cpu               = "6144m"
+        memory            = "12288Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -145,8 +145,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "24576m"
-        memory            = "49152Mi"
+        cpu               = "9216m"
+        memory            = "18432Mi"
         ephemeral_storage = "2Gi"
       }
     }
@@ -157,8 +157,8 @@ variable "resources_config" {
         ephemeral_storage = "50Mi"
       }
       limits = {
-        cpu               = "32768m"
-        memory            = "65536Mi"
+        cpu               = "12288m"
+        memory            = "24576Mi"
         ephemeral_storage = "2Gi"
       }
     }
